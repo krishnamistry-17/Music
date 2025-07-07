@@ -3,6 +3,7 @@ import home from "../../assets/svgs/home.svg";
 import discover from "../../assets/svgs/discover.svg";
 import album from "../../assets/svgs/album.svg";
 import artist from "../../assets/svgs/artist.svg";
+import bartist from "../../assets/svgs/bartist.svg";
 import recent from "../../assets/svgs/recent.svg";
 import most from "../../assets/svgs/most.svg";
 import fav from "../../assets/svgs/fav.svg";
@@ -23,7 +24,7 @@ import song from "../../assets/images/song.png";
 import { IoMenu } from "react-icons/io5";
 import { MdCancel } from "react-icons/md";
 import { FaShareAlt } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FcAbout } from "react-icons/fc";
 import { MdWorkspacePremium } from "react-icons/md";
 import Song from "./Song";
@@ -54,17 +55,11 @@ import Footer from "../Footer/Footer";
 const Albums = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(2);
-
+  const navigate = useNavigate();
   const handleToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const data = [
-    { img: home, name: "Home" },
-    { img: discover, name: "Discover" },
-    { img: album, name: "Album" },
-    { img: artist, name: "Artist" },
-  ];
   const data1 = [
     {
       image: music1,
@@ -227,6 +222,7 @@ const Albums = () => {
       oimage: poption,
     },
   ];
+
   const menuData = [
     {
       title: "Menu",
@@ -234,7 +230,7 @@ const Albums = () => {
         { img: home, name: "Home" },
         { img: discover, name: "Discover" },
         { img: album, name: "Album" },
-        { img: artist, name: "Artist" },
+        { img: artist, name: "Artist", path: "/artist" },
       ],
     },
     {
@@ -264,14 +260,14 @@ const Albums = () => {
   return (
     <div>
       <div className="lg:flex hidden font-vazir   ">
-        <div class="lg:grid grid-flow-col grid-rows-3 gap-4 ">
+        <div class="lg:grid grid-flow-col grid-rows-3 gap-4 h-screen">
           <div class="lg:row-span-3 ... lg:block hidden">
             <div className="pl-[64px] pr-[32px]">
               <h2 className="pt-[48px] text-[32px]  bg-gradient-to-r from-[#EE10B0] to-[#0E9EEFEB] text-transparent bg-clip-text">
                 Melodies
               </h2>
 
-              {menuData.map((section, sectionIndex) => (
+              {/* {menuData.map((section, sectionIndex) => (
                 <div key={sectionIndex}>
                   <h2 className="py-[24px] text-[12px] text-[#EE10B0]">
                     {section.title}
@@ -280,13 +276,14 @@ const Albums = () => {
                     const isActive = activeIndex === `${sectionIndex}-${index}`;
                     return (
                       <button
+                        navigate={item.path}
                         key={`${sectionIndex}-${index}`}
                         onClick={() =>
                           setActiveIndex(`${sectionIndex}-${index}`)
                         }
                         className={`${
                           isActive
-                            ? "bg-[#EE10B0] text-white flex gap-2 px-6 py-3 rounded-md"
+                            ? "bg-[#EE10B0] text-white flex gap-2 px-8 py-3 rounded-md"
                             : "text-[16px] text-white flex gap-2.5 py-[24px] px-4"
                         }`}
                       >
@@ -302,61 +299,48 @@ const Albums = () => {
                     );
                   })}
                 </div>
+              ))} */}
+
+              {menuData.map((section, sectionIndex) => (
+                <div key={sectionIndex}>
+                  <h2 className="py-[24px] text-[12px] text-[#EE10B0]">
+                    {section.title}
+                  </h2>
+                  {section.items.map((item, index) => {
+                    const isActive = activeIndex === `${sectionIndex}-${index}`;
+                    return (
+                      <button
+                        key={`${sectionIndex}-${index}`}
+                        onClick={() => {
+                          setActiveIndex(`${sectionIndex}-${index}`);
+                          if (item.path) {
+                            navigate(item.path);
+                          }
+                        }}
+                        className={`${
+                          isActive
+                            ? "bg-[#EE10B0] text-white flex gap-2 px-8 py-3 rounded-md"
+                            : "text-[16px] text-white flex gap-2.5 py-[24px] px-4"
+                        }`}
+                      >
+                        <span>
+                          <img
+                            src={item.img}
+                            alt={item.name}
+                            className="w-[20px] h-[20px]"
+                          />
+                        </span>
+                        {item.name}
+                      </button>
+                    );
+                  })}
+                </div>
               ))}
-
-              <h2 className="py-[24px] text-[12px] text-[#EE10B0] ">Library</h2>
-              <button className="text-[16px] text-white flex gap-2.5 py-[24px]">
-                <span>
-                  <img src={recent} alt="m" className="w-[23px] h-[20px]" />
-                </span>
-                Recently Added
-              </button>
-              <button className="text-[16px] text-white flex gap-2.5 py-[24px]">
-                <span>
-                  <img src={most} alt="m" className="w-[23px] h-[20px]" />
-                </span>
-                Most played
-              </button>
-
-              <h2 className="py-[24px] text-[12px] text-[#EE10B0]">
-                Playlist and favorite
-              </h2>
-              <button className="text-[16px] text-white flex gap-2.5 py-[24px]">
-                <span>
-                  <img src={fav} alt="m" className="w-[23px] h-[20px]" />
-                </span>
-                Your favorites
-              </button>
-              <button className="text-[16px] text-white flex gap-2.5 py-[24px]">
-                <span>
-                  <img src={yourplay} alt="m" className="w-[23px] h-[20px]" />
-                </span>
-                Your playlist
-              </button>
-              <button className="text-[16px] text-[#0E9EEF] flex gap-2.5 py-[24px]">
-                <span>
-                  <img src={addplay} alt="m" className="w-[23px] h-[20px]" />
-                </span>
-                Add playlist
-              </button>
-              <h2 className="py-[24px] text-[12px] text-[#EE10B0]">general</h2>
-              <button className="text-[16px] text-white flex gap-2.5 py-[24px]">
-                <span>
-                  <img src={setting} alt="m" className="w-[23px] h-[20px]" />
-                </span>
-                Setting
-              </button>
-              <button className="text-[16px] text-[#EE10B0] flex gap-2.5 py-[24px]">
-                <span>
-                  <img src={logout} alt="m" className="w-[23px] h-[20px]" />
-                </span>
-                Logout
-              </button>
             </div>
           </div>
 
           <div class="col-span-3 mt-[26px] md:mr-[26px]  ">
-            <div className=" w-full h-fit pb-6 rounded-md   lg:block hidden  bg-gradient-to-r from-[#1171E2] to-[#8BCBE700] ">
+            <div className=" w-full h-fit pb-6    lg:block hidden  bg-gradient-to-r from-[#1171E2] to-[#8BCBE700] ">
               <div className="flex justify-between items-center py-[30px] pr-[31px] pl-[10px]">
                 <div>
                   <img src={back} alt="back" />
@@ -397,13 +381,16 @@ const Albums = () => {
             <div class="col-span-2 row-span-2 pt-5 pb-40 lg:block hidden  bg-gradient-to-r from-[#1171E2] to-[#53ADD606] ">
               <Song />
             </div>
+            <div>
+              <Footer />
+            </div>
           </div>
         </div>
       </div>
 
       {/*Mobile */}
       <div className="lg:hidden">
-        <div className=" flex justify-between items-center px-4 pb-4 ">
+        <div className=" flex justify-between items-center px-4 pb-4  sticky top-0 bg-[#181818]">
           <img src={back} alt="back" className=" text-[#0E9EEF] w-10 h-8" />
           <h2 className="text-[32px]  bg-gradient-to-r from-[#0E9EEFEB] to-[#EE10B0] text-transparent bg-clip-text">
             Album
@@ -602,13 +589,14 @@ const Albums = () => {
             <img src={balbum} alt="bh" />
             <p className="text-[14px] text-[#0E9EEF] pt-2">Albums</p>
           </div>
+          <div className="flex flex-col" onClick={() => navigate("/artist")}>
+            <img src={bartist} alt="bh" className="w-[39px] h-[44px]" />
+            <p className="text-[14px] text-[#0E9EEF] pt-2">Artist</p>
+          </div>
           <div className="flex flex-col">
             <img src={blib} alt="bh" />
             <p className="text-[14px] text-[#0E9EEF] pt-2">Library</p>
           </div>
-        </div>
-        <div>
-          <Footer />
         </div>
       </div>
     </div>
@@ -616,10 +604,3 @@ const Albums = () => {
 };
 
 export default Albums;
-// echo "# Music" >> README.md
-// git init
-// git add README.md
-// git commit -m "first commit"
-// git branch -M main
-// git remote add origin https://github.com/krishnamistry-17/Music.git
-// git push -u origin main
