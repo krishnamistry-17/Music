@@ -170,22 +170,22 @@ const ArtAlbum = () => {
       <div className="md:hidden">
         <div className="flex justify-between pt-5">
           <div>
-            <h2 className="text-[26px] text-white font-bold pl-4 ">
+            <h2 className="text-[19px] text-white font-bold pl-4 ">
               Artist’s <span className="text-[#EE10B0]">Albums</span>
             </h2>
           </div>
           <div className="flex gap-2.5 pt-3" onClick={() => setIsOpen(!isOpen)}>
             <div>
-              <h2 className="text-[#0E9EEF] text-[16px] font-semibold">
+              <h2 className="text-[#0E9EEF] text-[12px] font-semibold">
                 {isOpen ? "View Less" : "View More"}
               </h2>
             </div>
             <div>
-              <img src={more} alt="m" className="w-4 h-4 mt-1" />
+              <img src={more} alt="m" className="w-4 h-4 " />
             </div>
           </div>
         </div>
-        <div className=" grid grid-cols-2 gap-3 pt-5">
+        <div className=" flex gap-3 overflow-x-auto pt-5">
           {(isOpen ? data3 : data3.slice(0, smallCount)).map((item, index) => (
             <div key={index}>
               <div className="bg-[#1F1F1F] w-[135.33px] h-[174px] p-2 rounded-[8px]">

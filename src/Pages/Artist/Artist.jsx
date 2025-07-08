@@ -64,14 +64,20 @@ const Artist = () => {
       items: [
         { img: fav, name: "Your Favorites" },
         { img: yourplay, name: "Your Playlist" },
-        { img: addplay, name: "Add Playlist", textc: "#0E9EEFEB" },
+        {
+          img: addplay,
+          name: ["", <a className="text-[#0E9EEFEB]">Add Playlist</a>, ""],
+        },
       ],
     },
     {
       title: "General",
       items: [
         { img: setting, name: "Setting" },
-        { img: logout, name: "Logout" },
+        {
+          img: logout,
+          name: ["", <a className="text-[#EE10B0]">Logout</a>, ""],
+        },
       ],
     },
   ];
@@ -236,7 +242,7 @@ const Artist = () => {
                         }}
                         className={`${
                           isActive
-                            ? "bg-[#EE10B0] text-white flex gap-2 w-[160px] py-3 px-2 rounded-md"
+                            ? "bg-[#EE10B0] text-white flex gap-2 px-8 py-3 rounded-md"
                             : "text-[16px] text-white flex gap-2.5 py-[24px] px-4"
                         }`}
                       >
@@ -497,6 +503,12 @@ const Artist = () => {
         </div>
         <div>
           <SingleSong />
+        </div>
+        <div>
+          <ArtistPlay />
+        </div>
+        <div>
+          <Fans />
         </div>
       </div>
     </div>

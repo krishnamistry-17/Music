@@ -74,7 +74,7 @@ const SingleSong = () => {
 
       <div className="hidden md:block lg:hidden">
         <h2 className="text-[32px] text-white font-bold pl-4 pt-5">
-          Artist’s <span className="text-[#EE10B0]">Albums</span>
+          Single <span className="text-[#EE10B0]">Songs</span>
         </h2>
         <div className="grid grid-cols-4 pt-5 gap-6 px-4 overflow-x-auto">
           {(isOpen ? data1 : data1.slice(0, mediumcount)).map((item, index) => (
@@ -109,28 +109,25 @@ const SingleSong = () => {
       <div className="md:hidden">
         <div className="flex justify-between pt-5">
           <div>
-            <h2 className="text-[26px] text-white font-bold pl-4 ">
-              Artist’s <span className="text-[#EE10B0]">Albums</span>
+            <h2 className="text-[19px] text-white font-bold pl-4 ">
+              Single <span className="text-[#EE10B0]">Songs</span>
             </h2>
           </div>
-          <div
-            className=" grid grid-cols-2 gap-2.5 pt-3"
-            onClick={() => setIsOpen(!isOpen)}
-          >
+          <div className="flex gap-2.5 pt-3" onClick={() => setIsOpen(!isOpen)}>
             <div>
-              <h2 className="text-[#0E9EEF] text-[16px] font-semibold">
+              <h2 className="text-[#0E9EEF] text-[12px] font-semibold">
                 {isOpen ? "View Less" : "View More"}
               </h2>
             </div>
             <div>
-              <img src={more} alt="m" className="w-4 h-4 mt-1" />
+              <img src={more} alt="m" className="w-4 h-4" />
             </div>
           </div>
         </div>
-        <div className="flex gap-3 overflow-x-auto scrollbar-hide">
+        <div className="flex gap-3 overflow-x-auto scrollbar-hide pt-8">
           {(isOpen ? data3 : data3.slice(0, smallCount)).map((item, index) => (
             <div key={index}>
-              <div className="bg-[#1F1F1F] w-[135.33px] h-[174px] p-2 rounded-[8px]">
+              <div className="bg-[#1F1F1F] w-[144.33px] h-[203px] p-2 rounded-[8px]">
                 <div className="p-2">
                   <img src={item.image} alt="a1" />
                   <div className="pt-[8px]">

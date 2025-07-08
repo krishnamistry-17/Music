@@ -24,7 +24,6 @@ import music19 from "../../assets/images/music19.png";
 import music20 from "../../assets/images/music20.jpg";
 
 const Song = () => {
-  const data = [{ img: playmusic }, { num: 2 }];
   const [activeIndex, setActiveIndex] = useState(0);
 
   const data1 = [
@@ -267,68 +266,7 @@ const Song = () => {
             <p className="text-[20px] text-white ">Time</p>
           </div>
         </div>
-        {/* <div className="flex pt-[15px]">
-          <div className="flex flex-col ">
-            <img src={playmusic} alt="ps" className="mt-4 mr-4" />
-            <p className="text-[24px] text-white pt-11 list-decimal list-inside">
-              2
-            </p>
-            <p className="text-[24px] text-white pt-11 list-decimal list-inside">
-              3
-            </p>
-            <p className="text-[24px] text-white pt-11 list-decimal list-inside">
-              4
-            </p>
-            <p className="text-[24px] text-white pt-11 list-decimal list-inside">
-              5
-            </p>
-          </div>
 
-          <div className=" pb-[15px]">
-            {data1.map((item, index) => (
-              <div className="pt-[15px] ">
-                <div
-                  key={index}
-                  onClick={() => setActiveIndex(index)}
-                  className="grid grid-cols-4 rounded-md justify-between items-center bg-[#1E1E1E] pr-2 "
-                >
-                  <div className="flex">
-                    <div>
-                      <img
-                        src={item.image}
-                        alt="m1"
-                        className="w-[60px] h-[60px] rounded-[5px] border"
-                      />
-                    </div>
-                    <div className="pl-[23px] ">
-                      <p className="text-white text-[20px] pt-1">{item.head}</p>
-                      <p className="text-white text-[12px] pt-0.5">
-                        {item.para}
-                      </p>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-white text-[16px]">{item.rdate}</p>
-                  </div>
-                  <div>
-                    <p className="text-white text-[16px]">{item.album}</p>
-                  </div>
-                  <div className="flex justify-end gap-2.5">
-                    <div>
-                      <img src={item.fimg} alt="pf" />
-                    </div>
-                    <div>
-                      <p className="text-white text-[16px]">{item.ptime}</p>
-                    </div>
-                    <div>
-                      <img src={item.oimage} alt="op" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div> */}
         <div className="flex pt-[15px]">
           <div className="flex flex-col items-center mt-4 mr-4">
             {data1.map((_, index) => (

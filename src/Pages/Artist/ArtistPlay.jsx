@@ -71,31 +71,35 @@ const ArtistPlay = () => {
         </div>
       </div>
 
-      {/* <div className="hidden md:block lg:hidden">
+      <div className="hidden md:block lg:hidden">
         <h2 className="text-[32px] text-white font-bold pl-4 pt-5">
           Artist’s <span className="text-[#EE10B0]">Playlist</span>
         </h2>
-        <div className="flex pt-5 gap-6 px-4 overflow-x-auto">
-          {data1.map((item, index) => (
+        <div className="grid grid-cols-4 pt-5 gap-6 px-4 overflow-x-auto">
+          {(isOpen ? data1 : data1.slice(0, mediumcount)).map((item, index) => (
             <div key={index}>
               <div className="bg-[#1F1F1F] w-[176.4px] h-[222px] p-2 rounded-[8px]">
                 <div className="p-2">
                   <img src={item.image} alt="a1" />
                   <div className="pt-[8px]">
-                    <h2 className="text-white text-[16px]">{item.heading}</h2>
-                    <p className="text-white text-[16px] pt-[4px]">
-                      {item.para}
-                    </p>
+                    <h2 className="text-white text-[16px] pt-3">
+                      {item.heading}
+                    </h2>
                   </div>
                 </div>
               </div>
             </div>
           ))}
-          <div className="pl-[24px] py-[64px]">
+          <div
+            className="pl-[24px] py-[64px] cursor-pointer"
+            onClick={() => setIsOpen(!isOpen)}
+          >
             <div className="h-[62px] w-[62px] rounded-[31px] bg-[#1E1E1E]">
               <img src={plus} alt="pls" className="p-[19px]" />
             </div>
-            <p className="text-white text-[16px] font-medium pt-1">View All</p>
+            <p className="text-white text-[16px] font-medium pt-1">
+              {isOpen ? "View Less" : "View More"}
+            </p>
           </div>
         </div>
       </div>
@@ -103,39 +107,38 @@ const ArtistPlay = () => {
       <div className="md:hidden">
         <div className="flex justify-between pt-5">
           <div>
-            <h2 className="text-[26px] text-white font-bold pl-4 ">
-              Artist’s <span className="text-[#EE10B0]">Playlist</span>
+            <h2 className="text-[22 px] text-white font-bold pl-4 ">
+              Top <span className="text-[#EE10B0]">Mix’s</span>
             </h2>
           </div>
-          <div className="flex gap-2.5 pt-3">
+          <div className="flex gap-2.5 pt-3" onClick={() => setIsOpen(!isOpen)}>
             <div>
-              <h2 className="text-[#0E9EEF] text-[16px] font-semibold">
-                View All
+              <h2 className="text-[#0E9EEF] text-[12px] font-semibold">
+                {isOpen ? "View Less" : "View More"}
               </h2>
             </div>
             <div>
-              <img src={more} alt="m" className="w-4 h-4 mt-1" />
+              <img src={more} alt="m" className="w-4 h-4 " />
             </div>
           </div>
         </div>
-        <div className="flex gap-3 overflow-x-auto scrollbar-hide">
-          {data3.map((item, index) => (
+        <div className="flex gap-3 overflow-x-auto scrollbar-hide pt-5">
+          {(isOpen ? data3 : data3.slice(0, smallCount)).map((item, index) => (
             <div key={index}>
-              <div className="bg-[#1F1F1F] w-[135.33px] h-[174px] p-2 rounded-[8px]">
+              <div className="bg-[#1F1F1F] w-[148.33px] h-[177px] p-2 rounded-[8px]">
                 <div className="p-2">
                   <img src={item.image} alt="a1" />
                   <div className="pt-[8px]">
-                    <h2 className="text-white text-[16px]">{item.heading}</h2>
-                    <p className="text-white text-[16px] pt-[4px]">
-                      {item.para}
-                    </p>
+                    <h2 className="text-white text-[16px] pt-3">
+                      {item.heading}
+                    </h2>
                   </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
-      </div> */}
+      </div>
     </>
   );
 };

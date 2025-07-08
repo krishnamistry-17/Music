@@ -229,7 +229,7 @@ const Albums = () => {
       items: [
         { img: home, name: "Home" },
         { img: discover, name: "Discover" },
-        { img: album, name: "Album" },
+        { img: album, name: "Album", path: "/album" },
         { img: artist, name: "Artist", path: "/artist" },
       ],
     },
@@ -245,14 +245,20 @@ const Albums = () => {
       items: [
         { img: fav, name: "Your Favorites" },
         { img: yourplay, name: "Your Playlist" },
-        { img: addplay, name: "Add Playlist" },
+        {
+          img: addplay,
+          name: ["", <a className="text-[#0E9EEFEB]">Add Playlist</a>, ""],
+        },
       ],
     },
     {
       title: "General",
       items: [
         { img: setting, name: "Setting" },
-        { img: logout, name: "Logout" },
+        {
+          img: logout,
+          name: ["", <a className="text-[#EE10B0]">Logout</a>, ""],
+        },
       ],
     },
   ];
@@ -263,43 +269,12 @@ const Albums = () => {
         <div class="lg:grid grid-flow-col grid-rows-3 gap-4 h-screen">
           <div class="lg:row-span-3 ... lg:block hidden">
             <div className="pl-[64px] pr-[32px]">
-              <h2 className="pt-[48px] text-[32px]  bg-gradient-to-r from-[#EE10B0] to-[#0E9EEFEB] text-transparent bg-clip-text">
+              <h2
+                className="pt-[48px] text-[32px] 
+              bg-gradient-to-r from-[#EE10B0] to-[#0E9EEFEB] text-transparent bg-clip-text"
+              >
                 Melodies
               </h2>
-
-              {/* {menuData.map((section, sectionIndex) => (
-                <div key={sectionIndex}>
-                  <h2 className="py-[24px] text-[12px] text-[#EE10B0]">
-                    {section.title}
-                  </h2>
-                  {section.items.map((item, index) => {
-                    const isActive = activeIndex === `${sectionIndex}-${index}`;
-                    return (
-                      <button
-                        navigate={item.path}
-                        key={`${sectionIndex}-${index}`}
-                        onClick={() =>
-                          setActiveIndex(`${sectionIndex}-${index}`)
-                        }
-                        className={`${
-                          isActive
-                            ? "bg-[#EE10B0] text-white flex gap-2 px-8 py-3 rounded-md"
-                            : "text-[16px] text-white flex gap-2.5 py-[24px] px-4"
-                        }`}
-                      >
-                        <span>
-                          <img
-                            src={item.img}
-                            alt="m"
-                            className="w-[20px] h-[20px]"
-                          />
-                        </span>
-                        {item.name}
-                      </button>
-                    );
-                  })}
-                </div>
-              ))} */}
 
               {menuData.map((section, sectionIndex) => (
                 <div key={sectionIndex}>
@@ -339,7 +314,7 @@ const Albums = () => {
             </div>
           </div>
 
-          <div class="col-span-3 mt-[26px] md:mr-[26px]  ">
+          <div class="col-span-3 mt-[26px]   ">
             <div className=" w-full h-fit pb-6    lg:block hidden  bg-gradient-to-r from-[#1171E2] to-[#8BCBE700] ">
               <div className="flex justify-between items-center py-[30px] pr-[31px] pl-[10px]">
                 <div>

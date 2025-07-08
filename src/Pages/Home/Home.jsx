@@ -1,7 +1,6 @@
 import React from "react";
 import Albums from "../Albums/Albums";
 
-
 const Home = () => {
   return (
     <div className="">
@@ -13,3 +12,6 @@ const Home = () => {
 };
 
 export default Home;
+{
+  /*Mp3 audio file */
+}
