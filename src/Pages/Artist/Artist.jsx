@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import home from "../../assets/svgs/home.svg";
-import discover from "../../assets/svgs/discover.svg";
 import album from "../../assets/svgs/album.svg";
 import artist from "../../assets/svgs/artist.svg";
 import recent from "../../assets/svgs/recent.svg";
@@ -8,9 +7,13 @@ import most from "../../assets/svgs/most.svg";
 import fav from "../../assets/svgs/fav.svg";
 import yourplay from "../../assets/svgs/yourplay.svg";
 import addplay from "../../assets/svgs/addplay.svg";
+import wplay from "../../assets/svgs/wplay.svg";
 import setting from "../../assets/svgs/setting.svg";
 import logout from "../../assets/svgs/logout.svg";
+import wlog from "../../assets/svgs/wlog.svg";
+import wdis from "../../assets/svgs/wdis.svg";
 import back from "../../assets/svgs/back.svg";
+import bback from "../../assets/svgs/blueback.svg";
 import right from "../../assets/svgs/right.svg";
 import profile from "../../assets/svgs/profile.svg";
 import artist0 from "../../assets/images/artist.png";
@@ -21,6 +24,16 @@ import art4 from "../../assets/images/art4.jpg";
 import art5 from "../../assets/images/art5.jpg";
 import pfav from "../../assets/svgs/pfav.svg";
 import option from "../../assets/svgs/option.svg";
+import bhome from "../../assets/svgs/bhome.svg";
+import bartist from "../../assets/svgs/bartist.svg";
+import phome from "../../assets/svgs/phome.svg";
+import pdisc from "../../assets/svgs/pdisc.svg";
+import palbum from "../../assets/svgs/palbum.svg";
+import plib from "../../assets/svgs/plib.svg";
+import part from "../../assets/svgs/part.svg";
+import bdisc from "../../assets/svgs/bdisc.svg";
+import albumb from "../../assets/svgs/albumb.svg";
+import discb from "../../assets/svgs/discb.svg";
 import { IoMenu } from "react-icons/io5";
 import { MdCancel } from "react-icons/md";
 import { FaShareAlt } from "react-icons/fa";
@@ -28,26 +41,25 @@ import { data, Link, useNavigate } from "react-router-dom";
 import { FcAbout } from "react-icons/fc";
 import { MdWorkspacePremium } from "react-icons/md";
 import Popular from "./Popular";
-import Footer from "../Footer/Footer";
 import ArtAlbum from "./ArtAlbum";
 import SingleSong from "./SingleSong";
 import ArtistPlay from "./ArtistPlay";
 import Fans from "./Fans";
+import { useLocation } from "react-router-dom";
 
 const Artist = () => {
   const [activeIndex, setActiveIndex] = useState(2);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [lastindex, setLastIndex] = useState(5);
-  const [isOpen, setIsOpen] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const menuData = [
     {
       title: "Menu",
       items: [
         { img: home, name: "Home" },
-        { img: discover, name: "Discover" },
+        { img: wdis, name: "Discover", path: "/discover" },
         { img: album, name: "Album", path: "/album" },
         { img: artist, name: "Artist", path: "/artist" },
       ],
@@ -66,7 +78,8 @@ const Artist = () => {
         { img: yourplay, name: "Your Playlist" },
         {
           img: addplay,
-          name: ["", <a className="text-[#0E9EEFEB]">Add Playlist</a>, ""],
+          npimg: wplay,
+          name: "Add Playlist",
         },
       ],
     },
@@ -76,13 +89,12 @@ const Artist = () => {
         { img: setting, name: "Setting" },
         {
           img: logout,
-          name: ["", <a className="text-[#EE10B0]">Logout</a>, ""],
+          nlimg: wlog,
+          name: "Logout",
         },
       ],
     },
   ];
-
-  const visibleCount = 5;
 
   const data1 = [
     {
@@ -199,6 +211,18 @@ const Artist = () => {
     },
   ];
 
+  const optionData = [
+    {
+      items: [
+        { img: bhome, activeimg: phome, name: "Home" },
+        { img: bdisc, activeimg: pdisc, name: "Discover", path: "/discover" },
+        { img: albumb, activeimg: palbum, name: "Album", path: "/album" },
+        { img: bartist, activeimg: part, name: "Artist", path: "/artist" },
+        { img: discb, activeimg: plib, name: "Library", path: "/library" },
+      ],
+    },
+  ];
+
   const handleToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -213,25 +237,33 @@ const Artist = () => {
 
   return (
     <div>
-      <div className="lg:flex hidden font-vazir ">
-        <div className="lg:grid grid-flow-col grid-rows-3 gap-4 h-screen">
-          <div className=" lg:row-span-3 lg:block hidden">
-            <div className="pl-[64px] pr-[32px]">
-              <h2
-                className="pt-[48px] text-[32px] 
-              bg-gradient-to-r from-[#EE10B0] to-[#0E9EEFEB] text-transparent bg-clip-text"
-              >
-                Melodies
-              </h2>
+      <div className="lg:flex hidden ">
+        {/* Sidebar */}
+        <div
+          className="fixed top-0 left-0 h-screen hidden lg:block border-r-2 border-darkpink bg-black z-40 overflow-y-auto"
+          style={{ scrollbarWidth: "none" }}
+        >
+          {/* Sidebar content (Melodies, menu, etc.) */}
+          <div className="pl-[64px] pr-[32px] pb-[50px] ">
+            <h2
+              className="pt-[48px] text-[32px]  font-Vazirmatn-600
+              bg-gradient-to-r from-darkpink to-blue text-transparent bg-clip-text"
+            >
+              Melodies
+            </h2>
 
-              {menuData.map((section, sectionIndex) => (
-                <div key={sectionIndex}>
-                  <h2 className="py-[24px] text-[12px] text-[#EE10B0]">
-                    {section.title}
-                  </h2>
-                  {section.items.map((item, index) => {
-                    const isActive = activeIndex === `${sectionIndex}-${index}`;
-                    return (
+            {menuData.map((section, sectionIndex) => (
+              <div key={sectionIndex}>
+                <h2 className="my-[24px] text-[12px] text-darkpink font-Vazirmatn-300">
+                  {section.title}
+                </h2>
+                {section.items.map((item, index) => {
+                  const isActive =
+                    activeIndex === `${sectionIndex}-${index}` ||
+                    location.pathname.startsWith(item.path);
+
+                  return (
+                    <div>
                       <button
                         key={`${sectionIndex}-${index}`}
                         onClick={() => {
@@ -240,97 +272,133 @@ const Artist = () => {
                             navigate(item.path);
                           }
                         }}
-                        className={`${
+                        className={`flex gap-2 w-[174px] mt-[24px] 
+                        ${
                           isActive
-                            ? "bg-[#EE10B0] text-white flex gap-2 px-8 py-3 rounded-md"
-                            : "text-[16px] text-white flex gap-2.5 py-[24px] px-4"
-                        }`}
+                            ? "bg-darkpink text-white h-[40px] pl-4 pt-2 rounded-md font-Vazirmatn-600"
+                            : "h-[23px] font-Vazirmatn-500 hover:border-none"
+                        } 
+                          ${
+                            item.name === "Add Playlist"
+                              ? "text-blue"
+                              : item.name === "Logout"
+                              ? "text-darkpink"
+                              : "text-white"
+                          }
+                      
+                        `}
                       >
                         <span>
                           <img
-                            src={item.img}
-                            alt={item.name}
-                            className="w-[20px] h-[20px]"
+                            src={`
+                              ${
+                                item.name === "Add Playlist" && isActive
+                                  ? item.npimg
+                                  : item.name === "Logout" && isActive
+                                  ? item.nlimg
+                                  : item.img
+                              }`}
+                            alt="img"
+                            className={`
+                              ${
+                                isActive
+                                  ? "w-[24px] h-[24px] mt-[-2px]"
+                                  : "w-[16px] h-[16px] "
+                              }
+                            
+                            `}
                           />
                         </span>
                         {item.name}
                       </button>
-                    );
-                  })}
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Main content area (grid content, header, songs, footer) */}
+        <div className="lg:ml-[300px] mt-[25px] pl-[32px] ">
+          <div>
+            <div className=" relative top-[71px]  z-10">
+              <div className="flex justify-between items-center px-5">
+                <div>
+                  <img
+                    src={back}
+                    alt="back"
+                    onClick={handleClick}
+                    className="w-[50px] h-[50px]"
+                  />
                 </div>
-              ))}
+                <div className="flex gap-5">
+                  <p className="text-white text-[24px] font-Vazirmatn-600">
+                    Share
+                  </p>
+                  <p className="text-white text-[24px] font-Vazirmatn-600">
+                    About
+                  </p>
+                  <p className="text-white text-[24px] font-Vazirmatn-600">
+                    Premuim
+                  </p>
+                  <img src={profile} alt="pf" className="md:pl-[37px] pr-8" />
+                </div>
+              </div>
+            </div>
+            <img
+              src={artist0}
+              alt="art"
+              className="md:h-[422px] md:w-[1230px]   rounded-[10px] relative z-0 shadow-l
+"
+            />
+            <div className=" relative z-20  bottom-32 pl-5">
+              <h2 className="text-white text-[96px] font-Vazirmatn-900">
+                Eminem
+              </h2>
             </div>
           </div>
-
-          <div className=" col-span-3 ">
-            <div>
-              <div className=" relative top-[95px]  z-10">
-                <div className="flex justify-between items-center px-5">
-                  <div>
-                    <img src={back} alt="back" onClick={handleClick} />
-                  </div>
-                  <div className="flex gap-5">
-                    <p className="text-white text-[24px]">Share</p>
-                    <p className="text-white text-[24px]">About</p>
-                    <p className="text-white text-[24px]">Premuim</p>
-                    <img src={profile} alt="pf" className="md:pl-[37px]" />
-                  </div>
-                </div>
-              </div>
-              <img
-                src={artist0}
-                alt="art"
-                className="md:h-[422px] md:w-[1200px]  top-[37px] rounded-[10px] relative z-0"
-              />
-              <div className=" relative z-20  bottom-27 pl-5">
-                <h2 className="text-white text-[96px]">Eminem</h2>
-              </div>
-            </div>
-            <div className=" col-span-2 row-span-2 lg:block hidden">
-              <Popular />
-            </div>
-            <div className="pt-[64px] ">
-              <ArtAlbum />
-            </div>
-            <div className="pt-[64px]">
-              <SingleSong />
-            </div>
-            <div className="pt-[64px]">
-              <ArtistPlay />
-            </div>
-            <div className="pt-[64px]">
-              <Fans />
-            </div>
-            <div className="pt-[64px]">
-              <Footer />
-            </div>
+          <div className=" col-span-2 row-span-2 lg:block hidden md:mt-[-45px]">
+            <Popular />
+          </div>
+          <div className="pt-[64px] ">
+            <ArtAlbum />
+          </div>
+          <div className="pt-[64px]">
+            <SingleSong />
+          </div>
+          <div className="pt-[64px]">
+            <ArtistPlay />
+          </div>
+          <div className="pt-[64px]">
+            <Fans />
           </div>
         </div>
       </div>
 
       <div className="lg:hidden">
-        <div className=" flex justify-between items-center">
+        <div className=" flex justify-between items-center px-4 py-2  sticky top-0 bg-blackbg z-50">
           <img
-            src={back}
+            src={bback}
             alt="back"
-            className=" text-[#0E9EEF] w-10 h-8"
+            className=" text-bluearrow w-[35px] h-[35px]"
             onClick={handleClick}
           />
-          <h2 className="text-[32px]  bg-gradient-to-r from-[#0E9EEFEB] to-[#EE10B0] text-transparent bg-clip-text">
+          <h2 className="text-[32px] font-Vazirmatn-800  bg-gradient-to-r from-blue to-darkpink text-transparent bg-clip-text">
             Artist
           </h2>
           <button onClick={handleToggle}>
             {" "}
-            <IoMenu className="text-[#EE10B0] w-10 h-8" />
+            <IoMenu className="text-[#EE10B0] w-[35px] h-[35px]" />
           </button>
         </div>
         {isMenuOpen && (
-          <div className=" fixed top-0 left-0 w-full h-full bg-black z-[1000] overflow-y-auto">
+          <div className="fixed top-0 left-0 w-full h-full  bg-black z-[1000] overflow-y-auto">
             <div
-              className=" flex flex-col h-full"
+              className="flex flex-col h-full "
               onClick={() => setIsMenuOpen(false)}
             >
-              <div className=" flex justify-end space-x-2 p-4 w-full">
+              <div className="flex justify-end space-x-2 p-4 sticky top-0 w-full ">
                 <MdCancel
                   className="text-white text-5xl cursor-pointer"
                   onClick={() => setIsMenuOpen(false)}
@@ -339,8 +407,8 @@ const Artist = () => {
               <nav className="flex-1 overflow-y-auto  px-8  ">
                 <p className="border-white/20 border-b-2"></p>
                 <Link
-                  className="text-white text-[20px] font-medium 
-                   border-white/20 border-b-2  p-4 flex gap-4"
+                  className="text-white font-Vazirmatn-600 text-[20px] 
+                          border-white/20 border-b-2  p-4 flex gap-4"
                 >
                   <span>
                     <FaShareAlt className="mt-1.5" />
@@ -348,8 +416,8 @@ const Artist = () => {
                   Share
                 </Link>
                 <Link
-                  className="text-white text-[20px] font-medium 
-                   border-white/20 border-b-2  p-4 flex gap-4"
+                  className="text-white font-Vazirmatn-600 text-[20px] 
+                          border-white/20 border-b-2  p-4 flex gap-4"
                 >
                   <span>
                     <FcAbout className="mt-0.5" />
@@ -357,8 +425,8 @@ const Artist = () => {
                   About
                 </Link>
                 <Link
-                  className="text-white text-[20px] font-medium 
-                   border-white/20 border-b-2  p-4 flex gap-4"
+                  className="text-white font-Vazirmatn-600 text-[20px] 
+                          border-white/20 border-b-2  p-4 flex gap-4"
                 >
                   <span>
                     <MdWorkspacePremium className="mt-0.5" />
@@ -366,8 +434,8 @@ const Artist = () => {
                   Premium
                 </Link>
                 <Link
-                  className="text-white text-[20px] font-medium 
-                   border-white/20 border-b-2  p-4 flex gap-4"
+                  className="text-white font-Vazirmatn-600 text-[20px] 
+                          border-white/20 border-b-2  p-4 flex gap-4"
                 >
                   <span>
                     <img src={setting} alt="set" className="w-5 h-5 mt-1" />
@@ -375,8 +443,8 @@ const Artist = () => {
                   Setting
                 </Link>
                 <Link
-                  className="text-white text-[20px] font-medium 
-                   border-white/20 border-b-2  p-4 flex gap-4"
+                  className="text-white font-Vazirmatn-600 text-[20px] 
+                          border-white/20 border-b-2  p-4 flex gap-4"
                 >
                   <span>
                     <img src={logout} alt="lg" className="w-5 h-5 mt-1" />
@@ -385,16 +453,14 @@ const Artist = () => {
                 </Link>
 
                 <div className="border-white/20 border-b-2  p-4">
-                  <h2 className="text-[#EE10B0] text-[14px] font-medium pb-4">
-                    Library
-                  </h2>
-                  <button className="text-[16px] text-white flex gap-2.5 pb-4 ">
+                  <h2 className="text-[#EE10B0] text-[14px] pb-4">Library</h2>
+                  <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
                     <span>
                       <img src={recent} alt="m" className="w-[23px] h-[20px]" />
                     </span>
                     Recently Added
                   </button>
-                  <button className="text-[16px] text-white flex gap-2.5 pb-4 ">
+                  <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
                     <span>
                       <img src={most} alt="m" className="w-[23px] h-[20px]" />
                     </span>
@@ -402,16 +468,16 @@ const Artist = () => {
                   </button>
                 </div>
                 <div className="border-white/20 border-b-2  p-4">
-                  <h2 className="text-[#EE10B0] text-[14px] font-medium pb-4">
+                  <h2 className="text-[#EE10B0] text-[14px] pb-4">
                     Playlist and favorite
                   </h2>
-                  <button className="text-[16px] text-white flex gap-2.5 pb-4 ">
+                  <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
                     <span>
                       <img src={fav} alt="m" className="w-[23px] h-[20px]" />
                     </span>
                     Your favorites
                   </button>
-                  <button className="text-[16px] text-white flex gap-2.5 pb-4 ">
+                  <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
                     <span>
                       <img
                         src={addplay}
@@ -430,72 +496,18 @@ const Artist = () => {
           <img
             src={artist0}
             alt="art"
-            className=" rounded-[10px] pt-8 drop-shadow-lg px-2 relative z-0"
+            className=" rounded-[10px] pt-8 drop-shadow-lg px-2 relative z-0 shadow-l"
           />
-          <div className=" flex justify-between items-center px-4 relative z-10 bottom-15">
-            <h2 className="text-white text-[32px]">Eminem</h2>
+          <div className=" flex justify-between items-center px-4 relative z-10 bottom-13">
+            <h2 className="text-white text-[32px] font-Vazirmatn-800">
+              Eminem
+            </h2>
             <img src={right} alt="rite" />
           </div>
         </div>
 
-        <div className="px-2 pt-5">
-          {/* Header Section */}
-          <div className="flex justify-between">
-            <div>
-              <p className="text-[24px] font-bold text-white">
-                Popular{" "}
-                <span className="text-[24px] text-[#EE10B0] font-bold">
-                  Songs
-                </span>
-              </p>
-            </div>
-            <div className="flex gap-6.5">
-              <p className="text-[20px] text-white">Time</p>
-              <p className="text-[20px] text-white">More</p>
-            </div>
-          </div>
-
-          {/* Song List */}
-          <div className="pt-4">
-            {(isOpen ? data1 : data1.slice(0, visibleCount)).map(
-              (item, index) => (
-                <div key={index} className="pt-[15px]">
-                  <div className="flex items-center justify-between gap-5 bg-[#1E1E1E] p-3 rounded-md">
-                    {/* Left Section: Image + Song Info */}
-                    <div className="flex">
-                      <img
-                        src={item.image}
-                        alt="song"
-                        className="w-[60px] h-[60px] rounded-[5px] border"
-                      />
-                      <div className="pl-[23px]">
-                        <p className="text-white md:text-[20px] text-[18px] pt-1">
-                          {item.head}
-                        </p>
-                        <p className="text-white text-[12px] pt-0.5">
-                          {item.para}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Right Section: Time + More */}
-                    <div className="flex items-center gap-6.5">
-                      <p className="text-white text-[16px]">{item.ptime}</p>
-                      <img src={item.oimage} alt="more" />
-                    </div>
-                  </div>
-                </div>
-              )
-            )}
-            <div className="flex justify-center items-center pt-4">
-              <button
-                className="text-[14px] px-4 py-2 text-white bg-[#EE10B0] shadow-xl rounded-[4px]"
-                onClick={() => setIsOpen(!isOpen)}
-              >
-                {isOpen ? "Show Less" : "Show More"}
-              </button>
-            </div>
-          </div>
+        <div>
+          <Popular />
         </div>
 
         <div>
@@ -509,6 +521,47 @@ const Artist = () => {
         </div>
         <div>
           <Fans />
+        </div>
+
+        <div className=" lg:hidden sticky bottom-0 z-50 bg-blackbg">
+          {optionData.map((section, sectionIndex) => (
+            <div
+              key={sectionIndex}
+              className="flex justify-between items-center p-4 "
+            >
+              {section.items.map((item, index) => {
+                const isActive =
+                  activeIndex === `${sectionIndex}-${index}` ||
+                  location.pathname.startsWith(item.path);
+
+                return (
+                  <div
+                    key={`${sectionIndex}-${index}`}
+                    className="flex flex-col items-center cursor-pointer"
+                    onClick={() => {
+                      setActiveIndex(`${sectionIndex}-${index}`);
+                      if (item.path) {
+                        navigate(item.path);
+                      }
+                    }}
+                  >
+                    <img
+                      src={isActive ? item.activeimg : item.img}
+                      alt={item.name}
+                      className="w-13 h-10"
+                    />
+                    <div
+                      className={`text-[12px] pt-1 ${
+                        isActive ? "text-darkpink" : "text-darkblue"
+                      }`}
+                    >
+                      {item.name}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ))}
         </div>
       </div>
     </div>

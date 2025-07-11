@@ -1,30 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import playmusic from "../../assets/svgs/playmusic.svg";
 import pfav from "../../assets/svgs/pfav.svg";
 import option from "../../assets/svgs/option.svg";
+import bdot from "../../assets/svgs/bdot.svg";
+
 import music1 from "../../assets/images/music1.jpg";
 import music2 from "../../assets/images/music2.jpg";
 import music3 from "../../assets/images/music3.png";
 import music4 from "../../assets/images/music4.png";
 import music5 from "../../assets/images/music5.png";
 import music6 from "../../assets/images/music6.jpg";
-import music7 from "../../assets/images/music7.png";
-import music8 from "../../assets/images/music8.jpg";
-import music9 from "../../assets/images/music9.jpg";
-import music10 from "../../assets/images/music10.jpg";
-import music11 from "../../assets/images/music11.jpg";
-import music12 from "../../assets/images/music12.jpg";
-import music13 from "../../assets/images/music13.jpg";
-import music14 from "../../assets/images/music14.png";
-import music15 from "../../assets/images/music15.png";
-import music16 from "../../assets/images/music16.jpg";
-import music17 from "../../assets/images/music17.png";
-import music18 from "../../assets/images/music18.jpg";
-import music19 from "../../assets/images/music19.png";
-import music20 from "../../assets/images/music20.jpg";
+// import music7 from "../../assets/images/music7.png";
+// import music8 from "../../assets/images/music8.jpg";
+// import music9 from "../../assets/images/music9.jpg";
+// import music10 from "../../assets/images/music10.jpg";
+// import music11 from "../../assets/images/music11.jpg";
+// import music12 from "../../assets/images/music12.jpg";
+// import music13 from "../../assets/images/music13.jpg";
+// import music14 from "../../assets/images/music14.png";
+// import music15 from "../../assets/images/music15.png";
+// import music16 from "../../assets/images/music16.jpg";
+// import music17 from "../../assets/images/music17.png";
+// import music18 from "../../assets/images/music18.jpg";
+// import music19 from "../../assets/images/music19.png";
+// import music20 from "../../assets/images/music20.jpg";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import apiInstance from "../../../utils/axios";
+import { apiRoutes } from "../Component/Constants/apiRoutes";
+import { getallAlbum } from "../Redux/Action/action";
 
 const Song = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [data, setData] = useState([]);
+  console.log("data :", data);
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  localStorage.setItem(
+    "accessToken",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmRmYTI3NmU5OTIzZjQxYmE3OGFhZiIsImlhdCI6MTc1MjIxNDM0NSwiZXhwIjoxNzUyMzAwNzQ1fQ.NzWP_mGi4cRX_Y0HFxcb2Dhmv_8huD_ICSUOwtbUxE4"
+  );
 
   const data1 = [
     {
@@ -37,6 +54,7 @@ const Song = () => {
       fimg: pfav,
       ptime: "3:26",
       oimage: option,
+      voption: bdot,
     },
     {
       id: 1,
@@ -48,6 +66,7 @@ const Song = () => {
       fimg: pfav,
       ptime: "2:45",
       oimage: option,
+      voption: bdot,
     },
     {
       id: 2,
@@ -59,6 +78,7 @@ const Song = () => {
       fimg: pfav,
       ptime: "2:11",
       oimage: option,
+      voption: bdot,
     },
     {
       id: 3,
@@ -70,6 +90,7 @@ const Song = () => {
       fimg: pfav,
       ptime: "2:18",
       oimage: option,
+      voption: bdot,
     },
     {
       id: 4,
@@ -81,6 +102,7 @@ const Song = () => {
       fimg: pfav,
       ptime: "3:51",
       oimage: option,
+      voption: bdot,
     },
     {
       id: 5,
@@ -92,225 +114,148 @@ const Song = () => {
       fimg: pfav,
       ptime: "2:56",
       oimage: option,
-    },
-    {
-      id: 6,
-      image: music7,
-      head: "Water",
-      para: " Tyla",
-      rdate: "Oct 21, 2023",
-      album: "Water",
-      fimg: pfav,
-      ptime: "3:20",
-      oimage: option,
-    },
-    {
-      id: 7,
-      image: music8,
-      head: "Push your limits",
-      para: " Brian michael",
-      rdate: "Jan 2, 2024",
-      album: "Push your limits",
-      fimg: pfav,
-      ptime: "2:24",
-      oimage: option,
-    },
-    {
-      id: 8,
-      image: music9,
-      head: "Houdini",
-      para: " Dualipa",
-      rdate: "Dec 12, 2023",
-      album: "Houdini",
-      fimg: pfav,
-      ptime: "3:05",
-      oimage: option,
-    },
-    {
-      id: 9,
-      image: music10,
-      head: "Lala",
-      para: " myke towers",
-      rdate: "Nov 20, 2023",
-      album: "La vida es una",
-      fimg: pfav,
-      ptime: "3:17",
-      oimage: option,
-    },
-    {
-      id: 10,
-      image: music11,
-      head: "I Wanaa Be Yours",
-      para: "arctic monkeys",
-      rdate: "Sep 9, 2023",
-      album: "AM",
-      fimg: pfav,
-      ptime: "3:03",
-      oimage: option,
-    },
-    {
-      id: 11,
-      image: music12,
-      head: "Paradise",
-      para: "braaheim",
-      rdate: "Jul 5, 2023",
-      album: "Paradise",
-      fimg: pfav,
-      ptime: "2:30",
-      oimage: option,
-    },
-    {
-      id: 12,
-      image: music13,
-      head: "As It Was",
-      para: " Harry Styles",
-      rdate: "Sep 14, 2022",
-      album: "As It Was",
-      fimg: pfav,
-      ptime: "2:47",
-      oimage: option,
-    },
-    {
-      id: 13,
-      image: music14,
-      head: "Another Love",
-      para: " Tom Odell",
-      rdate: "Dec 19, 2013",
-      album: "Another Love",
-      fimg: pfav,
-      ptime: "4:06",
-      oimage: option,
-    },
-    {
-      id: 14,
-      image: music15,
-      head: "Daylight",
-      para: "david kushner",
-      rdate: "Jun 16, 2022",
-      album: "Daylight",
-      fimg: pfav,
-      ptime: "3:32",
-      oimage: option,
-    },
-    {
-      id: 15,
-      image: music16,
-      head: "Beggin",
-      para: " Måneskin",
-      rdate: "Feb 27, 2017",
-      album: "Chosen",
-      fimg: pfav,
-      ptime: "3:31",
-      oimage: option,
-    },
-    {
-      id: 16,
-      image: music17,
-      head: "What Was I Made F...",
-      para: " Billie eilish",
-      rdate: "Sep 6, 2023",
-      album: "What Was I Made For",
-      fimg: pfav,
-      ptime: "3:42",
-      oimage: option,
-    },
-    {
-      id: 17,
-      image: music18,
-      head: "Daddy Issues",
-      para: " The Neighbourhood",
-      rdate: "Aug 21, 2015",
-      album: "Wiped out",
-      fimg: pfav,
-      ptime: "4:20",
-      oimage: option,
-    },
-    {
-      id: 18,
-      image: music19,
-      head: "Rolling In The Deep",
-      para: " Adele",
-      rdate: "Jun 5, 2011",
-      album: "Adele 21",
-      fimg: pfav,
-      ptime: "3:48",
-      oimage: option,
-    },
-    {
-      id: 19,
-      image: music20,
-      head: "OneShot",
-      para: " mhst",
-      rdate: "Dec 14, 2023",
-      album: "Toca Donka",
-      fimg: pfav,
-      ptime: "1:15",
-      oimage: option,
+      voption: bdot,
     },
   ];
 
+  useEffect(() => {
+    async function fetchData() {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        console.warn("No token found, skipping API call");
+        setError("Unauthorized: Please login first");
+        setLoading(false);
+        return;
+      }
+      try {
+        const response = await apiInstance.get(apiRoutes.GET_ALL_DATA);
+        setData(response.data.data);
+        dispatch(getallAlbum());
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  if (error) {
+    return <div>Error...</div>;
+  }
+
+  if (loading) {
+    return <div>Loading..</div>;
+  }
+
   return (
     <div>
-      <div className="px-5">
-        <div className="flex justify-between items-end px-5">
+      <div className="md:px-5 px-1 ">
+        <div className="flex justify-between items-end md:px-5 ">
           <div>
             <p></p>
           </div>
           <div>
-            <p className="text-[20px] text-white">Relase Date</p>
+            <p className="text-[20px] font-Vazirmatn-400 text-white lg:block hidden">
+              Relase Date
+            </p>
           </div>
           <div>
-            <p className="text-[20px] text-white">album</p>
+            <p className="text-[20px] font-Vazirmatn-400 text-white lg:block hidden">
+              Album
+            </p>
           </div>
           <div>
-            <p className="text-[20px] text-white ">Time</p>
+            <p className="text-[20px] text-white font-Vazirmatn-400 lg:block hidden">
+              Time
+            </p>
+          </div>
+        </div>
+        <div className="flex justify-end gap-5 pt-5 lg:hidden">
+          <div>
+            <p className="text-[16px] font-Vazirmatn-600 text-white">Time</p>
+          </div>
+          <div>
+            <p className="text-[16px] font-Vazirmatn-600 text-white pr-3 ">
+              More
+            </p>
           </div>
         </div>
 
-        <div className="flex pt-[15px]">
-          <div className="flex flex-col items-center mt-4 mr-4">
-            {data1.map((_, index) => (
-              <p key={index} className="text-[24px] text-white py-[20px]">
+        <div className="flex pt-[15px] mt-[-17px] px-2">
+          <div className="flex flex-col items-center mt-4 md:mr-4 mr-3">
+            {data?.map((_, index) => (
+              <p
+                key={index}
+                className="lg:text-[24px] text-[16px] font-Vazirmatn-600 text-white lg:py-[18px] py-[25px]"
+              >
                 {index + 1}
               </p>
             ))}
           </div>
 
           <div className="pb-[15px]">
-            {data1.map((item, index) => (
-              <div key={index} className="pt-[15px]">
-                <div
-                  onClick={() => setActiveIndex(index)}
-                  className="grid grid-cols-4 rounded-md justify-between items-center bg-[#1E1E1E] pr-2 "
-                >
-                  <div className="flex">
-                    <img
-                      src={item.image}
-                      alt="m1"
-                      className="w-[60px] h-[60px] rounded-[5px] border"
-                    />
-                    <div className="pl-[23px] ">
-                      <p className="text-white text-[20px] pt-1">{item.head}</p>
-                      <p className="text-white text-[12px] pt-0.5">
-                        {item.para}
-                      </p>
+            {Array.isArray(data) &&
+              data.map((item, index) => {
+                const extra = data1[index];
+
+                return (
+                  <>
+                    <div key={item.id || index} className="pt-[15px] ">
+                      <div
+                        className=" grid grid-cols-4 gap-6 bg-[#1E1E1E]"
+                        onClick={() => setActiveIndex(index)}
+                      >
+                        <div className="flex">
+                          <img
+                            src={item.albumImages?.[0]}
+                            alt="m1"
+                            className="w-[60px] h-[60px] rounded-[5px] border"
+                          />
+                          <div className="md:pl-[23px] pl-1 md:py-[5px] pt-[11px]">
+                            <p className="text-white md:text-[20px] font-Vazirmatn-600 text-[15px] truncate ">
+                              {item.title}
+                            </p>
+                            <p className="text-white text-[12px] font-Vazirmatn-300 pt-0.5 ">
+                              {item.artist}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div>
+                          <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] lg:block hidden">
+                            {item.releaseDate?.split("T")[0]}
+                          </p>
+                        </div>
+
+                        <div>
+                          <p className="text-white text-[16px] font-Vazirmatn-400  py-[17.5px] w-[345px] lg:block hidden">
+                            {extra?.album}{" "}
+                          </p>
+                        </div>
+
+                        <div className="flex justify-end lg:gap-2.5 gap-8 py-[17.5px] pr-[9px]">
+                          <img
+                            src={extra?.fimg}
+                            alt="pf"
+                            className="lg:block hidden"
+                          />
+                          <p className="text-white text-[16px] font-Vazirmatn-400">
+                            {extra?.ptime}
+                          </p>
+                          <img src={extra?.voption} alt="op" />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div>
-                    <p className="text-white text-[16px]">{item.rdate}</p>
-                  </div>
-                  <div>
-                    <p className="text-white text-[16px]">{item.album}</p>
-                  </div>
-                  <div className="flex justify-end gap-2.5">
-                    <img src={item.fimg} alt="pf" />
-                    <p className="text-white text-[16px]">{item.ptime}</p>
-                    <img src={item.oimage} alt="op" />
-                  </div>
-                </div>
-              </div>
-            ))}
+                  </>
+                );
+              })}
           </div>
+        </div>
+        <div className=" flex justify-center items-center pb-8">
+          <button className="bg-darkpink px-4 py-[7px] text-white text-[14px] font-Vazirmatn-400 rounded-[4px]">
+            Show More
+          </button>
         </div>
       </div>
     </div>

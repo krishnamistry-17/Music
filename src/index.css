@@ -1,7 +1,5 @@
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif,Vazirmatn;
-
-
   color-scheme: light dark;
   color: rgb(24, 24, 24);
   background-color: #181818;
@@ -9,4 +7,106 @@
  
 }
 
+
+
+/* index.css */
 @import "tailwindcss";
+
+@theme {
+  --color-darkpink: #EE10B0; 
+}
+@theme {
+  --color-blackbg: #181818; 
+}
+@theme {
+  --color-blue: #0E9EEFEB; 
+}
+@theme {
+  --color-lightblue: #012636; 
+}
+@theme {
+  --color-darkblue: #1171E2; 
+}
+@theme {
+  --color-bluearrow: #0E9EEF; 
+}
+@theme {
+  --color-lightestblue: #01202e; 
+}
+@theme {
+  --color-shadeblack: #0C0B0B; 
+}
+
+@theme {
+  --shadow-l:  3px 12px 4px 0px #0000004D; 
+}
+@font-face {
+  font-family: VazirmatnSemibold;
+  src: url("../src/assets/fonts/Vazirmatn-SemiBold.ttf");
+}
+
+@font-face {
+  font-family: vazirmatnThin;
+  src: url("../src/assets/fonts/Vazirmatn-Thin.ttf");
+}
+@font-face {
+  font-family: vazirmatnExtraLight;
+  src: url("../src/assets/fonts/Vazirmatn-ExtraLight.ttf");
+}
+@font-face {
+  font-family: vazirmatnLight;
+  src: url("../src/assets/fonts/Vazirmatn-Light.ttf");
+}
+@font-face {
+  font-family: vazirmatnRegular;
+  src: url("../src/assets/fonts/Vazirmatn-Regular.ttf");
+}
+@font-face {
+  font-family: vazirmatnMedium;
+  src: url("../src/assets/fonts/Vazirmatn-Medium.ttf");
+}
+@font-face {
+  font-family: vazirmatnSemiBold;
+  src: url("../src/assets/fonts/Vazirmatn-SemiBold.ttf");
+}
+@font-face {
+  font-family: vazirmatnBold;
+  src: url("../src/assets/fonts/Vazirmatn-Bold.ttf");
+}
+@font-face {
+  font-family: VazirmatnExtraBold;
+  src: url("../src/assets/fonts/Vazirmatn-ExtraBold.ttf");
+}
+@font-face {
+  font-family: VazirmatnBlack;
+  src: url("../src/assets/fonts/Vazirmatn-Black.ttf");
+}
+
+
+@theme {
+  --font-Vazirmatn-100: "vazirmatnThin";
+}
+@theme {
+  --font-Vazirmatn-200: "vazirmatnExtraLight";
+}
+@theme {
+  --font-Vazirmatn-300: "vazirmatnLight";
+}
+@theme {
+  --font-Vazirmatn-400: "vazirmatnRegular";
+}
+@theme {
+  --font-Vazirmatn-500: "vazirmatnMedium";
+}
+@theme {
+  --font-Vazirmatn-600: "vazirmatnSemiBold";
+}
+@theme {
+  --font-Vazirmatn-700: "vazirmatnBold";
+}
+@theme {
+  --font-Vazirmatn-800: "vazirmatnExtraBold";
+}
+@theme {
+  --font-Vazirmatn-900: "VazirmatnBlack";
+}

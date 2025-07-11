@@ -1,25 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import home from "../../assets/svgs/home.svg";
-import discover from "../../assets/svgs/discover.svg";
 import album from "../../assets/svgs/album.svg";
 import artist from "../../assets/svgs/artist.svg";
-import bartist from "../../assets/svgs/bartist.svg";
 import recent from "../../assets/svgs/recent.svg";
 import most from "../../assets/svgs/most.svg";
 import fav from "../../assets/svgs/fav.svg";
 import yourplay from "../../assets/svgs/yourplay.svg";
 import addplay from "../../assets/svgs/addplay.svg";
+import wplay from "../../assets/svgs/wplay.svg";
 import setting from "../../assets/svgs/setting.svg";
 import logout from "../../assets/svgs/logout.svg";
-import back from "../../assets/svgs/back.svg";
+import wlog from "../../assets/svgs/wlog.svg";
+import back from "../../assets/svgs/blueback.svg";
+import whiteback from "../../assets/svgs/whitearrow.svg";
 import profile from "../../assets/svgs/profile.svg";
 import pdot from "../../assets/svgs/pdot.svg";
 import play from "../../assets/svgs/play.svg";
 import bplay from "../../assets/svgs/bplay.svg";
 import bhome from "../../assets/svgs/bhome.svg";
-import blib from "../../assets/svgs/blib.svg";
-import bdis from "../../assets/svgs/bdis.svg";
-import balbum from "../../assets/svgs/balbum.svg";
+import bartist from "../../assets/svgs/artb.svg";
+import bdisc from "../../assets/svgs/bdisc.svg";
+import albumb from "../../assets/svgs/albumb.svg";
+import discb from "../../assets/svgs/discb.svg";
+import wdis from "../../assets/svgs/wdis.svg";
+import eminem from "../../assets/svgs/eminem.svg";
+import phome from "../../assets/svgs/phome.svg";
+import pdisc from "../../assets/svgs/pdisc.svg";
+import palbum from "../../assets/svgs/palbum.svg";
+import plib from "../../assets/svgs/plib.svg";
+import part from "../../assets/svgs/part.svg";
 import song from "../../assets/images/song.png";
 import { IoMenu } from "react-icons/io5";
 import { MdCancel } from "react-icons/md";
@@ -28,7 +37,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FcAbout } from "react-icons/fc";
 import { MdWorkspacePremium } from "react-icons/md";
 import Song from "./Song";
-import pfav from "../../assets/svgs/pfav.svg";
+import bluedot from "../../assets/svgs/bluedot.svg";
 import poption from "../../assets/svgs/poption.svg";
 import music1 from "../../assets/images/music1.jpg";
 import music2 from "../../assets/images/music2.jpg";
@@ -50,12 +59,16 @@ import music17 from "../../assets/images/music17.png";
 import music18 from "../../assets/images/music18.jpg";
 import music19 from "../../assets/images/music19.png";
 import music20 from "../../assets/images/music20.jpg";
-import Footer from "../Footer/Footer";
+import { useLocation } from "react-router-dom";
 
 const Albums = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(2);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [visibleContent, setVisibleContent] = useState();
+  console.log("visibleContent :", visibleContent);
+
   const handleToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -228,7 +241,7 @@ const Albums = () => {
       title: "Menu",
       items: [
         { img: home, name: "Home" },
-        { img: discover, name: "Discover" },
+        { img: wdis, name: "Discover", path: "/discover" },
         { img: album, name: "Album", path: "/album" },
         { img: artist, name: "Artist", path: "/artist" },
       ],
@@ -247,7 +260,8 @@ const Albums = () => {
         { img: yourplay, name: "Your Playlist" },
         {
           img: addplay,
-          name: ["", <a className="text-[#0E9EEFEB]">Add Playlist</a>, ""],
+          npimg: wplay,
+          name: "Add Playlist",
         },
       ],
     },
@@ -257,33 +271,72 @@ const Albums = () => {
         { img: setting, name: "Setting" },
         {
           img: logout,
-          name: ["", <a className="text-[#EE10B0]">Logout</a>, ""],
+          nlimg: wlog,
+          name: "Logout",
         },
       ],
     },
   ];
 
+  const optionData = [
+    {
+      items: [
+        { img: bhome, activeimg: phome, name: "Home" },
+        { img: bdisc, activeimg: pdisc, name: "Discover", path: "/discover" },
+        { img: albumb, activeimg: palbum, name: "Album", path: "/album" },
+        { img: bartist, activeimg: part, name: "Artist", path: "/artist" },
+        { img: discb, activeimg: plib, name: "Library", path: "/library" },
+      ],
+    },
+  ];
+
+  // const getTextColor = (item, isActive) => {
+  //   if (item.name === "Add Playlist" && isActive) return "text-blue";
+  //   if (item.name === "Logout" && isActive) return "text-darkpink";
+  //   return "text-white";
+  // };
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    const updateContent = () => {
+      const width = window.innerWidth;
+      if (width >= 425) setVisibleContent(425);
+      else setVisibleContent(320);
+    };
+    updateContent();
+    window.addEventListener("resize", updateContent);
+    return () => window.removeEventListener("resize", updateContent);
+  }, []);
+
   return (
     <div>
-      <div className="lg:flex hidden font-vazir   ">
-        <div class="lg:grid grid-flow-col grid-rows-3 gap-4 h-screen">
-          <div class="lg:row-span-3 ... lg:block hidden">
-            <div className="pl-[64px] pr-[32px]">
-              <h2
-                className="pt-[48px] text-[32px] 
-              bg-gradient-to-r from-[#EE10B0] to-[#0E9EEFEB] text-transparent bg-clip-text"
-              >
-                Melodies
-              </h2>
+      <div className="lg:flex hidden   ">
+        {/* Sidebar */}
+        <div
+          className="fixed top-0 left-0 h-screen hidden lg:block border-r-2 border-darkpink bg-black z-40 overflow-y-auto"
+          style={{ scrollbarWidth: "none" }}
+        >
+          {/* Sidebar content (Melodies, menu, etc.) */}
+          <div className="pl-[64px] pr-[32px] pb-[50px] ">
+            <h2
+              className="pt-[48px] text-[32px]  font-Vazirmatn-600
+              bg-gradient-to-r from-darkpink to-blue text-transparent bg-clip-text"
+            >
+              Melodies
+            </h2>
 
-              {menuData.map((section, sectionIndex) => (
-                <div key={sectionIndex}>
-                  <h2 className="py-[24px] text-[12px] text-[#EE10B0]">
-                    {section.title}
-                  </h2>
-                  {section.items.map((item, index) => {
-                    const isActive = activeIndex === `${sectionIndex}-${index}`;
-                    return (
+            {menuData.map((section, sectionIndex) => (
+              <div key={sectionIndex}>
+                <h2 className="my-[24px] text-[12px] text-darkpink font-Vazirmatn-300">
+                  {section.title}
+                </h2>
+                {section.items.map((item, index) => {
+                  const isActive =
+                    activeIndex === `${sectionIndex}-${index}` ||
+                    location.pathname.startsWith(item.path);
+
+                  return (
+                    <div>
                       <button
                         key={`${sectionIndex}-${index}`}
                         onClick={() => {
@@ -292,87 +345,135 @@ const Albums = () => {
                             navigate(item.path);
                           }
                         }}
-                        className={`${
+                        className={`flex gap-2 w-[174px] mt-[24px] 
+                        ${
                           isActive
-                            ? "bg-[#EE10B0] text-white flex gap-2 px-8 py-3 rounded-md"
-                            : "text-[16px] text-white flex gap-2.5 py-[24px] px-4"
-                        }`}
+                            ? "bg-darkpink text-white h-[40px] pl-4 pt-2 rounded-md font-Vazirmatn-600"
+                            : "h-[23px] font-Vazirmatn-500 hover:border-none"
+                        } 
+                          ${
+                            item.name === "Add Playlist"
+                              ? "text-blue"
+                              : item.name === "Logout"
+                              ? "text-darkpink"
+                              : "text-white"
+                          }
+                      
+                        `}
                       >
                         <span>
                           <img
-                            src={item.img}
-                            alt={item.name}
-                            className="w-[20px] h-[20px]"
+                            src={`
+                              ${
+                                item.name === "Add Playlist" && isActive
+                                  ? item.npimg
+                                  : item.name === "Logout" && isActive
+                                  ? item.nlimg
+                                  : item.img
+                              }`}
+                            alt="img"
+                            className={`
+                              ${
+                                isActive
+                                  ? "w-[24px] h-[24px] mt-[-2px]"
+                                  : "w-[16px] h-[16px] "
+                              }
+                            
+                            `}
                           />
                         </span>
                         {item.name}
                       </button>
-                    );
-                  })}
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Main content area (grid content, header, songs, footer) */}
+        <div className="lg:ml-[300px] mr-[20px]">
+          <div className="w-full bg-gradient-to-r from-blue to-lightblue mt-[25px] rounded-tr-[7px] rounded-tl-[7px]">
+            <div className="flex justify-between items-center py-[30px] pr-[31px] pl-[10px]">
+              <div>
+                <img
+                  src={whiteback}
+                  alt="back"
+                  className="w-[50px] h-[50px] text-white"
+                />
+              </div>
+              <div className="flex gap-5">
+                <p className="text-white text-[24px] font-Vazirmatn-600">
+                  Share
+                </p>
+                <p className="text-white text-[24px] font-Vazirmatn-600">
+                  About
+                </p>
+                <p className="text-white text-[24px] font-Vazirmatn-600">
+                  Premuim
+                </p>
+                <img src={profile} alt="pf" className="md:pl-[37px]" />
+              </div>
+            </div>
+            <div className="lg:flex justify-between items-center">
+              <div className="lg:flex pl-[43px] gap-14 md:w-[712px]">
+                <div>
+                  <img src={song} alt="song" />
                 </div>
-              ))}
+                <div>
+                  <h2 className=" text-white md:text-[40px] font-Vazirmatn-800 text-[22px] ">
+                    Trending songs{" "}
+                    <span className="text-darkpink text-[40px] font-Vazirmatn-800">
+                      mix
+                    </span>
+                  </h2>
+                  <p className=" text-white text-[20px] font-Vazirmatn-600 py-[44px]">
+                    tate mcree, nightmares, the neighberhood, doja cat and ...
+                  </p>
+                  <div className="flex justify-between items-center w-[204px] pb-10">
+                    <p className="text-white font-Vazirmatn-600 text-[20px]">
+                      20 songs
+                    </p>
+                    <img src={pdot} alt="pd" />
+                    <p className="text-white font-Vazirmatn-600 text-[20px]">
+                      1h 36m
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className=" lg:pt-[220px] flex gap-4 md:pl-0 pl-10 pt-4 pr-8 pb-10">
+                <p className="text-[24px] text-darkpink font-Vazirmatn-600 pt-4">
+                  Play All
+                </p>
+                <img src={play} alt="play" />
+              </div>
             </div>
           </div>
 
-          <div class="col-span-3 mt-[26px]   ">
-            <div className=" w-full h-fit pb-6    lg:block hidden  bg-gradient-to-r from-[#1171E2] to-[#8BCBE700] ">
-              <div className="flex justify-between items-center py-[30px] pr-[31px] pl-[10px]">
-                <div>
-                  <img src={back} alt="back" />
-                </div>
-                <div className="flex gap-5">
-                  <p className="text-white text-[24px]">Share</p>
-                  <p className="text-white text-[24px]">About</p>
-                  <p className="text-white text-[24px]">Premuim</p>
-                  <img src={profile} alt="pf" className="md:  pl-[37px]" />
-                </div>
-              </div>
-              <div className="lg:flex justify-between items-center">
-                <div className="lg:flex pl-[43px] gap-14 md:w-[712px]">
-                  <div>
-                    <img src={song} alt="song" />
-                  </div>
-                  <div>
-                    <h2 className=" text-white md:text-[40px] text-[22px] font-bold">
-                      Trending songs{" "}
-                      <span className="text-[#EE10B0] text-[40px]">mix</span>
-                    </h2>
-                    <p className=" text-white text-[20px] py-[44px]">
-                      tate mcree, nightmares, the neighberhood, doja cat and ...
-                    </p>
-                    <div className="flex justify-between items-center w-[204px]">
-                      <p>20 songs</p>
-                      <img src={pdot} alt="pd" />
-                      <p>1h 36m</p>
-                    </div>
-                  </div>
-                </div>
-                <div className=" lg:pt-[220px] flex gap-4 md:pl-0 pl-10 pt-4 pr-8">
-                  <p className="text-[24px] text-[#EE10B0] pt-4">Play All</p>
-                  <img src={play} alt="play" />
-                </div>
-              </div>
-            </div>
-            <div class="col-span-2 row-span-2 pt-5 pb-40 lg:block hidden  bg-gradient-to-r from-[#1171E2] to-[#53ADD606] ">
-              <Song />
-            </div>
-            <div>
-              <Footer />
-            </div>
+          {/* Songs */}
+          <div className="bg-gradient-to-r from-darkblue to-lightestblue pt-8">
+            <Song />
           </div>
+
+          {/* Footer */}
         </div>
       </div>
 
       {/*Mobile */}
       <div className="lg:hidden">
-        <div className=" flex justify-between items-center px-4 pb-4  sticky top-0 bg-[#181818]">
-          <img src={back} alt="back" className=" text-[#0E9EEF] w-10 h-8" />
-          <h2 className="text-[32px]  bg-gradient-to-r from-[#0E9EEFEB] to-[#EE10B0] text-transparent bg-clip-text">
+        <div className=" flex justify-between items-center px-4 py-2  sticky top-0 bg-blackbg">
+          <img
+            src={back}
+            alt="back"
+            className=" text-bluearrow w-[35px] h-[35px]"
+          />
+          <h2 className="text-[32px] font-Vazirmatn-800 bg-gradient-to-r from-blue to-darkpink text-transparent bg-clip-text">
             Album
           </h2>
           <button onClick={handleToggle}>
             {" "}
-            <IoMenu className="text-[#EE10B0] w-10 h-8" />
+            <IoMenu className="text-darkpink w-[35px] h-[35px]" />
           </button>
         </div>
         {isMenuOpen && (
@@ -390,7 +491,7 @@ const Albums = () => {
               <nav className="flex-1 overflow-y-auto  px-8  ">
                 <p className="border-white/20 border-b-2"></p>
                 <Link
-                  className="text-white text-[20px] font-medium 
+                  className="text-white font-Vazirmatn-600 text-[20px] 
                    border-white/20 border-b-2  p-4 flex gap-4"
                 >
                   <span>
@@ -399,7 +500,7 @@ const Albums = () => {
                   Share
                 </Link>
                 <Link
-                  className="text-white text-[20px] font-medium 
+                  className="text-white font-Vazirmatn-600 text-[20px] 
                    border-white/20 border-b-2  p-4 flex gap-4"
                 >
                   <span>
@@ -408,7 +509,7 @@ const Albums = () => {
                   About
                 </Link>
                 <Link
-                  className="text-white text-[20px] font-medium 
+                  className="text-white font-Vazirmatn-600 text-[20px] 
                    border-white/20 border-b-2  p-4 flex gap-4"
                 >
                   <span>
@@ -417,7 +518,7 @@ const Albums = () => {
                   Premium
                 </Link>
                 <Link
-                  className="text-white text-[20px] font-medium 
+                  className="text-white font-Vazirmatn-600 text-[20px] 
                    border-white/20 border-b-2  p-4 flex gap-4"
                 >
                   <span>
@@ -426,7 +527,7 @@ const Albums = () => {
                   Setting
                 </Link>
                 <Link
-                  className="text-white text-[20px] font-medium 
+                  className="text-white font-Vazirmatn-600 text-[20px] 
                    border-white/20 border-b-2  p-4 flex gap-4"
                 >
                   <span>
@@ -436,16 +537,14 @@ const Albums = () => {
                 </Link>
 
                 <div className="border-white/20 border-b-2  p-4">
-                  <h2 className="text-[#EE10B0] text-[14px] font-medium pb-4">
-                    Library
-                  </h2>
-                  <button className="text-[16px] text-white flex gap-2.5 pb-4 ">
+                  <h2 className="text-[#EE10B0] text-[14px] pb-4">Library</h2>
+                  <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
                     <span>
                       <img src={recent} alt="m" className="w-[23px] h-[20px]" />
                     </span>
                     Recently Added
                   </button>
-                  <button className="text-[16px] text-white flex gap-2.5 pb-4 ">
+                  <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
                     <span>
                       <img src={most} alt="m" className="w-[23px] h-[20px]" />
                     </span>
@@ -453,16 +552,16 @@ const Albums = () => {
                   </button>
                 </div>
                 <div className="border-white/20 border-b-2  p-4">
-                  <h2 className="text-[#EE10B0] text-[14px] font-medium pb-4">
+                  <h2 className="text-[#EE10B0] text-[14px] pb-4">
                     Playlist and favorite
                   </h2>
-                  <button className="text-[16px] text-white flex gap-2.5 pb-4 ">
+                  <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
                     <span>
                       <img src={fav} alt="m" className="w-[23px] h-[20px]" />
                     </span>
                     Your favorites
                   </button>
-                  <button className="text-[16px] text-white flex gap-2.5 pb-4 ">
+                  <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
                     <span>
                       <img
                         src={addplay}
@@ -477,101 +576,98 @@ const Albums = () => {
             </div>
           </div>
         )}
-        <div className=" bg-gradient-to-r from-[#1171E2] to-[#022042]">
-          <div className=" w-full h-fit pb-6 rounded-lg  bg-gradient-to-r from-[#1171E2] to-[#8BCBE700] ">
+        <div>
+          <div className=" w-full h-fit pb-6 shadow-lg  bg-gradient-to-r from-blue to-lightblue ">
             <div className="lg:flex justify-between items-center">
-              <div className="md:flex p-5">
+              <div
+                className={`${
+                  visibleContent >= 425 ? "flex p-5" : "block p-5"
+                }`}
+              >
                 <div>
-                  <img src={song} alt="song" className="w-[221px]" />
+                  <img
+                    src={song}
+                    alt="song"
+                    className={`${
+                      visibleContent >= 425 ? " w-[160px]" : "w-[200px] mx-8"
+                    }`}
+                  />
                 </div>
-                <div className="md:pl-4">
-                  <h2 className=" text-white md:text-[32px] text-[28px]  font-bold">
-                    Trending songs{" "}
-                    <span className="text-[#EE10B0] text-[25px]">mix</span>
+                <div className="md:pl-4 pl-3 pt-[27px] mx-8">
+                  <h2 className=" text-white font-Vazirmatn-700 text-[20px] ">
+                    The Eminem Show
                   </h2>
-                  <p className=" text-white md:text-[22px] text-[18px]  md:py-[44px] py-3">
-                    tate mcree, nightmares, the neighberhood, doja cat and ...
-                  </p>
-                  <div className="flex justify-between items-center w-[250px] text-white">
-                    <p>20 songs</p>
-                    <img src={pdot} alt="pd" />
-                    <p>1h 36m</p>
+                  <div className="flex gap-2.5 pt-4">
+                    <img src={eminem} alt="em" className="w-[36px] h-[36px]" />
+                    <p
+                      className="text-white text-[16px] font-Vazirmatn-600 pt-1.5
+                    "
+                    >
+                      Eminem
+                    </p>
+                  </div>
+                  <div className="flex  items-center gap-4 pt-4">
+                    <p className="text-white text-[14px] font-Vazirmatn-800">
+                      20 songs
+                    </p>
+                    <img src={bluedot} alt="pd" />
+                    <p className="text-white text-[14px] font-Vazirmatn-800">
+                      1h 36m
+                    </p>
                     <img
                       src={bplay}
                       alt="bplay"
-                      className=" w-8 h-10 md:w-10 md:h-12 "
+                      className=" w-[35px] h-[35px] "
                     />
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="pb-10">
-            <div className="flex justify-end gap-5 pt-5">
-              <div>
-                <p className="text-[20px] text-white">Time</p>
-              </div>
-              <div>
-                <p className="text-[20px] text-white pr-4">More</p>
-              </div>
-            </div>
-            {data1.map((item, index) => (
-              <div key={index}>
-                <div className="pt-[15px]">
-                  <div key={index} className="grid grid-cols-2 px-2 ">
-                    <div className="flex">
-                      <div>
-                        <img
-                          src={item.image}
-                          alt="m1"
-                          className="w-[60px] h-[60px] rounded-[5px] border"
-                        />
-                      </div>
-                      <div className="pl-[23px] ">
-                        <p className="text-white md:text-[20px] text-[18px] pt-1">
-                          {item.head}
-                        </p>
-                        <p className="text-white text-[12px] pt-0.5">
-                          {item.para}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-end gap-12.5">
-                      <div>
-                        <p className="text-white text-[16px]">{item.ptime}</p>
-                      </div>
-                      <div>
-                        <img src={item.oimage} alt="op" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="bg-gradient-to-r from-darkblue to-lightestblue">
+            <Song />
           </div>
         </div>
-        <div className="flex justify-between items-center mt-10 p-4 ">
-          <div className="flex flex-col">
-            <img src={bhome} alt="bh" className="w-[43px] h-[52px]" />
-            <p className="text-[14px] text-[#0E9EEF] pt-2">Home</p>
-          </div>
-          <div className="flex flex-col">
-            <img src={bdis} alt="bh" />
-            <p className="text-[14px] text-[#0E9EEF] pt-2">Discover</p>
-          </div>
-          <div className="flex flex-col">
-            <img src={balbum} alt="bh" />
-            <p className="text-[14px] text-[#0E9EEF] pt-2">Albums</p>
-          </div>
-          <div className="flex flex-col" onClick={() => navigate("/artist")}>
-            <img src={bartist} alt="bh" className="w-[39px] h-[44px]" />
-            <p className="text-[14px] text-[#0E9EEF] pt-2">Artist</p>
-          </div>
-          <div className="flex flex-col">
-            <img src={blib} alt="bh" />
-            <p className="text-[14px] text-[#0E9EEF] pt-2">Library</p>
-          </div>
+
+        <div className=" lg:hidden sticky bottom-0 z-50 bg-blackbg">
+          {optionData.map((section, sectionIndex) => (
+            <div
+              key={sectionIndex}
+              className="flex justify-between items-center p-4 "
+            >
+              {section.items.map((item, index) => {
+                const isActive =
+                  activeIndex === `${sectionIndex}-${index}` ||
+                  location.pathname.startsWith(item.path);
+
+                return (
+                  <div
+                    key={`${sectionIndex}-${index}`}
+                    className="flex flex-col items-center cursor-pointer"
+                    onClick={() => {
+                      setActiveIndex(`${sectionIndex}-${index}`);
+                      if (item.path) {
+                        navigate(item.path);
+                      }
+                    }}
+                  >
+                    <img
+                      src={isActive ? item.activeimg : item.img}
+                      alt={item.name}
+                      className="w-13 h-10"
+                    />
+                    <div
+                      className={`text-[12px] pt-[13px] ${
+                        isActive ? "text-darkpink" : "text-darkblue"
+                      }`}
+                    >
+                      {item.name}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ))}
         </div>
       </div>
     </div>

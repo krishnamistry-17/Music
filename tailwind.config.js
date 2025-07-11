@@ -10,8 +10,7 @@ export default {
     extend: {
       colors: {
         transparent: "transparent",
-        current: "currentcolor",
-
+        current: "currentColor",
         pink: {
           light: "#be7699",
           second: "#d65e98",
@@ -20,11 +19,9 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["ui-sans-serif", "system-ui"],
-        serif: ["ui-serif", "Georgia"],
-        poppins: ["Poppins", "sans-serif"],
-        vazir: ["Vazirmatn", "sans-serif"],
+        Vazirmatn1: ["Vazirmatn"],
       },
+
       screens: {
         xs: "320px",
         sm: "480px",
@@ -33,7 +30,7 @@ export default {
         xl: "1440px",
       },
       textShadow: {
-        stroke: "2px black", // Custom text-stroke style
+        stroke: "2px black",
         DEFAULT:
           "3px 3px 5px rgba(0, 4, 4, 0.5), 0px 4px 4px rgba(248, 249, 249, 0.5)",
       },
@@ -43,13 +40,4 @@ export default {
     },
   },
   plugins: [],
-  module: {
-    rules: [
-      {
-        test: /\.svg$/,
-        use: ["@svgr/webpack"],
-      },
-      // other rules...
-    ],
-  },
 };
