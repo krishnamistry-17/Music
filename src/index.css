@@ -36,6 +36,9 @@
 @theme {
   --color-shadeblack: #0C0B0B; 
 }
+@theme {
+  --color-blackbg: #1F1F1F; 
+}
 
 @theme {
   --shadow-l:  3px 12px 4px 0px #0000004D; 

@@ -8,13 +8,13 @@ import Footer from "./Pages/Footer/Footer";
 function App() {
   return (
     <>
-      <div>
+      <div className="min-h-screen flex flex-col">
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/artist" element={<Artist />} />
-            <Route path="/album" element={<Albums />} />
             <Route path="/discover" element={<Discover />} />
+            <Route path="/album" element={<Albums />} />
+            <Route path="/artist" element={<Artist />} />
           </Routes>
           <Footer />
         </BrowserRouter>

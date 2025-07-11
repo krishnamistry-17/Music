@@ -1,11 +1,15 @@
 import React from "react";
-import Albums from "../Albums/Albums";
+import SideBar from "../SideBar/SideBar";
+import Content from "./Content";
 
 const Home = () => {
   return (
-    <div className="">
+    <div className="lg:flex hidden">
       <div>
-        <Albums />
+        <SideBar />
+      </div>
+      <div className="lg:ml-[300px]">
+        <Content />
       </div>
     </div>
   );
