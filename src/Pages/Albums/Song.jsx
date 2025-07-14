@@ -33,14 +33,14 @@ import { getallAlbum } from "../Redux/Action/action";
 const Song = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [data, setData] = useState([]);
-  console.log("data :", data);
+  
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   localStorage.setItem(
     "accessToken",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmRmYTI3NmU5OTIzZjQxYmE3OGFhZiIsImlhdCI6MTc1MjIxNDM0NSwiZXhwIjoxNzUyMzAwNzQ1fQ.NzWP_mGi4cRX_Y0HFxcb2Dhmv_8huD_ICSUOwtbUxE4"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmRmYTI3NmU5OTIzZjQxYmE3OGFhZiIsImlhdCI6MTc1MjQ2NTkwMywiZXhwIjoxNzUyNTUyMzAzfQ.CE3kHm0d9Sg7-rL2OpRXhxGTo0ephu9qaCZDKYi1o4w"
   );
 
   const data1 = [

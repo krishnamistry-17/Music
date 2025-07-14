@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import search from "../../assets/svgs/search.svg";
 
-const Search = () => {
+const Search = ({ inputvalue, setInputValue }) => {
+  const [isSelected, setIsSelected] = useState(true);
+  console.log("isSelected :", isSelected);
+  const handleSelect = () => {
+    setIsSelected(!isSelected);
+  };
   return (
     <div>
       <div className="lg:flex hidden gap-[12px]">
@@ -14,8 +19,12 @@ const Search = () => {
               <div>
                 <input
                   type="search"
+                  value={inputvalue}
+                  onChange={(e) => setInputValue(e.target.value)}
                   placeholder="Search For Musics, Artists,..."
-                  className="text-[12px] text-white font-Vazirmatn-300 focus:ring-0 focus:outline-none focus:shadow-none w-[155px] h-[19px] opacity-60"
+                  className="text-[12px] text-white font-Vazirmatn-300 
+                  focus:ring-0 focus:outline-none focus:shadow-none
+                   w-[155px] h-[19px] opacity-60"
                 />
               </div>
             </div>

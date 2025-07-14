@@ -33,7 +33,7 @@ const Popular = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [data, setData] = useState([]);
 
-  console.log("data :", data);
+
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);

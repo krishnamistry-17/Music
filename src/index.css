@@ -16,7 +16,16 @@
   --color-darkpink: #EE10B0; 
 }
 @theme {
-  --color-blackbg: #181818; 
+  --color-bgpink: #53063E; 
+}
+@theme {
+  --color-lightpink: #53063E; 
+}
+@theme {
+  --color-lightestpink: #FAB5E7; 
+}
+@theme {
+  --color-bordercolor: #D9D9D9; 
 }
 @theme {
   --color-blue: #0E9EEFEB; 

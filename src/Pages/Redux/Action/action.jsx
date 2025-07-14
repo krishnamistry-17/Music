@@ -11,3 +11,10 @@ export const getAllArtitst = (artist) => {
     payload: artist,
   };
 };
+
+export const getAllSong = (song) => {
+  return {
+    type: "GET_ALL_SONG",
+    payload: song,
+  };
+};

@@ -1,6 +1,7 @@
 const initialState = {
   artist: [],
   album: [],
+  song: [],
 };
 
 const MusicReducer = (state = initialState, action) => {
@@ -10,6 +11,9 @@ const MusicReducer = (state = initialState, action) => {
 
     case "GET_ALL_ARTIST":
       return { ...state, artist: action.payload };
+
+    case "GET_ALL_SONG":
+      return { ...state, song: action.payload };
 
     default:
       return state;

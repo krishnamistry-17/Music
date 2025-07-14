@@ -7,7 +7,7 @@ import plus from "../../assets/svgs/plus.svg";
 const MusicGeners = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
-  console.log("visibleCount :", visibleCount);
+  
 
   const data = [
     { image: gen1, para: "Rap Songs" },
@@ -64,7 +64,7 @@ const MusicGeners = () => {
         ))}
 
         <div
-          className="pl-[24px] py-[31px] cursor-pointer "
+          className="pl-[69px] py-[31px] cursor-pointer "
           onClick={() => setIsOpen(!isOpen)}
         >
           <div className="h-[62px] w-[62px] rounded-[31px] bg-[#1E1E1E] flex items-center justify-center">

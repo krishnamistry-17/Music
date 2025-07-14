@@ -1,0 +1,55 @@
+import React, { useEffect, useState } from "react";
+import homebg from "../../assets/images/homebg.png";
+import Search from "../Discover/Search";
+const Bg = () => {
+  const handleClick = () => {
+    window.scrollTo(0, 1255);
+  };
+
+  useEffect(() => {
+    window.scroll({ behavior: "smooth", top: 0 });
+  });
+
+  return (
+    <div>
+      <div className="top-[48px] relative rounded-[25px] pr-[64px] pl-[25px]">
+        <img src={homebg} alt="bg" className=" max-w-full w-full h-[595px]" />
+        <div className=" absolute top-[24px] px-[25px] pb-[113px]">
+          <div>
+            <Search />
+          </div>
+          <div className="pt-[114px]">
+            <p className="text-[40px] text-white font-Vazirmatn-800">
+              All the <span className="text-darkpink">Best Songs</span>
+              <br />
+              in One Place
+            </p>
+            <p className="text-white text-[12px] font-Vazirmatn-300 text-justify w-[332px] pt-[16px]">
+              On our website, you can access an amazing collection of popular
+              and new songs. Stream your favorite tracks in high quality and
+              enjoy without interruptions. Whatever your taste in music, we have
+              it all for you!
+            </p>
+            <div className="pt-[16px] flex gap-[24px] px-[14.5px]">
+              <div>
+                <button
+                  className="text-white text-[16px] font-Vazirmatn-500 text-center py-[8px] px-[24px] bg-darkpink rounded-[4px]"
+                  onClick={handleClick}
+                >
+                  Discover Now
+                </button>
+              </div>
+              <div>
+                <button className="text-bluearrow text-[16px] font-Vazirmatn-500 text-center py-[8px] px-[24px] rounded-[4px] border-[1px] border-bluearrow">
+                  Create Playlist
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Bg;

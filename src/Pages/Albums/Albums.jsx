@@ -61,7 +61,7 @@ const Albums = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [visibleContent, setVisibleContent] = useState();
-  console.log("visibleContent :", visibleContent);
+ 
 
   const handleToggle = () => {
     setIsMenuOpen(!isMenuOpen);

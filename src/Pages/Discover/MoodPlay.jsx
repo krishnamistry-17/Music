@@ -9,7 +9,7 @@ import plus from "../../assets/svgs/plus.svg";
 const MoodPlay = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
-  console.log("visibleCount :", visibleCount);
+
 
   const data = [
     { image: song1, para: "Sad Playlist" },

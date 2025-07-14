@@ -7,10 +7,10 @@ import artist55 from "../../assets/images/artist55.png";
 import artist66 from "../../assets/images/artist66.png";
 import plus from "../../assets/svgs/plus.svg";
 
-const PopArtist = () => {
+const PopArtist = ({ searchQuery }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
-  console.log("visibleCount :", visibleCount);
+
 
   const data = [
     { image: artist11, para: "Eminiem" },
@@ -48,6 +48,12 @@ const PopArtist = () => {
     return () => window.removeEventListener("resize", updateCount);
   }, []);
 
+  const allArtists = ["Eminiem", "The Weekend", "Adele", "Billie Eilish"];
+
+  const filteredArtists = allArtists.filter((artist) =>
+    artist.toLowerCase().includes(searchQuery?.toLowerCase())
+  );
+
   return (
     <div>
       <div>
@@ -60,6 +66,7 @@ const PopArtist = () => {
           Popular <span className="text-darkpink">Artists</span>
         </h2>
       </div>
+
       <div>
         <div
           className=" hidden md:grid lg:grid-cols-6 md:grid-cols-4 gap-[24px] overflow-x-auto"
@@ -71,6 +78,9 @@ const PopArtist = () => {
                 <div className="">
                   <img src={item.image} alt="a1" className="pl-4" />
                   <p className="text-white text-[16px] font-Vazirmatn-500 pt-[23px] text-center">
+                    {filteredArtists.map((artist, index) => (
+                      <div key={index}>{artist.para}</div>
+                    ))}
                     {item.para}
                   </p>
                 </div>
@@ -103,9 +113,9 @@ const PopArtist = () => {
                   <img
                     src={item.image}
                     alt="a1"
-                    className="w-[124.67px] h-[110px]"
+                    className="  max-w-[175px] max-h-[100px]"
                   />
-                  <p className="text-white text-[14px] font-Vazirmatn-500 pt-[14px] pl-[8px]">
+                  <p className="text-white text-[12px] font-Vazirmatn-300 pt-[23px]  text-center">
                     {item.para}
                   </p>
                 </div>
