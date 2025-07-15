@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import Bg from "./Bg";
 import WeeklyTop from "./WeeklyTop";
 import NewRelease from "../Discover/NewRelease";
@@ -10,10 +10,34 @@ import TrendingSong from "./TrendingSong";
 import Platform from "./Platform";
 
 const Content = () => {
+  const tabsectionRef = useRef(null);
+
+  const [activeTab, setActiveTab] = useState("signup");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  console.log("isLoggedIn :", isLoggedIn);
+
+  const handleSucess = () => {
+    setIsLoggedIn(true);
+  };
+
+  const scrollToTabs = () => {
+    tabsectionRef.current?.scrollIntoView({
+      behaviour: "smooth",
+      block: "end",
+    });
+  };
+
   return (
     <div>
       <div>
-        <Bg />
+        <Bg
+          tabsectionRef={tabsectionRef}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          scrollToTabs={scrollToTabs}
+          isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
+        />
       </div>
       <div className="pt-[64px] pl-[44px] pr-[64px]">
         <WeeklyTop />
@@ -37,7 +61,11 @@ const Content = () => {
         <MoodPlay />
       </div>
       <div className="pt-[64px] pl-[37px] pr-[65px]">
-        <Platform />
+        <Platform
+          scrollToTabs={scrollToTabs}
+          tabsectionRef={tabsectionRef}
+          onLoginSuccess={handleSucess}
+        />
       </div>
     </div>
   );

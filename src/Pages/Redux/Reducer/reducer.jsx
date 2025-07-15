@@ -2,6 +2,15 @@ const initialState = {
   artist: [],
   album: [],
   song: [],
+  user: {
+    name: "",
+    email: "",
+    password: "",
+  },
+  users: {
+    email: "",
+    password: "",
+  },
 };
 
 const MusicReducer = (state = initialState, action) => {
@@ -14,6 +23,12 @@ const MusicReducer = (state = initialState, action) => {
 
     case "GET_ALL_SONG":
       return { ...state, song: action.payload };
+
+    case "GET_SIGNUP":
+      return { ...state, user: action.payload };
+
+    case "GET_LOGIN":
+      return { ...state, users: action.payload };
 
     default:
       return state;

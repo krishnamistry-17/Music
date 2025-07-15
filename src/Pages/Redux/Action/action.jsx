@@ -18,3 +18,17 @@ export const getAllSong = (song) => {
     payload: song,
   };
 };
+
+export const getSignUp = (user) => {
+  return {
+    type: "GET_SIGNUP",
+    payload: user,
+  };
+};
+
+export const getLogin = (users) => {
+  return {
+    type: "GET_LOGIN",
+    payload: users,
+  };
+};

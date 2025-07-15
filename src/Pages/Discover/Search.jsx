@@ -2,11 +2,6 @@ import React, { useEffect, useState } from "react";
 import search from "../../assets/svgs/search.svg";
 
 const Search = ({ inputvalue, setInputValue }) => {
-  const [isSelected, setIsSelected] = useState(true);
-  console.log("isSelected :", isSelected);
-  const handleSelect = () => {
-    setIsSelected(!isSelected);
-  };
   return (
     <div>
       <div className="lg:flex hidden gap-[12px]">

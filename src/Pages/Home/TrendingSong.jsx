@@ -9,7 +9,7 @@ import { getAllSong } from "../Redux/Action/action";
 const TrendingSong = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [data, setData] = useState([]);
-  console.log("data :", data);
+
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

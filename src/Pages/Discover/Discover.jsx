@@ -21,6 +21,7 @@ const Discover = () => {
           <DisContent />
         </div>
       </div>
+
       <div className="lg:hidden">
         <div>
           <SmallSide />

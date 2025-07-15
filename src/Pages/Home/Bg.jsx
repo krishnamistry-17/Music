@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from "react";
 import homebg from "../../assets/images/homebg.png";
-import Search from "../Discover/Search";
-const Bg = () => {
+import HomeNav from "./HomeNav";
+
+const Bg = ({
+  tabsectionRef,
+  activeTab,
+  setActiveTab,
+  scrollToTabs,
+  isLoggedIn,
+  setIsLoggedIn,
+}) => {
   const handleClick = () => {
     window.scrollTo(0, 1255);
   };
 
   useEffect(() => {
     window.scroll({ behavior: "smooth", top: 0 });
-  });
+  }, []);
 
   return (
     <div>
@@ -16,7 +24,14 @@ const Bg = () => {
         <img src={homebg} alt="bg" className=" max-w-full w-full h-[595px]" />
         <div className=" absolute top-[24px] px-[25px] pb-[113px]">
           <div>
-            <Search />
+            <HomeNav
+              tabsectionRef={tabsectionRef}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              scrollToTabs={scrollToTabs}
+              isLoggedIn={isLoggedIn}
+              setIsLoggedIn={setIsLoggedIn}
+            />
           </div>
           <div className="pt-[114px]">
             <p className="text-[40px] text-white font-Vazirmatn-800">

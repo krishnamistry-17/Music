@@ -61,7 +61,6 @@ const Albums = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [visibleContent, setVisibleContent] = useState();
- 
 
   const handleToggle = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -260,6 +259,10 @@ const Albums = () => {
     return () => window.removeEventListener("resize", updateContent);
   }, []);
 
+  const handleBack = () => {
+    navigate("/discover");
+  };
+
   return (
     <div>
       <div className="lg:flex hidden   ">
@@ -273,6 +276,7 @@ const Albums = () => {
               <div>
                 <img
                   src={whiteback}
+                  onClick={handleBack}
                   alt="back"
                   className="w-[50px] h-[50px] text-white"
                 />

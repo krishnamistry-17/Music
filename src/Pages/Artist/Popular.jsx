@@ -33,15 +33,13 @@ const Popular = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [data, setData] = useState([]);
 
-
-
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   localStorage.setItem(
     "accessToken",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmRmYTI3NmU5OTIzZjQxYmE3OGFhZiIsImlhdCI6MTc1MjIxNDM0NSwiZXhwIjoxNzUyMzAwNzQ1fQ.NzWP_mGi4cRX_Y0HFxcb2Dhmv_8huD_ICSUOwtbUxE4"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmRmYTI3NmU5OTIzZjQxYmE3OGFhZiIsImlhdCI6MTc1MjU4MDg2NSwiZXhwIjoxNzUyNjY3MjY1fQ.ZLKjgrCRtFJHtIc184FprCs-jSCObRF7L8TohsxyE50"
   );
 
   const data1 = [
