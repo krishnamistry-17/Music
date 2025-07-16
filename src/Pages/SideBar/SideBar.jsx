@@ -13,11 +13,14 @@ import fav from "../../assets/svgs/fav.svg";
 import addplay from "../../assets/svgs/addplay.svg";
 import setting from "../../assets/svgs/setting.svg";
 import logout from "../../assets/svgs/logout.svg";
+import { useAuth } from "../Context/AuthContext";
 
 const SideBar = () => {
   const [activeIndex, setActiveIndex] = useState(2);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
 
   const menuData = [
     {
@@ -92,6 +95,15 @@ const SideBar = () => {
                       key={`${sectionIndex}-${index}`}
                       onClick={() => {
                         setActiveIndex(`${sectionIndex}-${index}`);
+
+                        if (item.name === "Logout") {
+                          localStorage.removeItem("accessToken");
+
+                          setIsLoggedIn(false);
+
+                          return;
+                        }
+
                         if (item.path) {
                           navigate(item.path);
                         }

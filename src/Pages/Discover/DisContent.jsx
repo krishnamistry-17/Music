@@ -29,7 +29,7 @@ const DisContent = () => {
 
   return (
     <div>
-      <div className="pt-[64px] pl-[50px] pr-[89px]">
+      {/* <div className="pt-[64px] pl-[50px] pr-[89px]">
         <div>
           <HomeNav
             tabsectionRef={tabsectionRef}
@@ -40,7 +40,7 @@ const DisContent = () => {
             setIsLoggedIn={setIsLoggedIn}
           />
         </div>
-      </div>
+      </div> */}
       <div className="pt-[23px] pl-[12px] pr-[64px]">
         <MusicGeners searchQuery={inputvalue} />
       </div>

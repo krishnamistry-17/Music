@@ -3,7 +3,7 @@ import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import SignUp from "./SignUp";
 import Login from "./Login";
 
-const Platform = ({ tabsectionRef, onLoginSuccess }) => {
+const Platform = ({ tabsectionRef, onLoginSuccess, scrollToTabs }) => {
   const [activeTab, setActiveTab] = useState("signup");
 
   return (

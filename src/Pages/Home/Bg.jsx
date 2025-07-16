@@ -2,14 +2,7 @@ import React, { useEffect, useState } from "react";
 import homebg from "../../assets/images/homebg.png";
 import HomeNav from "./HomeNav";
 
-const Bg = ({
-  tabsectionRef,
-  activeTab,
-  setActiveTab,
-  scrollToTabs,
-  isLoggedIn,
-  setIsLoggedIn,
-}) => {
+const Bg = ({ tabsectionRef, activeTab, setActiveTab, scrollToTabs }) => {
   const handleClick = () => {
     window.scrollTo(0, 1255);
   };
@@ -20,7 +13,7 @@ const Bg = ({
 
   return (
     <div>
-      <div className="top-[48px] relative rounded-[25px] pr-[64px] pl-[25px]">
+      <div className=" relative rounded-[25px] pr-[64px] pl-[25px]">
         <img src={homebg} alt="bg" className=" max-w-full w-full h-[595px]" />
         <div className=" absolute top-[24px] px-[25px] pb-[113px]">
           <div>
@@ -29,8 +22,6 @@ const Bg = ({
               activeTab={activeTab}
               setActiveTab={setActiveTab}
               scrollToTabs={scrollToTabs}
-              isLoggedIn={isLoggedIn}
-              setIsLoggedIn={setIsLoggedIn}
             />
           </div>
           <div className="pt-[114px]">

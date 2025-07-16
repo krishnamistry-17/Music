@@ -8,39 +8,47 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Bg from "./Pages/Home/Bg";
 import HomeNav from "./Pages/Home/HomeNav";
+import { AuthProvider } from "./Pages/Context/AuthContext";
+import LoginSmall from "./Pages/Home/LoginSmall";
+import SignUpSmall from "./Pages/Home/SignUpSmall";
+import Login from "./Pages/Home/Login";
+import SignUp from "./Pages/Home/SignUp";
 
-// function LayoutWrapper({ children }) {
-//   const location = useLocation();
+function LayoutWrapper({ children }) {
+  const location = useLocation();
 
-//   // const showBg = location.pathname === "/"; // Show Bg only on home
-//   const showHomeNav = ["/", "/discover"].includes(location.pathname); // Show HomeNav on both
+  const showHomeNav = ["/discover"].includes(location.pathname);
 
-//   return (
-//     <>
-//       {/* {showBg && <Bg />} */}
-//       {showHomeNav && <HomeNav />}
-//       {children}
-//     </>
-//   );
-// }
-function App() {
   return (
     <>
-      <div className="min-h-screen flex flex-col">
-        <BrowserRouter>
-          {/* <LayoutWrapper> */}
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/discover" element={<Discover />} />
-            <Route path="/album" element={<Albums />} />
-            <Route path="/artist" element={<Artist />} />
-          </Routes>
-          {/* </LayoutWrapper> */}
+      <div className="lg:ml-[300px] lg:pt-[64px] pl-[50px] pr-[89px]">
+        {showHomeNav && <HomeNav />}
+      </div>
+      {children}
+    </>
+  );
+}
+
+function App() {
+  return (
+    <div className="min-h-screen flex flex-col">
+      <BrowserRouter>
+        <AuthProvider>
+          <LayoutWrapper>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/discover" element={<Discover />} />
+              <Route path="/album" element={<Albums />} />
+              <Route path="/artist" element={<Artist />} />
+              <Route path="/login" element={<LoginSmall />} />
+              <Route path="/signup" element={<SignUpSmall />} />
+            </Routes>
+          </LayoutWrapper>
           <ToastContainer />
           <Footer />
-        </BrowserRouter>
-      </div>
-    </>
+        </AuthProvider>
+      </BrowserRouter>
+    </div>
   );
 }
 

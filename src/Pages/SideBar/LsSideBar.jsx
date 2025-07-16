@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import search from "../../assets/svgs/bsearch.svg";
+import back from "../../assets/svgs/blueback.svg";
 import { IoMenu } from "react-icons/io5";
 import { MdCancel } from "react-icons/md";
 import most from "../../assets/svgs/most.svg";
@@ -12,25 +12,32 @@ import { FcAbout } from "react-icons/fc";
 import { MdWorkspacePremium } from "react-icons/md";
 import setting from "../../assets/svgs/setting.svg";
 import logout from "../../assets/svgs/logout.svg";
+import { useAuth } from "../Context/AuthContext";
+import { IoIosLogIn } from "react-icons/io";
+import { SiGnuprivacyguard } from "react-icons/si";
 
-const SmallSide = () => {
+const LsSidebar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
+
   const navigate = useNavigate();
   const handleToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
+  const handleClick = () => {
+    navigate("/");
+  };
   return (
     <div>
       <div className=" flex justify-between items-center px-4 py-2   bg-blackbg">
         <img
-          src={search}
+          onClick={handleClick}
+          src={back}
           alt="back"
           className=" text-bluearrow w-[35px] h-[35px]"
         />
-        <h2 className="text-[32px] font-Vazirmatn-800 text-darkpink">
-          Dis<span className="text-blue">cover</span>
-        </h2>
+
         <button onClick={handleToggle}>
           {" "}
           <IoMenu className="text-darkpink w-[35px] h-[35px]" />
@@ -86,15 +93,44 @@ const SmallSide = () => {
                 </span>
                 Setting
               </Link>
-              <Link
-                className="text-white font-Vazirmatn-600 text-[20px] 
+              {isLoggedIn ? (
+                <div>
+                  {" "}
+                  <Link
+                    className="text-white font-Vazirmatn-600 text-[20px] 
                    border-white/20 border-b-2  p-4 flex gap-4"
-              >
-                <span>
-                  <img src={logout} alt="lg" className="w-5 h-5 mt-1" />
-                </span>
-                Logout
-              </Link>
+                    onClick={() => setIsLoggedIn((prev) => !prev)}
+                  >
+                    <span>
+                      <img src={logout} alt="lg" className="w-5 h-5 mt-1" />
+                    </span>
+                    Logout
+                  </Link>
+                </div>
+              ) : (
+                <div>
+                  <Link
+                    to={"/smalllogin"}
+                    className="text-white font-Vazirmatn-600 text-[20px] 
+                   border-white/20 border-b-2  p-4 flex gap-4"
+                  >
+                    <span>
+                      <IoIosLogIn className="w-5 h-5 mt-1" />
+                    </span>
+                    Login
+                  </Link>
+                  <Link
+                    to={"/smallsignup"}
+                    className="text-white font-Vazirmatn-600 text-[20px] 
+                   border-white/20 border-b-2  p-4 flex gap-4"
+                  >
+                    <span>
+                      <SiGnuprivacyguard className="w-5 h-5 mt-1" />
+                    </span>
+                    Signup
+                  </Link>
+                </div>
+              )}
 
               <div className="border-white/20 border-b-2  p-4">
                 <h2 className="text-[#EE10B0] text-[14px] pb-4">Library</h2>
@@ -136,4 +172,4 @@ const SmallSide = () => {
   );
 };
 
-export default SmallSide;
+export default LsSidebar;

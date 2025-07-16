@@ -23,7 +23,7 @@ const Home = () => {
         </div>
       </div>
       <div className="lg:hidden">
-        <div>
+        <div className="sticky top-0 z-[5000]">
           <HomeSideBar />
         </div>
         <div className="pt-[28px] pl-[24px]">

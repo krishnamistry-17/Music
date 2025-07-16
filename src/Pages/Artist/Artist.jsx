@@ -243,7 +243,7 @@ const Artist = () => {
         <SideBar />
 
         {/* Main content area (grid content, header, songs, footer) */}
-        <div className="lg:ml-[300px] mt-[25px] pl-[32px] ">
+        <div className="lg:ml-[300px]  pl-[32px] ">
           <div>
             <div className=" relative top-[71px]  z-10">
               <div className="flex justify-between items-center px-5">

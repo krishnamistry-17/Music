@@ -12,10 +12,10 @@ import { apiRoutes } from "../Component/Constants/apiRoutes";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
-import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
+import LsSidebar from "../SideBar/LsSideBar";
+import { useGoogleLogin } from "@react-oauth/google";
 
-const Login = ({ onSuccess }) => {
+const LoginSmall = ({ onSuccess }) => {
   const [isClicked, setIsClicked] = useState(false);
   const { setIsLoggedIn } = useAuth();
 
@@ -87,18 +87,6 @@ const Login = ({ onSuccess }) => {
     }
   };
 
-  // const login = useGoogleLogin({
-  //   onSuccess: (tokenResponse) => {
-  //     const decode = jwtDecode(tokenResponse.credential);
-  //     console.log("Decoded>>>>:", decode);
-  //     console.log("Token response:", tokenResponse);
-  //   },
-
-  //   onError: () => {
-  //     console.log("Login Failed");
-  //   },
-  // });
-
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
@@ -115,6 +103,7 @@ const Login = ({ onSuccess }) => {
         const googleUser = await userInfo.json();
         console.log("Google user data:", googleUser);
 
+        // 2. Send to your backend for login or signup
         const response = await apiInstance.post(apiRoutes.GET_LOGIN, {
           email: googleUser.email,
           name: googleUser.name,
@@ -134,6 +123,14 @@ const Login = ({ onSuccess }) => {
       } catch (err) {
         const errorMessage =
           err.response?.data?.message || "Google login failed";
+
+        if (errorMessage.includes("login using Google")) {
+          toast.info(
+            "This email was registered with Google. Please use Google login."
+          );
+        } else {
+          toast.error(errorMessage);
+        }
       }
     },
     onError: () => {
@@ -143,8 +140,25 @@ const Login = ({ onSuccess }) => {
 
   return (
     <div>
-      <div>
+      <div className="sticky top-0 z-[5000]">
+        <LsSidebar />
+      </div>
+      <div className="px-[24px] py-[30px] lg:hidden">
         <form onSubmit={handleSubmit}>
+          <div>
+            <div className="flex justify-center items-center">
+              <img src={smallicon} alt="bg" />
+            </div>
+            <h2
+              className="pt-[8px] text-[24px]  font-Vazirmatn-700 text-center
+              bg-gradient-to-r from-darkpink to-blue text-transparent bg-clip-text"
+            >
+              Melodies
+            </h2>
+          </div>
+          <p className="text-white text-[24px] font-Vazirmatn-700 py-[24px]">
+            Login To Continue
+          </p>
           <div className="">
             <p className="text-white text-[16px] font-Vazirmatn-500">Email</p>
             <div
@@ -198,9 +212,9 @@ const Login = ({ onSuccess }) => {
             </div>
           </div>
           <div className="py-[16px]">
-            <div className="w-full bg-darkpink rounded-[4px]">
+            <div className="w-full bg-darkpink rounded-[4px] text-center">
               <button
-                className="text-[18px] text-white font-Vazirmatn-500 text-center py-[8px] px-[181.75px]"
+                className="text-[18px] text-white font-Vazirmatn-500  py-[8px] "
                 type="submit"
               >
                 {loading ? "Loading" : "Login"}
@@ -221,12 +235,27 @@ const Login = ({ onSuccess }) => {
           </div>
           <div
             onClick={() => login()}
-            className="mt-[20px] flex justify-center items-center w-full py-[7px] border-[2px] rounded-[4px] border-white cursor-pointer"
+            className="mt-[20px] flex justify-center items-center w-full py-[7px] border-[2px] rounded-[4px] border-white "
           >
-            <img src={google} alt="Google" />
+            <img src={google} alt="ggle" />
             <p className="text-[16px] text-white font-Vazirmatn-500 text-justify pl-[6.25px]">
-              Sign in with Google
+              Sign in With Google
             </p>
+          </div>
+          <div className="flex py-[24px]">
+            <div>
+              <p className="text-[20px] font-Vazirmatn-700 text-white">
+                Dont Have An Account?
+              </p>
+            </div>
+            <div>
+              <a
+                href="/smallsignup"
+                className="text-[16px] font-Vazirmatn-500 text-white underline hover:text-bluearrow pl-2"
+              >
+                Signup
+              </a>
+            </div>
           </div>
         </form>
       </div>
@@ -234,4 +263,4 @@ const Login = ({ onSuccess }) => {
   );
 };
 
-export default Login;
+export default LoginSmall;

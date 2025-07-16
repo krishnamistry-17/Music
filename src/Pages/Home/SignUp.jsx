@@ -10,6 +10,8 @@ import { apiRoutes } from "../Component/Constants/apiRoutes";
 import { useDispatch } from "react-redux";
 import { getSignUp } from "../Redux/Action/action";
 import { toast } from "react-toastify";
+import { useGoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 const SignUp = ({ onSuccess }) => {
   const [isClicked, setIsClicked] = useState(false);
@@ -52,7 +54,7 @@ const SignUp = ({ onSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !email || !password) {
-      alert("Please fill all fields");
+      toast.warn("Please fill all fields");
       return;
     }
 
@@ -80,6 +82,59 @@ const SignUp = ({ onSuccess }) => {
       setError(err.response?.data?.message || "Signup failed");
     }
   };
+
+  const signup = useGoogleLogin({
+    onSuccess: (tokenResponse) => {
+      console.log("Token response>>>>:", tokenResponse);
+    },
+    onError: () => {
+      console.log("Login Failed");
+    },
+  });
+
+  // const signup = useGoogleLogin({
+  //   onSuccess: async (tokenResponse) => {
+  //     try {
+  //       // Fetch user info from Google API using the access token
+  //       const userInfo = await fetch(
+  //         "https://www.googleapis.com/oauth2/v3/userinfo",
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${tokenResponse.access_token}`,
+  //           },
+  //         }
+  //       );
+
+  //       const userData = await userInfo.json();
+  //       console.log("Google user data>>>>>>:", userData);
+
+  //       const signupData = {
+  //         name: userData.name,
+  //         email: userData.email,
+  //         password: "K@12345",
+  //         role: "user",
+  //       };
+
+  //       const response = await apiInstance.post(
+  //         apiRoutes.GET_SIGNUP,
+  //         signupData
+  //       );
+  //       setData(response.data);
+  //       dispatch(getSignUp(response.data));
+
+  //       if (response.status === 200) {
+  //         toast.success("Signed up with Google successfully!");
+  //         onSuccess();
+  //       }
+  //     } catch (err) {
+  //       console.error("Google signup error:", err);
+  //       toast.error(err.response?.data?.message || "Google signup failed");
+  //     }
+  //   },
+  //   onError: () => {
+  //     toast.error("Google login failed");
+  //   },
+  // });
 
   return (
     <div>
@@ -180,7 +235,10 @@ const SignUp = ({ onSuccess }) => {
               </span>
               <span className="border-t-[1px] block flex-1 border-white"></span>
             </div>
-            <div className="mt-[20px] flex justify-center items-center w-full py-[7px] border-[2px] rounded-[4px] border-white ">
+            <div
+              onClick={() => signup()}
+              className="mt-[20px] flex justify-center items-center w-full py-[7px] border-[2px] rounded-[4px] border-white "
+            >
               <img src={google} alt="ggle" />
               <p className="text-[16px] text-white font-Vazirmatn-500 text-justify pl-[6.25px] pt-1.5">
                 Sign Up With Google

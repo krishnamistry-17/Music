@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Bg from "./Bg";
 import WeeklyTop from "./WeeklyTop";
 import NewRelease from "../Discover/NewRelease";
@@ -13,8 +13,6 @@ const Content = () => {
   const tabsectionRef = useRef(null);
 
   const [activeTab, setActiveTab] = useState("signup");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  console.log("isLoggedIn :", isLoggedIn);
 
   const handleSucess = () => {
     setIsLoggedIn(true);
@@ -35,8 +33,6 @@ const Content = () => {
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           scrollToTabs={scrollToTabs}
-          isLoggedIn={isLoggedIn}
-          setIsLoggedIn={setIsLoggedIn}
         />
       </div>
       <div className="pt-[64px] pl-[44px] pr-[64px]">

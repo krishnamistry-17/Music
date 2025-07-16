@@ -12,9 +12,15 @@ import { FcAbout } from "react-icons/fc";
 import { MdWorkspacePremium } from "react-icons/md";
 import setting from "../../assets/svgs/setting.svg";
 import logout from "../../assets/svgs/logout.svg";
+import { useAuth } from "../Context/AuthContext";
+import { IoIosLogIn } from "react-icons/io";
+import { SiGnuprivacyguard } from "react-icons/si";
 
 const HomeSideBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
+
   const navigate = useNavigate();
   const handleToggle = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -86,15 +92,44 @@ const HomeSideBar = () => {
                 </span>
                 Setting
               </Link>
-              <Link
-                className="text-white font-Vazirmatn-600 text-[20px] 
+              {isLoggedIn ? (
+                <div>
+                  {" "}
+                  <Link
+                    className="text-white font-Vazirmatn-600 text-[20px] 
                    border-white/20 border-b-2  p-4 flex gap-4"
-              >
-                <span>
-                  <img src={logout} alt="lg" className="w-5 h-5 mt-1" />
-                </span>
-                Logout
-              </Link>
+                    onClick={() => setIsLoggedIn((prev) => !prev)}
+                  >
+                    <span>
+                      <img src={logout} alt="lg" className="w-5 h-5 mt-1" />
+                    </span>
+                    Logout
+                  </Link>
+                </div>
+              ) : (
+                <div>
+                  <Link
+                    to={"/login"}
+                    className="text-white font-Vazirmatn-600 text-[20px] 
+                   border-white/20 border-b-2  p-4 flex gap-4"
+                  >
+                    <span>
+                      <IoIosLogIn className="w-5 h-5 mt-1" />
+                    </span>
+                    Login
+                  </Link>
+                  <Link
+                    to={"/signup"}
+                    className="text-white font-Vazirmatn-600 text-[20px] 
+                   border-white/20 border-b-2  p-4 flex gap-4"
+                  >
+                    <span>
+                      <SiGnuprivacyguard className="w-5 h-5 mt-1" />
+                    </span>
+                    Signup
+                  </Link>
+                </div>
+              )}
 
               <div className="border-white/20 border-b-2  p-4">
                 <h2 className="text-[#EE10B0] text-[14px] pb-4">Library</h2>
