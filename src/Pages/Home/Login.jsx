@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import passwordp from "../../assets/svgs/password.svg";
 import mail from "../../assets/svgs/mail.svg";
 import google from "../../assets/svgs/google.svg";
-import smallicon from "../../assets/svgs/smallicon.svg";
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { useDispatch } from "react-redux";
@@ -12,12 +11,12 @@ import { apiRoutes } from "../Component/Constants/apiRoutes";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
-import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
+import { GoogleLogin, googleLogout, useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
 
 const Login = ({ onSuccess }) => {
   const [isClicked, setIsClicked] = useState(false);
-  const { setIsLoggedIn } = useAuth();
+  const { setIsLoggedIn, setIsGoogleLogin, setUserProfile } = useAuth();
 
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
@@ -51,11 +50,6 @@ const Login = ({ onSuccess }) => {
 
   const navigate = useNavigate();
 
-  localStorage.setItem(
-    "accessToken",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmRmYTI3NmU5OTIzZjQxYmE3OGFhZiIsImlhdCI6MTc1MjQ4NzM3MiwiZXhwIjoxNzUyNTczNzcyfQ.7FvhITSk-4kN12x0sIXx3Fjl-IPJZhp1EQ1vCBe_qfk"
-  );
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -87,53 +81,24 @@ const Login = ({ onSuccess }) => {
     }
   };
 
-  // const login = useGoogleLogin({
-  //   onSuccess: (tokenResponse) => {
-  //     const decode = jwtDecode(tokenResponse.credential);
-  //     console.log("Decoded>>>>:", decode);
-  //     console.log("Token response:", tokenResponse);
-  //   },
-
-  //   onError: () => {
-  //     console.log("Login Failed");
-  //   },
-  // });
-
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
+      console.log("tokenResponse ", tokenResponse);
+
       try {
-        // 1. Fetch user profile from Google
-        const userInfo = await fetch(
-          "https://www.googleapis.com/oauth2/v3/userinfo",
+        const Res = await axios.post(
+          "http://192.168.29.45:5000/api/auth/verify-token",
           {
-            headers: {
-              Authorization: `Bearer ${tokenResponse.access_token}`,
-            },
+            access_token: tokenResponse?.access_token,
           }
         );
-
-        const googleUser = await userInfo.json();
-        console.log("Google user data:", googleUser);
-
-        const response = await apiInstance.post(apiRoutes.GET_LOGIN, {
-          email: googleUser.email,
-          name: googleUser.name,
-          role: "user",
-          isGoogleLogin: true,
-          password: "K@12345" || password,
-        });
-
-        if (response.status === 200) {
-          localStorage.setItem("accessToken", response.data.token);
-          setIsLoggedIn(true);
-          dispatch(getLogin(response.data));
-          toast.success("Logged in with Google!");
-          onSuccess();
-          navigate("/album");
-        }
-      } catch (err) {
-        const errorMessage =
-          err.response?.data?.message || "Google login failed";
+        console.log("Res>>>>>", Res);
+        const { name, email, picture } = Res.data;
+        setIsGoogleLogin(true);
+        setUserProfile({ name, email, image: picture });
+        toast.success("Google Login Sucess..");
+      } catch (error) {
+        console.log(error.message);
       }
     },
     onError: () => {

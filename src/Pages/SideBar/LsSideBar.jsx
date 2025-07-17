@@ -11,7 +11,7 @@ import { FaShareAlt } from "react-icons/fa";
 import { FcAbout } from "react-icons/fc";
 import { MdWorkspacePremium } from "react-icons/md";
 import setting from "../../assets/svgs/setting.svg";
-import logout from "../../assets/svgs/logout.svg";
+import logoutbtn from "../../assets/svgs/logout.svg";
 import { useAuth } from "../Context/AuthContext";
 import { IoIosLogIn } from "react-icons/io";
 import { SiGnuprivacyguard } from "react-icons/si";
@@ -19,7 +19,8 @@ import { SiGnuprivacyguard } from "react-icons/si";
 const LsSidebar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const { isLoggedIn, setIsLoggedIn, isGoogleLogin, logout } = useAuth();
+  console.log("isGoogleLogin>>>small :", isGoogleLogin);
 
   const navigate = useNavigate();
   const handleToggle = () => {
@@ -93,16 +94,16 @@ const LsSidebar = () => {
                 </span>
                 Setting
               </Link>
-              {isLoggedIn ? (
+              {isLoggedIn || isGoogleLogin ? (
                 <div>
                   {" "}
                   <Link
                     className="text-white font-Vazirmatn-600 text-[20px] 
                    border-white/20 border-b-2  p-4 flex gap-4"
-                    onClick={() => setIsLoggedIn((prev) => !prev)}
+                    onClick={() => logout()}
                   >
                     <span>
-                      <img src={logout} alt="lg" className="w-5 h-5 mt-1" />
+                      <img src={logoutbtn} alt="lg" className="w-5 h-5 mt-1" />
                     </span>
                     Logout
                   </Link>

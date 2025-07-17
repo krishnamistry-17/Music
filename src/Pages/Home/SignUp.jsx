@@ -8,10 +8,12 @@ import { FaEye } from "react-icons/fa";
 import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
 import { useDispatch } from "react-redux";
-import { getSignUp } from "../Redux/Action/action";
+import { getLogin, getSignUp } from "../Redux/Action/action";
 import { toast } from "react-toastify";
 import { useGoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const SignUp = ({ onSuccess }) => {
   const [isClicked, setIsClicked] = useState(false);
@@ -23,6 +25,8 @@ const SignUp = ({ onSuccess }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -46,11 +50,6 @@ const SignUp = ({ onSuccess }) => {
       progress: undefined,
     });
 
-  localStorage.setItem(
-    "accessToken",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmRmYTI3NmU5OTIzZjQxYmE3OGFhZiIsImlhdCI6MTc1MjQ4NzM3MiwiZXhwIjoxNzUyNTczNzcyfQ.7FvhITSk-4kN12x0sIXx3Fjl-IPJZhp1EQ1vCBe_qfk"
-  );
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !email || !password) {
@@ -71,7 +70,6 @@ const SignUp = ({ onSuccess }) => {
       console.log("signupData  :", signupData);
       const response = await apiInstance.post(apiRoutes.GET_SIGNUP, signupData);
       setData(response.data);
-      console.log("response.data :", response.data);
       dispatch(getSignUp(response.data));
 
       if (response.status === 200) {
@@ -84,57 +82,45 @@ const SignUp = ({ onSuccess }) => {
   };
 
   const signup = useGoogleLogin({
-    onSuccess: (tokenResponse) => {
-      console.log("Token response>>>>:", tokenResponse);
+    onSuccess: async (tokenResponse) => {
+      try {
+        const userInfoRes = await axios.get(
+          "https://www.googleapis.com/oauth2/v1/userinfo?alt=json",
+          {
+            headers: {
+              Authorization: `Bearer ${tokenResponse.access_token}`,
+            },
+          }
+        );
+
+        const googleUser = userInfoRes.data;
+        console.log("Google user data:", googleUser);
+
+        const response = await apiInstance.post(apiRoutes.SIGNUP, {
+          email: googleUser.email,
+          name: googleUser.name,
+          role: "user",
+          isGoogleLogin: true,
+          password: "GOOGLE_SIGNUP_PLACEHOLDER", //option
+        });
+
+        if (response.status === 200 || response.status === 201) {
+          localStorage.setItem("accessToken", response.data.token);
+          dispatch(getLogin(response.data));
+          toast.success("Signed up with Google successfully!");
+          navigate("/album");
+        }
+      } catch (err) {
+        console.error("Google signup error:", err);
+        const errorMessage =
+          err.response?.data?.message || "Google signup failed";
+        toast.error(errorMessage);
+      }
     },
     onError: () => {
-      console.log("Login Failed");
+      toast.error("Google sign-up failed");
     },
   });
-
-  // const signup = useGoogleLogin({
-  //   onSuccess: async (tokenResponse) => {
-  //     try {
-  //       // Fetch user info from Google API using the access token
-  //       const userInfo = await fetch(
-  //         "https://www.googleapis.com/oauth2/v3/userinfo",
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${tokenResponse.access_token}`,
-  //           },
-  //         }
-  //       );
-
-  //       const userData = await userInfo.json();
-  //       console.log("Google user data>>>>>>:", userData);
-
-  //       const signupData = {
-  //         name: userData.name,
-  //         email: userData.email,
-  //         password: "K@12345",
-  //         role: "user",
-  //       };
-
-  //       const response = await apiInstance.post(
-  //         apiRoutes.GET_SIGNUP,
-  //         signupData
-  //       );
-  //       setData(response.data);
-  //       dispatch(getSignUp(response.data));
-
-  //       if (response.status === 200) {
-  //         toast.success("Signed up with Google successfully!");
-  //         onSuccess();
-  //       }
-  //     } catch (err) {
-  //       console.error("Google signup error:", err);
-  //       toast.error(err.response?.data?.message || "Google signup failed");
-  //     }
-  //   },
-  //   onError: () => {
-  //     toast.error("Google login failed");
-  //   },
-  // });
 
   return (
     <div>

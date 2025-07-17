@@ -12,7 +12,7 @@ import most from "../../assets/svgs/most.svg";
 import fav from "../../assets/svgs/fav.svg";
 import addplay from "../../assets/svgs/addplay.svg";
 import setting from "../../assets/svgs/setting.svg";
-import logout from "../../assets/svgs/logout.svg";
+import logoutbtn from "../../assets/svgs/logout.svg";
 import { useAuth } from "../Context/AuthContext";
 
 const SideBar = () => {
@@ -20,7 +20,7 @@ const SideBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const { isLoggedIn, setIsLoggedIn, logout } = useAuth();
 
   const menuData = [
     {
@@ -56,7 +56,7 @@ const SideBar = () => {
       items: [
         { img: setting, name: "Setting" },
         {
-          img: logout,
+          img: logoutbtn,
           nlimg: wlog,
           name: "Logout",
         },
@@ -98,8 +98,8 @@ const SideBar = () => {
 
                         if (item.name === "Logout") {
                           localStorage.removeItem("accessToken");
-
-                          setIsLoggedIn(false);
+                          logout();
+                          // setIsLoggedIn(false);
 
                           return;
                         }

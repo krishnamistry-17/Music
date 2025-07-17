@@ -1,14 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import pfav from "../../assets/svgs/pfav.svg";
+import pfull from "../../assets/svgs/pffav.svg";
 import plus from "../../assets/svgs/plus.svg";
 import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
 import { getAllSong } from "../Redux/Action/action";
+import { useAuth } from "../Context/AuthContext";
+import { toast } from "react-toastify";
 
 const TrendingSong = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [data, setData] = useState([]);
+  const { isGoogleLogin, isLoggedIn } = useAuth();
+
+  const [selectedId, setSelectedId] = useState(null);
+
+  const handleClick = (id) => {
+    setSelectedId(id === selectedId ? null : id);
+    toast.success("Item Selected");
+  };
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -16,18 +27,18 @@ const TrendingSong = () => {
 
   localStorage.setItem(
     "accessToken",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmRmYTI3NmU5OTIzZjQxYmE3OGFhZiIsImlhdCI6MTc1MjY0MTQwMiwiZXhwIjoxNzUyNzI3ODAyfQ.XEq8KUVepbmrn6Ovxl2BZaK6wVmLkVR5CPbByNuDwSY"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmRmYTI3NmU5OTIzZjQxYmE3OGFhZiIsImlhdCI6MTc1MjcyNTc2NSwiZXhwIjoxNzUyODEyMTY1fQ.45cI-v-eD0yllWZsi8-RGG0w7BvMUtwsLOcZE6GUSJA"
   );
 
   const data1 = [
-    { id: 0, fimg: pfav, ptime: "3:26" },
-    { id: 1, fimg: pfav, ptime: "2:45" },
-    { id: 2, fimg: pfav, ptime: "2:11" },
-    { id: 3, fimg: pfav, ptime: "2:18" },
-    { id: 4, fimg: pfav, ptime: "3:26" },
-    { id: 5, fimg: pfav, ptime: "3:26" },
-    { id: 6, fimg: pfav, ptime: "3:26" },
-    { id: 7, fimg: pfav, ptime: "3:26" },
+    { id: 0, fimg: pfav, fullimg: pfull, ptime: "3:26" },
+    { id: 1, fimg: pfav, fullimg: pfull, ptime: "2:45" },
+    { id: 2, fimg: pfav, fullimg: pfull, ptime: "2:11" },
+    { id: 3, fimg: pfav, fullimg: pfull, ptime: "2:18" },
+    { id: 4, fimg: pfav, fullimg: pfull, ptime: "3:26" },
+    { id: 5, fimg: pfav, fullimg: pfull, ptime: "3:26" },
+    { id: 6, fimg: pfav, fullimg: pfull, ptime: "3:26" },
+    { id: 7, fimg: pfav, fullimg: pfull, ptime: "3:26" },
   ];
 
   useEffect(() => {
@@ -151,11 +162,29 @@ const TrendingSong = () => {
                           </div>
 
                           <div className="flex justify-end lg:gap-2.5 gap-8 py-[17.5px] pr-[9px]">
-                            <img
-                              src={extra?.fimg}
-                              alt="pf"
-                              className="lg:block hidden w-[24.24px] h-[25px]"
-                            />
+                            {isLoggedIn || isGoogleLogin ? (
+                              <div>
+                                <div
+                                  key={item.id || index[0]}
+                                  onClick={() => handleClick(index)}
+                                >
+                                  <img
+                                    src={
+                                      selectedId === index
+                                        ? extra?.fullimg
+                                        : extra?.fimg
+                                    }
+                                    alt="pf"
+                                    className="lg:block hidden w-[24.24px] h-[25px]"
+                                  />
+                                </div>
+                              </div>
+                            ) : (
+                              <div>
+                                <img src={extra?.fimg} alt="pf" />
+                              </div>
+                            )}
+
                             <p className="text-white text-[16px] font-Vazirmatn-400">
                               {extra?.ptime}
                             </p>

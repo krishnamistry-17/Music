@@ -3,6 +3,7 @@ import search from "../../assets/svgs/search.svg";
 import { useAuth } from "../Context/AuthContext";
 import { Link } from "react-router-dom";
 import profile from "../../assets/svgs/profile.svg";
+import logoutbtn from "../../assets/svgs/logout.svg";
 const HomeNav = ({
   inputvalue,
   setInputValue,
@@ -11,8 +12,13 @@ const HomeNav = ({
   scrollToTabs,
   setActiveTab,
 }) => {
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const { isLoggedIn } = useAuth();
   console.log("isLoggedIn :", isLoggedIn);
+  const { isGoogleLogin, userProfile, logout } = useAuth();
+  const [isdisplayDetail, setDisplayDetail] = useState();
+  console.log("isdisplayDetail :", isdisplayDetail);
+  console.log("userProfile :", userProfile);
+  console.log("isGoogleLogin :", isGoogleLogin);
 
   return (
     <div>
@@ -58,11 +64,45 @@ const HomeNav = ({
         </div>
 
         {/* Login/Signup OR Profile -  */}
-        <div ref={tabsectionRef}>
-          {isLoggedIn ? (
+        <div ref={tabsectionRef} className=" relative">
+          {isLoggedIn || isGoogleLogin ? (
             <div className="ml-[250px]">
-              <button>
-                <img src={profile} alt="pf" />
+              <button onClick={() => setDisplayDetail(!isdisplayDetail)}>
+                <img
+                  // src={userProfile?.image || profile}
+                  src={isGoogleLogin ? userProfile?.image : profile}
+                  alt="Profile"
+                  className="w-[40px] h-[40px] rounded-full object-cover"
+                />
+                <h2 className="text-white">
+                  {isGoogleLogin ? userProfile?.name : "User"}
+                </h2>
+
+                {isdisplayDetail && (
+                  <div className="absolute top-[72px] right-[-7px] bg-black border border-gray-700 rounded-md shadow-md w-[140px] z-50">
+                    <div className="p-3 text-white text-[14px] font-Vazirmatn-400">
+                      <div className="flex items-center gap-2 mb-2">
+                        <img
+                          src={profile}
+                          alt="pf"
+                          className="w-[20px] h-[20px]"
+                        />
+                        <p className="text-white pt-1.5 ">User Detail</p>
+                      </div>
+                      <button
+                        onClick={logout}
+                        className="flex items-center gap-2 text-white hover:text-darkpink pt-1"
+                      >
+                        <img
+                          src={logoutbtn}
+                          alt="logout"
+                          className="w-[16px] h-[16px]"
+                        />
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                )}
               </button>
             </div>
           ) : (
