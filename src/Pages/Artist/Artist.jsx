@@ -10,6 +10,7 @@ import addplay from "../../assets/svgs/addplay.svg";
 import wplay from "../../assets/svgs/wplay.svg";
 import setting from "../../assets/svgs/setting.svg";
 import logout from "../../assets/svgs/logout.svg";
+import logoutbtn from "../../assets/svgs/logout.svg";
 import wlog from "../../assets/svgs/wlog.svg";
 import wdis from "../../assets/svgs/wdis.svg";
 import back from "../../assets/svgs/back.svg";
@@ -47,10 +48,13 @@ import ArtistPlay from "./ArtistPlay";
 import Fans from "./Fans";
 import { useLocation } from "react-router-dom";
 import SideBar from "../SideBar/SideBar";
+import { useAuth } from "../Context/AuthContext";
 
 const Artist = () => {
   const [activeIndex, setActiveIndex] = useState(2);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isLoggedIn, isGoogleLogin, userProfile, logout } = useAuth();
+  const [isdisplayDetail, setDisplayDetail] = useState();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -255,17 +259,66 @@ const Artist = () => {
                     className="w-[50px] h-[50px]"
                   />
                 </div>
-                <div className="flex gap-5">
-                  <p className="text-white text-[24px] font-Vazirmatn-600">
-                    Share
-                  </p>
-                  <p className="text-white text-[24px] font-Vazirmatn-600">
-                    About
-                  </p>
-                  <p className="text-white text-[24px] font-Vazirmatn-600">
-                    Premuim
-                  </p>
-                  <img src={profile} alt="pf" className="md:pl-[37px] pr-8" />
+                <div className="flex gap-15">
+                  <div className="flex gap-5">
+                    <p className="text-white text-[24px] font-Vazirmatn-600">
+                      Share
+                    </p>
+                    <p className="text-white text-[24px] font-Vazirmatn-600">
+                      About
+                    </p>
+                    <p className="text-white text-[24px] font-Vazirmatn-600">
+                      Premuim
+                    </p>
+                  </div>
+                  <div className="mr-5">
+                    {(isLoggedIn || isGoogleLogin) && (
+                      <div>
+                        <button
+                          onClick={() => setDisplayDetail(!isdisplayDetail)}
+                        >
+                          <img
+                            // src={userProfile?.image || profile}
+                            src={isGoogleLogin ? userProfile?.image : profile}
+                            alt="Profile"
+                            className="w-[40px] h-[40px] rounded-full object-cover"
+                          />
+                          <h2 className="text-white">
+                            {isGoogleLogin ? userProfile?.name : "User"}
+                          </h2>
+
+                          {isdisplayDetail && (
+                            <div className="absolute top-[190px] right-5 bg-black border border-gray-700 rounded-md shadow-md w-[140px] z-50">
+                              <div className="p-3 text-white text-[14px] font-Vazirmatn-400">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <img
+                                    src={profile}
+                                    alt="pf"
+                                    className="w-[20px] h-[20px]"
+                                  />
+                                  <p className="text-white pt-1.5 ">
+                                    User Detail
+                                  </p>
+                                </div>
+                                <button
+                                  onClick={logout}
+                                  className="flex items-center gap-2 text-white hover:text-darkpink pt-1"
+                                >
+                                  <img
+                                    src={logoutbtn}
+                                    alt="logout"
+                                    className="w-[16px] h-[16px]"
+                                  />
+                                  Logout
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  {/* <img src={profile} alt="pf" className="md:pl-[37px] pr-8" /> */}
                 </div>
               </div>
             </div>

@@ -4,7 +4,7 @@ import most from "../../assets/svgs/most.svg";
 import fav from "../../assets/svgs/fav.svg";
 import addplay from "../../assets/svgs/addplay.svg";
 import setting from "../../assets/svgs/setting.svg";
-import logout from "../../assets/svgs/logout.svg";
+import logoutbtn from "../../assets/svgs/logout.svg";
 import back from "../../assets/svgs/blueback.svg";
 import whiteback from "../../assets/svgs/whitearrow.svg";
 import profile from "../../assets/svgs/profile.svg";
@@ -54,6 +54,7 @@ import music19 from "../../assets/images/music19.png";
 import music20 from "../../assets/images/music20.jpg";
 import { useLocation } from "react-router-dom";
 import SideBar from "../SideBar/SideBar";
+import { useAuth } from "../Context/AuthContext";
 
 const Albums = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -61,6 +62,8 @@ const Albums = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [visibleContent, setVisibleContent] = useState();
+  const { isLoggedIn, isGoogleLogin, userProfile, logout } = useAuth();
+  const [isdisplayDetail, setDisplayDetail] = useState();
 
   const handleToggle = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -281,17 +284,62 @@ const Albums = () => {
                   className="w-[50px] h-[50px] text-white"
                 />
               </div>
-              <div className="flex gap-5">
-                <p className="text-white text-[24px] font-Vazirmatn-600">
-                  Share
-                </p>
-                <p className="text-white text-[24px] font-Vazirmatn-600">
-                  About
-                </p>
-                <p className="text-white text-[24px] font-Vazirmatn-600">
-                  Premuim
-                </p>
-                <img src={profile} alt="pf" className="md:pl-[37px]" />
+
+              <div className="flex gap-15">
+                <div className="flex gap-5">
+                  <p className="text-white text-[24px] font-Vazirmatn-600">
+                    Share
+                  </p>
+                  <p className="text-white text-[24px] font-Vazirmatn-600">
+                    About
+                  </p>
+                  <p className="text-white text-[24px] font-Vazirmatn-600">
+                    Premuim
+                  </p>
+
+                  {/* <img src={profile} alt="pf" className="md:pl-[37px]" /> */}
+                </div>
+                {(isLoggedIn || isGoogleLogin) && (
+                  <div>
+                    <button onClick={() => setDisplayDetail(!isdisplayDetail)}>
+                      <img
+                        // src={userProfile?.image || profile}
+                        src={isGoogleLogin ? userProfile?.image : profile}
+                        alt="Profile"
+                        className="w-[40px] h-[40px] rounded-full object-cover"
+                      />
+                      <h2 className="text-white">
+                        {isGoogleLogin ? userProfile?.name : "User"}
+                      </h2>
+
+                      {isdisplayDetail && (
+                        <div className="absolute top-[190px] right-5 bg-black border border-gray-700 rounded-md shadow-md w-[140px] z-50">
+                          <div className="p-3 text-white text-[14px] font-Vazirmatn-400">
+                            <div className="flex items-center gap-2 mb-2">
+                              <img
+                                src={profile}
+                                alt="pf"
+                                className="w-[20px] h-[20px]"
+                              />
+                              <p className="text-white pt-1.5 ">User Detail</p>
+                            </div>
+                            <button
+                              onClick={logout}
+                              className="flex items-center gap-2 text-white hover:text-darkpink pt-1"
+                            >
+                              <img
+                                src={logoutbtn}
+                                alt="logout"
+                                className="w-[16px] h-[16px]"
+                              />
+                              Logout
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
             <div className="lg:flex justify-between items-center">
@@ -334,7 +382,7 @@ const Albums = () => {
             <Song />
           </div>
 
-          {/* Footer */}
+         
         </div>
       </div>
 

@@ -122,7 +122,7 @@ const Login = ({ onSuccess }) => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter Your E-Mail"
-                className=" opacity-75 pl-[4px] text-[12px] font-Vazirmatn-400 text-white
+                className=" opacity-75 pl-[4px] text-[12px] font-Vazirmatn-400 text-white w-full
                               focus:ring-0 focus:outline-none focus:shadow-none
                              "
               />
@@ -143,7 +143,7 @@ const Login = ({ onSuccess }) => {
                   value={password}
                   onChange={handlePasswordChange}
                   placeholder="Enter Your Password"
-                  className=" opacity-75 pl-[4px] text-[12px] font-Vazirmatn-400 text-white
+                  className=" opacity-75 pl-[4px] text-[12px] font-Vazirmatn-400 text-white w-full
                           focus:ring-0 focus:outline-none focus:shadow-none
                          "
                 />

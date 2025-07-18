@@ -9,7 +9,7 @@ import MoodPlay from "../Discover/MoodPlay";
 import TrendingSong from "./TrendingSong";
 import Platform from "./Platform";
 
-const Content = () => {
+const Content = ({ selectedId, setSelectedId, handleClick }) => {
   const tabsectionRef = useRef(null);
 
   const [activeTab, setActiveTab] = useState("signup");
@@ -42,7 +42,11 @@ const Content = () => {
         <NewRelease />
       </div>
       <div className="pt-[64px] pl-[44px] pr-[64px]">
-        <TrendingSong />
+        <TrendingSong
+          selectedId={selectedId}
+          setSelectedId={setSelectedId}
+          handleClick={handleClick}
+        />
       </div>
       <div className="pt-[64px] pl-[44px] pr-[64px]">
         <PopArtist />

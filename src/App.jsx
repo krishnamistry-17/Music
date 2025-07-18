@@ -13,6 +13,8 @@ import LoginSmall from "./Pages/Home/LoginSmall";
 import SignUpSmall from "./Pages/Home/SignUpSmall";
 import Login from "./Pages/Home/Login";
 import SignUp from "./Pages/Home/SignUp";
+import Favorites from "./Pages/Favorites/Favorites";
+import { SongProvider } from "./Pages/Context/SongContext";
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
@@ -34,18 +36,21 @@ function App() {
     <div className="min-h-screen flex flex-col">
       <BrowserRouter>
         <AuthProvider>
-          <LayoutWrapper>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/discover" element={<Discover />} />
-              <Route path="/album" element={<Albums />} />
-              <Route path="/artist" element={<Artist />} />
-              <Route path="/login" element={<LoginSmall />} />
-              <Route path="/signup" element={<SignUpSmall />} />
-            </Routes>
-          </LayoutWrapper>
-          <ToastContainer />
-          <Footer />
+          <SongProvider>
+            <LayoutWrapper>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/discover" element={<Discover />} />
+                <Route path="/album" element={<Albums />} />
+                <Route path="/artist" element={<Artist />} />
+                <Route path="/login" element={<LoginSmall />} />
+                <Route path="/signup" element={<SignUpSmall />} />
+                <Route path="/favorites" element={<Favorites />} />
+              </Routes>
+            </LayoutWrapper>
+            <ToastContainer />
+            <Footer />
+          </SongProvider>
         </AuthProvider>
       </BrowserRouter>
     </div>

@@ -15,12 +15,12 @@ import setting from "../../assets/svgs/setting.svg";
 import logoutbtn from "../../assets/svgs/logout.svg";
 import { useAuth } from "../Context/AuthContext";
 
-const SideBar = () => {
+const SideBar = ({ selectedId, setSelectedId, handleClick }) => {
   const [activeIndex, setActiveIndex] = useState(2);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { isLoggedIn, setIsLoggedIn, logout } = useAuth();
+  const { logout } = useAuth();
 
   const menuData = [
     {
@@ -42,7 +42,7 @@ const SideBar = () => {
     {
       title: "Playlist and Favorite",
       items: [
-        { img: fav, name: "Your Favorites" },
+        { img: fav, name: "Your Favorites", path: "/favorites" },
         { img: yourplay, name: "Your Playlist" },
         {
           img: addplay,

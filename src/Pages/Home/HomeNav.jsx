@@ -13,12 +13,9 @@ const HomeNav = ({
   setActiveTab,
 }) => {
   const { isLoggedIn } = useAuth();
-  console.log("isLoggedIn :", isLoggedIn);
+
   const { isGoogleLogin, userProfile, logout } = useAuth();
   const [isdisplayDetail, setDisplayDetail] = useState();
-  console.log("isdisplayDetail :", isdisplayDetail);
-  console.log("userProfile :", userProfile);
-  console.log("isGoogleLogin :", isGoogleLogin);
 
   return (
     <div>

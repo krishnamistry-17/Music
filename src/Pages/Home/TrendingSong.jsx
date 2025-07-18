@@ -1,33 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import pfav from "../../assets/svgs/pfav.svg";
 import pfull from "../../assets/svgs/pffav.svg";
 import plus from "../../assets/svgs/plus.svg";
+import { FaPause } from "react-icons/fa6";
 import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
 import { getAllSong } from "../Redux/Action/action";
 import { useAuth } from "../Context/AuthContext";
+import { FaPlay } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { useSong } from "../Context/SongContext";
 
-const TrendingSong = () => {
+const TrendingSong = ({ selectedId, setSelectedId }) => {
+  const { setCurrentSong, setCurrentSongId } = useSong();
   const [activeIndex, setActiveIndex] = useState(0);
+  const { isLoggedIn, isGoogleLogin } = useAuth();
+  const [isplaying, setIsPlaying] = useState(false);
   const [data, setData] = useState([]);
-  const { isGoogleLogin, isLoggedIn } = useAuth();
-
-  const [selectedId, setSelectedId] = useState(null);
-
-  const handleClick = (id) => {
-    setSelectedId(id === selectedId ? null : id);
-    toast.success("Item Selected");
-  };
-
-  const dispatch = useDispatch();
+  const [musicId, setMusicId] = useState(null);
+  const [isSelect, setIsSelected] = useState(false);
+  const [showSongDrop, setShowSongDrop] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const audioRef = useRef(null);
+
   localStorage.setItem(
     "accessToken",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmRmYTI3NmU5OTIzZjQxYmE3OGFhZiIsImlhdCI6MTc1MjcyNTc2NSwiZXhwIjoxNzUyODEyMTY1fQ.45cI-v-eD0yllWZsi8-RGG0w7BvMUtwsLOcZE6GUSJA"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmRmYTI3NmU5OTIzZjQxYmE3OGFhZiIsImlhdCI6MTc1Mjg0MDE5MywiZXhwIjoxNzUyOTI2NTkzfQ.xZnZEoYZ5115rxO00I_e-NWfY9OMKtlfyKV2m0gSsn4"
   );
 
   const data1 = [
@@ -63,13 +64,45 @@ const TrendingSong = () => {
     fetchData();
   }, []);
 
-  if (error) {
+  if (!error) {
     return <div>Error...</div>;
   }
 
   if (loading) {
     return <div>Loading..</div>;
   }
+
+  const handlePlay = (_id) => {
+    const selectedSong = data.find((song) => song._id === _id);
+    if (selectedSong?.cloudinaryUrl) {
+      setCurrentSong(selectedSong);
+      setMusicId(_id);
+      setShowSongDrop(true);
+
+      setTimeout(() => {
+        audioRef?.current?.play();
+      }, 100);
+    } else {
+      console.warn("No audio URL found for this song.");
+    }
+  };
+
+  const togglePlayPause = () => {
+    if (!audioRef.current) return;
+    //play and pause toggle
+    if (isplaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play().catch((err) => console.warn(err));
+    }
+    setIsPlaying(!isplaying);
+  };
+
+  const handleSelect = (index, _id) => {
+    setActiveIndex(index);
+    setCurrentSongId(_id);
+    handlePlay(_id);
+  };
 
   return (
     <div>
@@ -111,87 +144,96 @@ const TrendingSong = () => {
 
           <div className="flex pt-[15px] mt-[-17px] px-2">
             <div className="flex flex-col items-center mt-4 md:mr-4 mr-3">
-              {data?.map((_, index) => (
-                <p
-                  key={index}
-                  className="lg:text-[24px] text-[16px] font-Vazirmatn-600 text-white lg:py-[18px] py-[25px]"
+              {data?.map((item, index) => (
+                <div
+                  key={item.id}
+                  className="lg:py-[18px] py-[25px] text-white flex items-center justify-center"
                 >
-                  #{index + 1}
-                </p>
+                  {(isLoggedIn || isGoogleLogin) && (
+                    <div>
+                      {musicId === item._id ? (
+                        <div onClick={togglePlayPause}>
+                          {isplaying ? (
+                            <div>
+                              <FaPause className="text-white w-[20px] h-[20px]" />
+                            </div>
+                          ) : (
+                            <div>
+                              {" "}
+                              <FaPlay className="text-white w-[20px] h-[20px]" />
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <p className="lg:text-[24px] text-[16px] font-Vazirmatn-600">
+                          #{index + 1}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
 
             <div className="pb-[15px]">
               {Array.isArray(data) &&
                 data.map((item, index) => {
-                  const extra = data1[index];
+                  const extra = data1[index] || {};
 
                   return (
-                    <>
-                      <div key={item.id || index} className="pt-[15px] ">
-                        <div
-                          className=" grid grid-cols-4 gap-6 bg-[#1E1E1E]"
-                          onClick={() => setActiveIndex(index)}
-                        >
-                          <div className="flex">
-                            <img
-                              src={item?.artistId?.artistImage?.[0]}
-                              alt="m1"
-                              className="w-[60px] h-[60px] rounded-[5px] border"
-                            />
-                            <div className="md:pl-[23px] pl-1 md:py-[5px] pt-[11px]">
-                              <p className="text-white md:text-[20px] font-Vazirmatn-600 text-[15px] truncate ">
-                                {item?.artistId?.name}
-                              </p>
-                              <p className="text-white text-[12px] font-Vazirmatn-300  truncate">
-                                {item?.albumId?.title}
-                              </p>
-                            </div>
-                          </div>
-
-                          <div>
-                            <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] lg:block hidden">
-                              {item?.artistId?.createdAt?.split("T")[0]}
+                    <div
+                      key={item._id || index}
+                      className="pt-[15px] cursor-pointer"
+                      onClick={() => handleSelect(index, item._id)}
+                    >
+                      <div className="grid grid-cols-4 gap-6 bg-[#1E1E1E] relative">
+                        <div className="flex">
+                          <img
+                            src={item?.artistId?.artistImage?.[0]}
+                            alt="artist"
+                            className="w-[60px] h-[60px] rounded-[5px] border"
+                          />
+                          <div className="md:pl-[23px] pl-1 md:py-[5px] pt-[11px]">
+                            <p className="text-white md:text-[20px] font-Vazirmatn-600 text-[15px] truncate">
+                              {item?.artistId?.name}
                             </p>
-                          </div>
-
-                          <div>
-                            <p className="text-white text-[16px] font-Vazirmatn-400  py-[17.5px] w-[345px] lg:block hidden truncate">
-                              {item?.artistId?.bio}
-                            </p>
-                          </div>
-
-                          <div className="flex justify-end lg:gap-2.5 gap-8 py-[17.5px] pr-[9px]">
-                            {isLoggedIn || isGoogleLogin ? (
-                              <div>
-                                <div
-                                  key={item.id || index[0]}
-                                  onClick={() => handleClick(index)}
-                                >
-                                  <img
-                                    src={
-                                      selectedId === index
-                                        ? extra?.fullimg
-                                        : extra?.fimg
-                                    }
-                                    alt="pf"
-                                    className="lg:block hidden w-[24.24px] h-[25px]"
-                                  />
-                                </div>
-                              </div>
-                            ) : (
-                              <div>
-                                <img src={extra?.fimg} alt="pf" />
-                              </div>
-                            )}
-
-                            <p className="text-white text-[16px] font-Vazirmatn-400">
-                              {extra?.ptime}
+                            <p className="text-white text-[12px] font-Vazirmatn-300 truncate">
+                              {item?.albumId?.title}
                             </p>
                           </div>
                         </div>
+
+                        <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] lg:block hidden">
+                          {item?.artistId?.createdAt?.split("T")[0]}
+                        </p>
+
+                        <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] w-[345px] lg:block hidden truncate">
+                          {item?.artistId?.bio}
+                        </p>
+
+                        <div
+                          className="flex justify-end lg:gap-2.5 gap-8 py-[17.5px] pr-[9px]"
+                          onClick={() => setSelectedId(selectedId)}
+                        >
+                          {isLoggedIn || isGoogleLogin ? (
+                            <img
+                              src={
+                                selectedId === index
+                                  ? extra?.fullimg
+                                  : extra?.fimg
+                              }
+                              alt="favourite"
+                              className="lg:block hidden w-[24.24px] h-[25px]"
+                            />
+                          ) : (
+                            <img src={extra?.fimg} alt="lock" />
+                          )}
+                          <p className="text-white text-[16px] font-Vazirmatn-400">
+                            {item?.duration}
+                          </p>
+                        </div>
                       </div>
-                    </>
+                    </div>
                   );
                 })}
             </div>

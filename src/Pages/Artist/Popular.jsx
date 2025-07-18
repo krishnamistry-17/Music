@@ -239,7 +239,7 @@ const Popular = () => {
                         </div>
 
                         <div>
-                          <p className="text-white text-[16px] font-Vazirmatn-400 pt-2 lg:block hidden">
+                          <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] truncate lg:block hidden">
                             {item.bio}
                           </p>
                         </div>

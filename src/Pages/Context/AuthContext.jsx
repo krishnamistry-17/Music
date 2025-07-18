@@ -14,12 +14,23 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    const storedLogin = localStorage.getItem("isLoggedIn");
+    if (storedLogin === "true") setIsLoggedIn(true);
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem("isGoogleLogin", isGoogleLogin);
   }, [isGoogleLogin]);
 
   useEffect(() => {
     localStorage.setItem("isLoggedIn", isLoggedIn);
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (userProfile) {
+      localStorage.setItem("userProfile", JSON.stringify(userProfile));
+    }
+  }, [userProfile]);
 
   useEffect(() => {
     const storedProfile = localStorage.getItem("userProfile");
