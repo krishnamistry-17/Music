@@ -15,46 +15,28 @@ import AudioMusic from "./AudioMusic";
 import { useAuth } from "../Context/AuthContext";
 
 const Home = () => {
-  const [selectedId, setSelectedId] = useState(null);
   const { isLoggedIn, isGoogleLogin } = useAuth();
-  const handleClick = (id) => {
-    setSelectedId(id === selectedId ? null : id);
-    toast.success("Item selected..");
-  };
 
   return (
     <>
       <div className=" relative ">
-        {/*Main */}
         <div className="lg:flex hidden">
-          {/* Sidebar (Fixed left) */}
           <div className=" fixed top-0 bottom-0 bg-gray-900 z-40">
-            <SideBar
-              selectedId={selectedId}
-              setSelectedId={setSelectedId}
-              handleClick={handleClick}
-            />
+            <SideBar />
           </div>
 
-          {/* Content Area */}
           <div className="ml-[300px] w-full pb-[80px]">
             {" "}
-            {/* bottom padding for audio bar */}
-            <Content
-              selectedId={selectedId}
-              setSelectedId={setSelectedId}
-              handleClick={handleClick}
-            />
+            <Content />
           </div>
         </div>
-
-        {/* Full-Width Fixed Audio Player */}
         {(isLoggedIn || isGoogleLogin) && (
           <div className="fixed bottom-0 left-0 right-0 h-[80px] bg-[#181818] z-50 border-t border-gray-700 lg:block hidden">
             <AudioMusic />
           </div>
         )}
       </div>
+      
       <div className="lg:hidden">
         <div className="sticky top-0 z-[5000]">
           <HomeSideBar />

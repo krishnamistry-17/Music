@@ -15,7 +15,7 @@ import setting from "../../assets/svgs/setting.svg";
 import logoutbtn from "../../assets/svgs/logout.svg";
 import { useAuth } from "../Context/AuthContext";
 
-const SideBar = ({ selectedId, setSelectedId, handleClick }) => {
+const SideBar = () => {
   const [activeIndex, setActiveIndex] = useState(2);
   const navigate = useNavigate();
   const location = useLocation();

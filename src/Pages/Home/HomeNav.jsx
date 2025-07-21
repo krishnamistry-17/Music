@@ -67,16 +67,16 @@ const HomeNav = ({
               <button onClick={() => setDisplayDetail(!isdisplayDetail)}>
                 <img
                   // src={userProfile?.image || profile}
-                  src={isGoogleLogin ? userProfile?.image : profile}
+                  src={profile}
                   alt="Profile"
                   className="w-[40px] h-[40px] rounded-full object-cover"
                 />
                 <h2 className="text-white">
-                  {isGoogleLogin ? userProfile?.name : "User"}
+                  {userProfile?.user?.name || "user"}
                 </h2>
 
                 {isdisplayDetail && (
-                  <div className="absolute top-[72px] right-[-7px] bg-black border border-gray-700 rounded-md shadow-md w-[140px] z-50">
+                  <div className="absolute top-[42px] right-[-7px] bg-black border border-gray-700 rounded-md shadow-md w-[140px] z-50">
                     <div className="p-3 text-white text-[14px] font-Vazirmatn-400">
                       <div className="flex items-center gap-2 mb-2">
                         <img

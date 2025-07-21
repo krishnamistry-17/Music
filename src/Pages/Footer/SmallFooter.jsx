@@ -10,6 +10,7 @@ import palbum from "../../assets/svgs/palbum.svg";
 import plib from "../../assets/svgs/plib.svg";
 import part from "../../assets/svgs/part.svg";
 import { useNavigate } from "react-router-dom";
+import AudioMusic from "../Home/AudioMusic";
 
 const SmallFooter = () => {
   const [activeIndex, setActiveIndex] = useState(2);
@@ -28,6 +29,9 @@ const SmallFooter = () => {
 
   return (
     <div>
+      <div>
+        <AudioMusic />
+      </div>
       <div className=" lg:hidden  bg-blackbg">
         {optionData.map((section, sectionIndex) => (
           <div

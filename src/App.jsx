@@ -15,6 +15,7 @@ import Login from "./Pages/Home/Login";
 import SignUp from "./Pages/Home/SignUp";
 import Favorites from "./Pages/Favorites/Favorites";
 import { SongProvider } from "./Pages/Context/SongContext";
+import { FavProvider } from "./Pages/Context/FavContext";
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
@@ -37,19 +38,21 @@ function App() {
       <BrowserRouter>
         <AuthProvider>
           <SongProvider>
-            <LayoutWrapper>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/discover" element={<Discover />} />
-                <Route path="/album" element={<Albums />} />
-                <Route path="/artist" element={<Artist />} />
-                <Route path="/login" element={<LoginSmall />} />
-                <Route path="/signup" element={<SignUpSmall />} />
-                <Route path="/favorites" element={<Favorites />} />
-              </Routes>
-            </LayoutWrapper>
-            <ToastContainer />
-            <Footer />
+            <FavProvider>
+              <LayoutWrapper>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/discover" element={<Discover />} />
+                  <Route path="/album" element={<Albums />} />
+                  <Route path="/artist" element={<Artist />} />
+                  <Route path="/login" element={<LoginSmall />} />
+                  <Route path="/signup" element={<SignUpSmall />} />
+                  <Route path="/favorites" element={<Favorites />} />
+                </Routes>
+              </LayoutWrapper>
+              <ToastContainer />
+              <Footer />
+            </FavProvider>
           </SongProvider>
         </AuthProvider>
       </BrowserRouter>

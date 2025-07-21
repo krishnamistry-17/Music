@@ -11,24 +11,30 @@ import { useAuth } from "../Context/AuthContext";
 import { FaPlay } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useSong } from "../Context/SongContext";
+import { useFav } from "../Context/FavContext";
 
-const TrendingSong = ({ selectedId, setSelectedId }) => {
-  const { setCurrentSong, setCurrentSongId } = useSong();
-  const [activeIndex, setActiveIndex] = useState(0);
+const TrendingSong = () => {
+  const {
+    songs,
+    setSongs,
+    playSongAt,
+    isPlaying,
+    setIsPlaying,
+    setCurrentIndex,
+    audioRef,
+    currentIndex,
+  } = useSong();
+
+  const { selectedId, setSelectedId } = useFav();
   const { isLoggedIn, isGoogleLogin } = useAuth();
-  const [isplaying, setIsPlaying] = useState(false);
+
   const [data, setData] = useState([]);
-  const [musicId, setMusicId] = useState(null);
-  const [isSelect, setIsSelected] = useState(false);
-  const [showSongDrop, setShowSongDrop] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const audioRef = useRef(null);
-
   localStorage.setItem(
     "accessToken",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmRmYTI3NmU5OTIzZjQxYmE3OGFhZiIsImlhdCI6MTc1Mjg0MDE5MywiZXhwIjoxNzUyOTI2NTkzfQ.xZnZEoYZ5115rxO00I_e-NWfY9OMKtlfyKV2m0gSsn4"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmRmYTI3NmU5OTIzZjQxYmE3OGFhZiIsImlhdCI6MTc1MzA3MDE4MSwiZXhwIjoxNzUzMTU2NTgxfQ.986SSH_YLabAS51cIJ45CoSKLf2Vy4NH-1JcWVbdpog"
   );
 
   const data1 = [
@@ -54,6 +60,7 @@ const TrendingSong = ({ selectedId, setSelectedId }) => {
       try {
         const response = await apiInstance.get(apiRoutes.GET_ALL_SONG);
         setData(response.data.data);
+        setSongs(response.data.data);
         dispatch(getAllSong());
       } catch (error) {
         setError(error);
@@ -62,7 +69,7 @@ const TrendingSong = ({ selectedId, setSelectedId }) => {
       }
     }
     fetchData();
-  }, []);
+  }, [setSongs]);
 
   if (!error) {
     return <div>Error...</div>;
@@ -72,37 +79,30 @@ const TrendingSong = ({ selectedId, setSelectedId }) => {
     return <div>Loading..</div>;
   }
 
-  const handlePlay = (_id) => {
-    const selectedSong = data.find((song) => song._id === _id);
-    if (selectedSong?.cloudinaryUrl) {
-      setCurrentSong(selectedSong);
-      setMusicId(_id);
-      setShowSongDrop(true);
+  const handleSelect = (index, item) => {
+    if (item?.cloudinaryUrl) {
+      toast.warn("This song has no playable audio.");
+      return;
+    }
 
-      setTimeout(() => {
-        audioRef?.current?.play();
-      }, 100);
+    if (!isLoggedIn || !isGoogleLogin) {
+      toast.warn("Please Log In To Play Music.");
     } else {
-      console.warn("No audio URL found for this song.");
+      playSongAt(index);
+      setCurrentIndex(index);
     }
   };
 
-  const togglePlayPause = () => {
-    if (!audioRef.current) return;
-    //play and pause toggle
-    if (isplaying) {
-      audioRef.current.pause();
+  const handleClick = (index) => {
+    if (!isLoggedIn || !isGoogleLogin) {
+      toast.warn("Please log in to use this feature.");
     } else {
-      audioRef.current.play().catch((err) => console.warn(err));
+      setSelectedId(selectedId === index ? null : index);
+      toast.success("Song is selected.");
     }
-    setIsPlaying(!isplaying);
   };
 
-  const handleSelect = (index, _id) => {
-    setActiveIndex(index);
-    setCurrentSongId(_id);
-    handlePlay(_id);
-  };
+  const togglePlay = () => setIsPlaying((p) => !p);
 
   return (
     <div>
@@ -150,20 +150,13 @@ const TrendingSong = ({ selectedId, setSelectedId }) => {
                   className="lg:py-[18px] py-[25px] text-white flex items-center justify-center"
                 >
                   {(isLoggedIn || isGoogleLogin) && (
-                    <div>
-                      {musicId === item._id ? (
-                        <div onClick={togglePlayPause}>
-                          {isplaying ? (
-                            <div>
-                              <FaPause className="text-white w-[20px] h-[20px]" />
-                            </div>
-                          ) : (
-                            <div>
-                              {" "}
-                              <FaPlay className="text-white w-[20px] h-[20px]" />
-                            </div>
-                          )}
-                        </div>
+                    <div onClick={togglePlay}>
+                      {currentIndex === index ? (
+                        isPlaying ? (
+                          <FaPause className="text-white w-[20px] h-[20px]" />
+                        ) : (
+                          <FaPlay className="text-white w-[20px] h-[20px]" />
+                        )
                       ) : (
                         <p className="lg:text-[24px] text-[16px] font-Vazirmatn-600">
                           #{index + 1}
@@ -184,10 +177,12 @@ const TrendingSong = ({ selectedId, setSelectedId }) => {
                     <div
                       key={item._id || index}
                       className="pt-[15px] cursor-pointer"
-                      onClick={() => handleSelect(index, item._id)}
                     >
                       <div className="grid grid-cols-4 gap-6 bg-[#1E1E1E] relative">
-                        <div className="flex">
+                        <div
+                          className="flex"
+                          onClick={() => handleSelect(index, item._id)}
+                        >
                           <img
                             src={item?.artistId?.artistImage?.[0]}
                             alt="artist"
@@ -213,21 +208,27 @@ const TrendingSong = ({ selectedId, setSelectedId }) => {
 
                         <div
                           className="flex justify-end lg:gap-2.5 gap-8 py-[17.5px] pr-[9px]"
-                          onClick={() => setSelectedId(selectedId)}
+                          onClick={() => handleClick(index)}
                         >
                           {isLoggedIn || isGoogleLogin ? (
-                            <img
-                              src={
-                                selectedId === index
-                                  ? extra?.fullimg
-                                  : extra?.fimg
-                              }
-                              alt="favourite"
-                              className="lg:block hidden w-[24.24px] h-[25px]"
-                            />
+                            <div>
+                              {" "}
+                              <img
+                                src={
+                                  selectedId === index
+                                    ? extra?.fullimg
+                                    : extra?.fimg
+                                }
+                                alt="fav"
+                                className="lg:block hidden w-[24.24px] h-[25px]"
+                              />
+                            </div>
                           ) : (
-                            <img src={extra?.fimg} alt="lock" />
+                            <div>
+                              <img src={extra?.fimg} alt="fav" />
+                            </div>
                           )}
+
                           <p className="text-white text-[16px] font-Vazirmatn-400">
                             {item?.duration}
                           </p>

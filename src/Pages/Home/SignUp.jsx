@@ -14,6 +14,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useAuth } from "../Context/AuthContext";
 
 const SignUp = ({ onSuccess }) => {
   const [isClicked, setIsClicked] = useState(false);
@@ -71,54 +72,30 @@ const SignUp = ({ onSuccess }) => {
       const response = await apiInstance.post(apiRoutes.GET_SIGNUP, signupData);
       setData(response.data);
       dispatch(getSignUp(response.data));
-
-      if (response.status === 200) {
-        notify();
-      }
       onSuccess();
+      toast.success("Signup suceess");
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed");
+      toast.error("Signup failed");
     }
   };
 
   const signup = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
+      console.log("tokenResponse :", tokenResponse);
+
       try {
-        const userInfoRes = await axios.get(
-          "https://www.googleapis.com/oauth2/v1/userinfo?alt=json",
+        const res = await axios.post(
+          "http://192.168.29.45:5000/api/auth/verify-token",
           {
-            headers: {
-              Authorization: `Bearer ${tokenResponse.access_token}`,
-            },
+            access_token: tokenResponse?.access_token,
           }
         );
-
-        const googleUser = userInfoRes.data;
-        console.log("Google user data:", googleUser);
-
-        const response = await apiInstance.post(apiRoutes.SIGNUP, {
-          email: googleUser.email,
-          name: googleUser.name,
-          role: "user",
-          isGoogleLogin: true,
-          password: "GOOGLE_SIGNUP_PLACEHOLDER", //option
-        });
-
-        if (response.status === 200 || response.status === 201) {
-          localStorage.setItem("accessToken", response.data.token);
-          dispatch(getLogin(response.data));
-          toast.success("Signed up with Google successfully!");
-          navigate("/album");
-        }
-      } catch (err) {
-        console.error("Google signup error:", err);
-        const errorMessage =
-          err.response?.data?.message || "Google signup failed";
-        toast.error(errorMessage);
+        console.log("res>>Signup:", res);
+        toast.success("Google Signup Success..");
+      } catch (error) {
+        console.log(error.message);
       }
-    },
-    onError: () => {
-      toast.error("Google sign-up failed");
     },
   });
 
