@@ -10,50 +10,21 @@ import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
 import { useSong } from "../Context/SongContext";
 import { getallAlbum } from "../Redux/Action/action";
+import { useNavigate } from "react-router-dom";
+import { useAlbum } from "../Context/AlbumContext";
 
 const AlbumsTop = () => {
-  const {
-    songs,
-    setSongs,
-    playSongAt,
-    isPlaying,
-    setIsPlaying,
-    setCurrentIndex,
-    audioRef,
-    currentIndex,
-  } = useSong();
+  const { setAlbums, selectedAlbum, setSelectedAlbum } = useAlbum();
 
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
 
   const [data, setData] = useState([]);
-  console.log("data>>>>Album :", data);
-
+  console.log("data :", data);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const data1 = [
-    { image: top6, para: "Adele 21", head: "Adele" },
-    { image: top7, para: "Scorpion", head: "Drake" },
-    { image: top8, para: "Harry’s House", head: "Harry Styles" },
-    { image: top9, para: "Born To Die", head: "Lana Del Ray" },
-    { image: top10, para: "Beauty Behind the...", head: "The Weekend" },
-    { image: top8, para: "Harry’s House", head: "Harry Styles" },
-    { image: top7, para: "Scorpion", head: "Drake" },
-    { image: top6, para: "Adele 21", head: "Adele" },
-  ];
-
-  const data3 = [
-    { image: top6, para: "Adele 21", head: "Adele" },
-    { image: top7, para: "Scorpion", head: "Drake" },
-    { image: top8, para: "Harry’s House", head: "Harry Styles" },
-    { image: top9, para: "Born To Die", head: "Lana Del Ray" },
-    { image: top10, para: "Beauty Behind the...", head: "The Weekend" },
-    { image: top8, para: "Harry’s House", head: "Harry Styles" },
-    { image: top7, para: "Scorpion", head: "Drake" },
-    { image: top6, para: "Adele 21", head: "Adele" },
-  ];
 
   localStorage.setItem(
     "accessToken",
@@ -85,7 +56,7 @@ const AlbumsTop = () => {
       try {
         const response = await apiInstance.get(apiRoutes.GET_ALL_DATA);
         setData(response.data.data);
-        setSongs(response.data.data);
+        setAlbums(response.data.data);
         dispatch(getallAlbum());
       } catch (error) {
         setError(error);
@@ -94,15 +65,12 @@ const AlbumsTop = () => {
       }
     }
     fetchData();
-  }, [setSongs]);
+  }, [setAlbums]);
 
-  if (error) {
-    return <div>Error...</div>;
-  }
-
-  if (loading) {
-    return <div>Loading..</div>;
-  }
+  const handleAlbum = () => {
+    setSelectedAlbum(data);
+    navigate(`/album/${data.id}`);
+  };
 
   return (
     <div>
@@ -123,11 +91,12 @@ const AlbumsTop = () => {
         >
           {Array.isArray(data) &&
             (isOpen ? data : data.slice(0, visibleCount)).map((item, index) => {
-              const extra = data1[index];
-
               return (
                 <div key={item._id || index}>
-                  <div className="bg-[#1F1F1F] w-[174.4px] h-[222px] p-[8px]  rounded-[8px] ">
+                  <div
+                    className="bg-[#1F1F1F] w-[174.4px] h-[222px] p-[8px]  rounded-[8px] "
+                    onClick={handleAlbum}
+                  >
                     <img src={item.albumImages?.[0]} alt="a1" className="" />
                     <p className="text-white text-[16px] font-Vazirmatn-500 pt-[8px] ">
                       {item?.title}
@@ -159,21 +128,27 @@ const AlbumsTop = () => {
           className=" flex gap-3 overflow-x-auto pt-5"
           style={{ scrollbarWidth: "none" }}
         >
-          {data3.map((item, index) => (
-            <div key={index}>
-              <div className="bg-[#1F1F1F] w-[140px] h-[185px]  rounded-[10px] py-[4px] px-[8px]">
-                <img src={item.image} alt="a1" className="]" />
-                <div>
-                  <p className="text-white text-[14px] font-Vazirmatn-500 pt-[8px]">
-                    {item.para}
-                  </p>
-                  <p className="text-white text-[12px] font-Vazirmatn-300 pt-[8px] opacity-80">
-                    {item.head}
-                  </p>
+          {Array.isArray(data) &&
+            data.map((item, index) => {
+              return (
+                <div key={item._id || index}>
+                  <div
+                    className="bg-[#1F1F1F] w-[140px] h-[185px]  rounded-[10px] py-[4px] px-[8px]"
+                    onClick={() => handleAlbum()}
+                  >
+                    <img src={item.albumImages?.[0]} alt="a1" className="]" />
+                    <div>
+                      <p className="text-white text-[14px] font-Vazirmatn-500 pt-[8px]">
+                        {item?.title}
+                      </p>
+                      <p className="text-white text-[12px] font-Vazirmatn-300 pt-[8px] opacity-80">
+                        {item?.artistId?.name}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              );
+            })}
         </div>
       </div>
     </div>

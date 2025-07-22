@@ -47,14 +47,20 @@ import { useAuth } from "../Context/AuthContext";
 import Menu from "../SideBar/Menu";
 import Song from "./Song";
 import AudioMusic from "../Home/AudioMusic";
+import { useAlbum } from "../Context/AlbumContext";
+
+import { useParams } from "react-router-dom";
 
 const Albums = () => {
+  const { albumId } = useParams();
+  const { currentAlbum, selectedAlbum } = useAlbum();
   const [activeIndex, setActiveIndex] = useState(2);
   const navigate = useNavigate();
   const location = useLocation();
   const [visibleContent, setVisibleContent] = useState();
   const { isLoggedIn, isGoogleLogin, userProfile, logout } = useAuth();
   const [isdisplayDetail, setDisplayDetail] = useState();
+  const [album, setAlbum] = useState(null);
 
   const data1 = [
     {
@@ -250,12 +256,18 @@ const Albums = () => {
   }, []);
 
   const handleBack = () => {
-    navigate("/discover");
+    navigate("/");
   };
+
+  useEffect(() => {
+    if (selectedAlbum && selectedAlbum.id === albumId) {
+      setAlbum(selectedAlbum);
+    }
+  }, [albumId, selectedAlbum]);
 
   return (
     <div>
-      <div className="lg:flex hidden   ">
+      <div className="lg:flex hidden ">
         {/* Sidebar */}
 
         <div>
@@ -329,10 +341,11 @@ const Albums = () => {
                 )}
               </div>
             </div>
+
             <div className="lg:flex justify-between items-center">
               <div className="lg:flex pl-[43px] gap-14 md:w-[712px]">
                 <div>
-                  <img src={song} alt="song" />
+                  <img src={album?.albumImages} alt="song" />
                 </div>
                 <div>
                   <h2 className=" text-white md:text-[40px] font-Vazirmatn-800 text-[22px] ">
@@ -342,7 +355,7 @@ const Albums = () => {
                     </span>
                   </h2>
                   <p className=" text-white text-[20px] font-Vazirmatn-600 py-[44px]">
-                    tate mcree, nightmares, the neighberhood, doja cat and ...
+                    {album?.artistId?.bio}
                   </p>
                   <div className="flex justify-between items-center w-[204px] pb-10">
                     <p className="text-white font-Vazirmatn-600 text-[20px]">

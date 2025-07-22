@@ -20,9 +20,11 @@ import SideBar from "./Pages/SideBar/SideBar";
 import AudioMusic from "./Pages/Home/AudioMusic";
 import AlbumPlay from "./Pages/Albums/AlbumPlay";
 import useIsLargeScreen from "./Pages/Context/useIsLargeScreen";
+import { AlbumProvider, useAlbum } from "./Pages/Context/AlbumContext";
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
+  const { currentAlbumIndex } = useAlbum();
   const { isLoggedIn, isGoogleLogin } = useAuth();
   const showHomeNav = ["/discover"].includes(location.pathname);
   const showAudio = (isLoggedIn || isGoogleLogin) && location.pathname === "/";
@@ -71,10 +73,22 @@ function App() {
     <div className="min-h-screen flex flex-col">
       <BrowserRouter>
         <AuthProvider>
-          <SongProvider>
-            <FavProvider>
-              {isLarge ? (
-                <LayoutWrapper>
+          <AlbumProvider>
+            <SongProvider>
+              <FavProvider>
+                {isLarge ? (
+                  <LayoutWrapper>
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/discover" element={<Discover />} />
+                      <Route path="/album" element={<Albums />} />
+                      <Route path="/artist" element={<Artist />} />
+                      <Route path="/login" element={<LoginSmall />} />
+                      <Route path="/signup" element={<SignUpSmall />} />
+                      <Route path="/favorites" element={<Favorites />} />
+                    </Routes>
+                  </LayoutWrapper>
+                ) : (
                   <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/discover" element={<Discover />} />
@@ -84,23 +98,13 @@ function App() {
                     <Route path="/signup" element={<SignUpSmall />} />
                     <Route path="/favorites" element={<Favorites />} />
                   </Routes>
-                </LayoutWrapper>
-              ) : (
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/discover" element={<Discover />} />
-                  <Route path="/album" element={<Albums />} />
-                  <Route path="/artist" element={<Artist />} />
-                  <Route path="/login" element={<LoginSmall />} />
-                  <Route path="/signup" element={<SignUpSmall />} />
-                  <Route path="/favorites" element={<Favorites />} />
-                </Routes>
-              )}
-              <ToastContainer />
-              {/* Don't show Footer on small because SmallFooter is already handled in pages */}
-              {isLarge && <Footer />}
-            </FavProvider>
-          </SongProvider>
+                )}
+                <ToastContainer />
+                {/* Don't show Footer on small because SmallFooter is already handled in pages */}
+                {isLarge && <Footer />}
+              </FavProvider>
+            </SongProvider>
+          </AlbumProvider>
         </AuthProvider>
       </BrowserRouter>
     </div>
