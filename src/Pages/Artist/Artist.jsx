@@ -9,7 +9,6 @@ import yourplay from "../../assets/svgs/yourplay.svg";
 import addplay from "../../assets/svgs/addplay.svg";
 import wplay from "../../assets/svgs/wplay.svg";
 import setting from "../../assets/svgs/setting.svg";
-import logout from "../../assets/svgs/logout.svg";
 import logoutbtn from "../../assets/svgs/logout.svg";
 import wlog from "../../assets/svgs/wlog.svg";
 import wdis from "../../assets/svgs/wdis.svg";
@@ -35,12 +34,7 @@ import part from "../../assets/svgs/part.svg";
 import bdisc from "../../assets/svgs/bdisc.svg";
 import albumb from "../../assets/svgs/albumb.svg";
 import discb from "../../assets/svgs/discb.svg";
-import { IoMenu } from "react-icons/io5";
-import { MdCancel } from "react-icons/md";
-import { FaShareAlt } from "react-icons/fa";
 import { data, Link, useNavigate } from "react-router-dom";
-import { FcAbout } from "react-icons/fc";
-import { MdWorkspacePremium } from "react-icons/md";
 import Popular from "./Popular";
 import ArtAlbum from "./ArtAlbum";
 import SingleSong from "./SingleSong";
@@ -49,10 +43,10 @@ import Fans from "./Fans";
 import { useLocation } from "react-router-dom";
 import SideBar from "../SideBar/SideBar";
 import { useAuth } from "../Context/AuthContext";
+import Menu from "../SideBar/Menu";
 
 const Artist = () => {
   const [activeIndex, setActiveIndex] = useState(2);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isLoggedIn, isGoogleLogin, userProfile, logout } = useAuth();
   const [isdisplayDetail, setDisplayDetail] = useState();
 
@@ -228,10 +222,6 @@ const Artist = () => {
     },
   ];
 
-  const handleToggle = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   const handleClick = () => {
     navigate("/album");
   };
@@ -247,9 +237,9 @@ const Artist = () => {
         <SideBar />
 
         {/* Main content area (grid content, header, songs, footer) */}
-        <div className="lg:ml-[300px]  pl-[32px] ">
+        <div className=" pl-[32px] ">
           <div>
-            <div className=" relative top-[71px]  z-10">
+            <div className=" relative top-[43px]  z-10">
               <div className="flex justify-between items-center px-5">
                 <div>
                   <img
@@ -279,16 +269,14 @@ const Artist = () => {
                         >
                           <img
                             // src={userProfile?.image || profile}
-                            src={isGoogleLogin ? userProfile?.image : profile}
+                            src={profile}
                             alt="Profile"
                             className="w-[40px] h-[40px] rounded-full object-cover"
                           />
-                          <h2 className="text-white">
-                            {isGoogleLogin ? userProfile?.name : "User"}
-                          </h2>
+                          <h2 className="text-white">{"User"}</h2>
 
                           {isdisplayDetail && (
-                            <div className="absolute top-[190px] right-5 bg-black border border-gray-700 rounded-md shadow-md w-[140px] z-50">
+                            <div className="absolute  right-5 bg-black border border-gray-700 rounded-md shadow-md w-[140px] z-50">
                               <div className="p-3 text-white text-[14px] font-Vazirmatn-400">
                                 <div className="flex items-center gap-2 mb-2">
                                   <img
@@ -325,7 +313,7 @@ const Artist = () => {
             <img
               src={artist0}
               alt="art"
-              className="md:h-[422px] md:w-[1230px]   rounded-[10px] relative z-0 shadow-l
+              className="md:h-[422px] md:w-[1230px] -mt-11  rounded-[10px] relative z-0 shadow-l
 "
             />
             <div className=" relative z-20  bottom-32 pl-5">
@@ -363,111 +351,11 @@ const Artist = () => {
           <h2 className="text-[32px] font-Vazirmatn-800  bg-gradient-to-r from-blue to-darkpink text-transparent bg-clip-text">
             Artist
           </h2>
-          <button onClick={handleToggle}>
-            {" "}
-            <IoMenu className="text-[#EE10B0] w-[35px] h-[35px]" />
-          </button>
-        </div>
-        {isMenuOpen && (
-          <div className="fixed top-0 left-0 w-full h-full  bg-black z-[1000] overflow-y-auto">
-            <div
-              className="flex flex-col h-full "
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <div className="flex justify-end space-x-2 p-4 sticky top-0 w-full ">
-                <MdCancel
-                  className="text-white text-5xl cursor-pointer"
-                  onClick={() => setIsMenuOpen(false)}
-                />
-              </div>
-              <nav className="flex-1 overflow-y-auto  px-8  ">
-                <p className="border-white/20 border-b-2"></p>
-                <Link
-                  className="text-white font-Vazirmatn-600 text-[20px] 
-                          border-white/20 border-b-2  p-4 flex gap-4"
-                >
-                  <span>
-                    <FaShareAlt className="mt-1.5" />
-                  </span>
-                  Share
-                </Link>
-                <Link
-                  className="text-white font-Vazirmatn-600 text-[20px] 
-                          border-white/20 border-b-2  p-4 flex gap-4"
-                >
-                  <span>
-                    <FcAbout className="mt-0.5" />
-                  </span>
-                  About
-                </Link>
-                <Link
-                  className="text-white font-Vazirmatn-600 text-[20px] 
-                          border-white/20 border-b-2  p-4 flex gap-4"
-                >
-                  <span>
-                    <MdWorkspacePremium className="mt-0.5" />
-                  </span>
-                  Premium
-                </Link>
-                <Link
-                  className="text-white font-Vazirmatn-600 text-[20px] 
-                          border-white/20 border-b-2  p-4 flex gap-4"
-                >
-                  <span>
-                    <img src={setting} alt="set" className="w-5 h-5 mt-1" />
-                  </span>
-                  Setting
-                </Link>
-                <Link
-                  className="text-white font-Vazirmatn-600 text-[20px] 
-                          border-white/20 border-b-2  p-4 flex gap-4"
-                >
-                  <span>
-                    <img src={logout} alt="lg" className="w-5 h-5 mt-1" />
-                  </span>
-                  Logout
-                </Link>
-
-                <div className="border-white/20 border-b-2  p-4">
-                  <h2 className="text-[#EE10B0] text-[14px] pb-4">Library</h2>
-                  <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
-                    <span>
-                      <img src={recent} alt="m" className="w-[23px] h-[20px]" />
-                    </span>
-                    Recently Added
-                  </button>
-                  <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
-                    <span>
-                      <img src={most} alt="m" className="w-[23px] h-[20px]" />
-                    </span>
-                    Most played
-                  </button>
-                </div>
-                <div className="border-white/20 border-b-2  p-4">
-                  <h2 className="text-[#EE10B0] text-[14px] pb-4">
-                    Playlist and favorite
-                  </h2>
-                  <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
-                    <span>
-                      <img src={fav} alt="m" className="w-[23px] h-[20px]" />
-                    </span>
-                    Your favorites
-                  </button>
-                  <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
-                    <span>
-                      <img
-                        src={addplay}
-                        alt="m"
-                        className="w-[23px] h-[20px]"
-                      />
-                    </span>
-                    Add playlist
-                  </button>
-                </div>
-              </nav>
-            </div>
+          <div>
+            <Menu />
           </div>
-        )}
+        </div>
+
         <div>
           <img
             src={artist0}

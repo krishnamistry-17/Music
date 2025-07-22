@@ -8,15 +8,15 @@ export const AuthProvider = ({ children }) => {
   const [isGoogleLogin, setIsGoogleLogin] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
 
-  useEffect(() => {
-    const storedGoogleLogin = localStorage.getItem("isGoogleLogin");
-    if (storedGoogleLogin === "true") setIsGoogleLogin(true);
-  }, []);
+  // useEffect(() => {
+  //   const storedGoogleLogin = localStorage.getItem("isGoogleLogin");
+  //   if (storedGoogleLogin === "true") setIsGoogleLogin(true);
+  // }, []);
 
-  useEffect(() => {
-    const storedLogin = localStorage.getItem("isLoggedIn");
-    if (storedLogin === "true") setIsLoggedIn(true);
-  }, []);
+  // useEffect(() => {
+  //   const storedLogin = localStorage.getItem("isLoggedIn");
+  //   if (storedLogin === "true") setIsLoggedIn(true);
+  // }, []);
 
   useEffect(() => {
     localStorage.setItem("isGoogleLogin", isGoogleLogin);

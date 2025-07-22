@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import playmusic from "../../assets/svgs/playmusic.svg";
 import dotp from "../../assets/svgs/dotp.svg";
 import pfav from "../../assets/svgs/pfav.svg";
-
+import pfull from "../../assets/svgs/pffav.svg";
+import plus from "../../assets/svgs/plus.svg";
+import artist from "../../assets/svgs/artist.svg";
+import { CiSaveUp1 } from "react-icons/ci";
+import { BiSolidRightArrow } from "react-icons/bi";
+import { IoMdShare } from "react-icons/io";
 import music1 from "../../assets/images/music1.jpg";
 import music2 from "../../assets/images/music2.jpg";
 import music3 from "../../assets/images/music3.png";
@@ -27,11 +32,26 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
-import { getallAlbum } from "../Redux/Action/action";
+import { getAllArtitst } from "../Redux/Action/action";
+import { useAuth } from "../Context/AuthContext";
+import { useFav } from "../Context/FavContext";
+import { toast } from "react-toastify";
 
 const Popular = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [data, setData] = useState([]);
+  const { isGoogleLogin, isLoggedIn } = useAuth();
+  const { selectedId, setSelectedId } = useFav();
+  const [selectedIndex, setSelectedIndex] = useState(null);
+
+  const handleClick = (index) => {
+    if (!isLoggedIn || !isGoogleLogin) {
+      toast.warn("Please log in to use this feature.");
+    } else {
+      setSelectedId(selectedId === index ? null : index);
+      toast.success("Added to favorites..");
+    }
+  };
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -39,7 +59,7 @@ const Popular = () => {
 
   localStorage.setItem(
     "accessToken",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmRmYTI3NmU5OTIzZjQxYmE3OGFhZiIsImlhdCI6MTc1Mjc1NjM2MiwiZXhwIjoxNzUyODQyNzYyfQ.e-ITzbhXLeH1kbRQ1paIIQkgRai9-WmGEkZIXub9O_E"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmRmYTI3NmU5OTIzZjQxYmE3OGFhZiIsImlhdCI6MTc1MzE1NjIwNiwiZXhwIjoxNzUzMjQyNjA2fQ.VTGoK1HaDYv44bdVGe2tJdG3EUHVPXNak34O8l6JInY"
   );
 
   const data1 = [
@@ -51,6 +71,7 @@ const Popular = () => {
       rdate: "Nov 4, 2023",
       album: " Hard to Imagine Neighbourhood Ever Changing",
       fimg: pfav,
+      ffull: pfull,
       ptime: "3:26",
       oimage: dotp,
     },
@@ -62,6 +83,7 @@ const Popular = () => {
       rdate: "Oct 26, 2023",
       album: "nightmares",
       fimg: pfav,
+      ffull: pfull,
       ptime: "2:45",
       oimage: dotp,
     },
@@ -73,6 +95,7 @@ const Popular = () => {
       rdate: "Nov 30, 2023",
       album: "Greedy",
       fimg: pfav,
+      ffull: pfull,
       ptime: "2:11",
       oimage: dotp,
     },
@@ -84,6 +107,7 @@ const Popular = () => {
       rdate: "Dec 15, 2023",
       album: "Lovin On me",
       fimg: pfav,
+      ffull: pfull,
       ptime: "2:18",
       oimage: dotp,
     },
@@ -95,6 +119,7 @@ const Popular = () => {
       rdate: "Dec 29, 2023",
       album: "Paint The Town Red",
       fimg: pfav,
+      ffull: pfull,
       ptime: "3:51",
       oimage: dotp,
     },
@@ -106,6 +131,7 @@ const Popular = () => {
       rdate: "may 27, 2023",
       album: "Dance The Night(From Barbie Movie)",
       fimg: pfav,
+      ffull: pfull,
       ptime: "2:56",
       oimage: dotp,
     },
@@ -117,6 +143,7 @@ const Popular = () => {
       rdate: "may 27, 2023",
       album: "Dance The Night(From Barbie Movie)",
       fimg: pfav,
+      ffull: pfull,
       ptime: "2:56",
       oimage: dotp,
     },
@@ -134,7 +161,7 @@ const Popular = () => {
       try {
         const response = await apiInstance.get(apiRoutes.GET_ALL_ARTIST);
         setData(response.data.data);
-        dispatch(getallAlbum());
+        dispatch(getAllArtitst());
       } catch (error) {
         setError(error);
       } finally {
@@ -161,7 +188,7 @@ const Popular = () => {
         <p className="text-white text-[24px] font-Vazirmatn-700 lg:hidden pl-4">
           Popular <span className="text-darkpink">Songs</span>{" "}
         </p>
-        <div className="flex justify-between items-end md:px-10 ">
+        <div className="flex justify-between items-end md:px-15 ">
           <div>
             <p></p>
           </div>
@@ -213,7 +240,7 @@ const Popular = () => {
                   <>
                     <div key={item.id || index} className="pt-[15px] ">
                       <div
-                        className=" grid grid-cols-4 gap-6 bg-[#1E1E1E]"
+                        className=" grid grid-cols-4 gap-6 bg-[#1E1E1E] relative"
                         onClick={() => setActiveIndex(index)}
                       >
                         <div className="flex">
@@ -245,19 +272,81 @@ const Popular = () => {
                         </div>
 
                         <div className="flex justify-end lg:gap-2.5 gap-9 py-[17.5px] lg:pr-5">
-                          <img
-                            src={extra?.fimg}
-                            alt="pf"
-                            className="lg:block hidden w-[25px] h-[25px]"
-                          />
-                          <p className="text-white text-[16px] font-Vazirmatn-400">
-                            {extra?.ptime}
-                          </p>
-                          <img
-                            src={extra?.oimage}
-                            alt="op"
-                            className=" w-[24px] h-[24px] mr-4"
-                          />
+                          <div onClick={() => handleClick(index)}>
+                            {isLoggedIn || isGoogleLogin ? (
+                              <div>
+                                {" "}
+                                <img
+                                  src={
+                                    selectedId === index
+                                      ? extra?.ffull
+                                      : extra?.fimg
+                                  }
+                                  alt="fav"
+                                  className="lg:block hidden w-[24.24px] h-[25px]"
+                                />
+                              </div>
+                            ) : (
+                              <div>
+                                <img src={extra?.fimg} alt="fav" />
+                              </div>
+                            )}
+                          </div>
+                          <div>
+                            <p className="text-white text-[16px] font-Vazirmatn-400">
+                              {extra?.ptime}
+                            </p>
+                          </div>
+                          <div>
+                            <img
+                              src={extra?.oimage}
+                              alt="op"
+                              className=" w-[24px] h-[24px] "
+                              onClick={() =>
+                                setSelectedIndex(
+                                  selectedIndex === index ? null : index
+                                )
+                              }
+                            />
+                            {selectedIndex === index && (
+                              <div key={index}>
+                                <div className="bg-[#282828] absolute z-50 top-[60px]  right-0 max-w-[350px] max-h-[175px] p-4">
+                                  <div className="flex gap-2 items-center">
+                                    <img src={plus} alt="ps" />
+                                    <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
+                                      Add to your playlist
+                                    </p>
+                                    <BiSolidRightArrow className="ml-[5px] w-[22px] h-[22px]" />
+                                  </div>
+                                  <div className="flex gap-2 items-center pt-2">
+                                    <CiSaveUp1 className="text-white w-[22px] h-[22px]" />
+                                    <p
+                                      className="text-white text-[17px] font-Vazirmatn-400 pt-1"
+                                      onClick={() => handleClick(index)}
+                                    >
+                                      Save to liked songs
+                                    </p>
+                                  </div>
+                                  <div className="flex gap-2 items-center pt-2">
+                                    <img
+                                      src={artist}
+                                      alt="ar"
+                                      className="text-white w-[22px] h-[22px]"
+                                    />
+                                    <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
+                                      Go to Artist
+                                    </p>
+                                  </div>
+                                  <div className="flex gap-2 items-center pt-2">
+                                    <IoMdShare className="text-white w-[22px] h-[22px]" />
+                                    <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
+                                      Share
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>

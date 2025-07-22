@@ -26,7 +26,7 @@ const SideBar = () => {
     {
       title: "Menu",
       items: [
-        { img: home, name: "Home" },
+        { img: home, name: "Home", path: "/" },
         { img: wdis, name: "Discover", path: "/discover" },
         { img: album, name: "Album", path: "/album" },
         { img: artist, name: "Artist", path: "/artist" },
@@ -65,10 +65,14 @@ const SideBar = () => {
   ];
 
   return (
-    <div>
+    <div className="">
       <div
-        className="fixed top-0 left-0 h-screen hidden lg:block border-r-2 border-darkpink bg-black z-40 overflow-y-auto"
-        style={{ scrollbarWidth: "none" }}
+        className="fixed top-0 left-0 lg:block hidden bg-black z-40 overflow-y-auto border-r-2 border-darkpink"
+        style={{
+          // height: "calc(100vh - 80px)",
+          bottom: 0,
+          scrollbarWidth: "none",
+        }}
       >
         {/* Sidebar content (Melodies, menu, etc.) */}
         <div className="pl-[64px] pr-[32px] pb-[50px] ">
@@ -86,8 +90,10 @@ const SideBar = () => {
               </h2>
               {section.items.map((item, index) => {
                 const isActive =
-                  activeIndex === `${sectionIndex}-${index}` ||
-                  location.pathname.startsWith(item.path);
+                  item.path &&
+                  (location.pathname === item.path ||
+                    (item.path !== "/" &&
+                      location.pathname.startsWith(item.path)));
 
                 return (
                   <div>

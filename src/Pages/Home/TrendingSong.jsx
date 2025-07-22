@@ -29,12 +29,13 @@ const TrendingSong = () => {
   const { isLoggedIn, isGoogleLogin } = useAuth();
 
   const [data, setData] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   localStorage.setItem(
     "accessToken",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmRmYTI3NmU5OTIzZjQxYmE3OGFhZiIsImlhdCI6MTc1MzA3MDE4MSwiZXhwIjoxNzUzMTU2NTgxfQ.986SSH_YLabAS51cIJ45CoSKLf2Vy4NH-1JcWVbdpog"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmRmYTI3NmU5OTIzZjQxYmE3OGFhZiIsImlhdCI6MTc1MzE1NjIwNiwiZXhwIjoxNzUzMjQyNjA2fQ.VTGoK1HaDYv44bdVGe2tJdG3EUHVPXNak34O8l6JInY"
   );
 
   const data1 = [
@@ -98,7 +99,7 @@ const TrendingSong = () => {
       toast.warn("Please log in to use this feature.");
     } else {
       setSelectedId(selectedId === index ? null : index);
-      toast.success("Song is selected.");
+      toast.success("Added to favorites..");
     }
   };
 
@@ -147,7 +148,7 @@ const TrendingSong = () => {
               {data?.map((item, index) => (
                 <div
                   key={item.id}
-                  className="lg:py-[18px] py-[25px] text-white flex items-center justify-center"
+                  className="lg:py-[20px] py-[25px] text-white flex items-center justify-center"
                 >
                   {(isLoggedIn || isGoogleLogin) && (
                     <div onClick={togglePlay}>

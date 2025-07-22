@@ -7,7 +7,7 @@ import call from "../../assets/svgs/call.svg";
 const Footer = () => {
   return (
     <div>
-      <div className="ml-[300px]">
+      <div className="ml-[300px] mb-15">
         <div className="lg:grid hidden grid-cols-3  pt-20 gap-5 ">
           <div>
             <h2 className="text-[26px] text-white font-Vazirmatn-900">About</h2>

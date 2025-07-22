@@ -11,7 +11,7 @@ import { apiRoutes } from "../Component/Constants/apiRoutes";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
-import { GoogleLogin, googleLogout, useGoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 
 const Login = ({ onSuccess }) => {

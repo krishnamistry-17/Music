@@ -1,9 +1,4 @@
 import React, { useEffect, useState } from "react";
-import recent from "../../assets/svgs/recent.svg";
-import most from "../../assets/svgs/most.svg";
-import fav from "../../assets/svgs/fav.svg";
-import addplay from "../../assets/svgs/addplay.svg";
-import setting from "../../assets/svgs/setting.svg";
 import logoutbtn from "../../assets/svgs/logout.svg";
 import back from "../../assets/svgs/blueback.svg";
 import whiteback from "../../assets/svgs/whitearrow.svg";
@@ -23,13 +18,7 @@ import palbum from "../../assets/svgs/palbum.svg";
 import plib from "../../assets/svgs/plib.svg";
 import part from "../../assets/svgs/part.svg";
 import song from "../../assets/images/song.png";
-import { IoMenu } from "react-icons/io5";
-import { MdCancel } from "react-icons/md";
-import { FaShareAlt } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { FcAbout } from "react-icons/fc";
-import { MdWorkspacePremium } from "react-icons/md";
-import Song from "./Song";
 import bluedot from "../../assets/svgs/bluedot.svg";
 import poption from "../../assets/svgs/poption.svg";
 import music1 from "../../assets/images/music1.jpg";
@@ -55,19 +44,17 @@ import music20 from "../../assets/images/music20.jpg";
 import { useLocation } from "react-router-dom";
 import SideBar from "../SideBar/SideBar";
 import { useAuth } from "../Context/AuthContext";
+import Menu from "../SideBar/Menu";
+import Song from "./Song";
+import AudioMusic from "../Home/AudioMusic";
 
 const Albums = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(2);
   const navigate = useNavigate();
   const location = useLocation();
   const [visibleContent, setVisibleContent] = useState();
   const { isLoggedIn, isGoogleLogin, userProfile, logout } = useAuth();
   const [isdisplayDetail, setDisplayDetail] = useState();
-
-  const handleToggle = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
 
   const data1 = [
     {
@@ -270,10 +257,12 @@ const Albums = () => {
     <div>
       <div className="lg:flex hidden   ">
         {/* Sidebar */}
-        <SideBar />
 
+        <div>
+          <SideBar />
+        </div>
         {/* Main content area (grid content, header, songs, footer) */}
-        <div className="lg:ml-[300px] mr-[20px]">
+        <div className=" mr-[20px]">
           <div className="w-full bg-gradient-to-r from-blue to-lightblue mt-[25px] rounded-tr-[7px] rounded-tl-[7px]">
             <div className="flex justify-between items-center py-[30px] pr-[31px] pl-[10px]">
               <div>
@@ -304,13 +293,11 @@ const Albums = () => {
                     <button onClick={() => setDisplayDetail(!isdisplayDetail)}>
                       <img
                         // src={userProfile?.image || profile}
-                        src={isGoogleLogin ? userProfile?.image : profile}
+                        src={profile}
                         alt="Profile"
                         className="w-[40px] h-[40px] rounded-full object-cover"
                       />
-                      <h2 className="text-white">
-                        {isGoogleLogin ? userProfile?.name : "User"}
-                      </h2>
+                      <h2 className="text-white">{"User"}</h2>
 
                       {isdisplayDetail && (
                         <div className="absolute top-[190px] right-5 bg-black border border-gray-700 rounded-md shadow-md w-[140px] z-50">
@@ -381,15 +368,14 @@ const Albums = () => {
           <div className="bg-gradient-to-r from-darkblue to-lightestblue pt-8">
             <Song />
           </div>
-
-         
         </div>
       </div>
 
       {/*Mobile */}
       <div className="lg:hidden">
-        <div className=" flex justify-between items-center px-4 py-2  sticky top-0 bg-blackbg">
+        <div className=" flex justify-between items-center px-4 py-2  sticky top-0 z-50 bg-blackbg">
           <img
+            onClick={handleBack}
             src={back}
             alt="back"
             className=" text-bluearrow w-[35px] h-[35px]"
@@ -397,111 +383,11 @@ const Albums = () => {
           <h2 className="text-[32px] font-Vazirmatn-800 bg-gradient-to-r from-blue to-darkpink text-transparent bg-clip-text">
             Album
           </h2>
-          <button onClick={handleToggle}>
-            {" "}
-            <IoMenu className="text-darkpink w-[35px] h-[35px]" />
-          </button>
-        </div>
-        {isMenuOpen && (
-          <div className="fixed top-0 left-0 w-full h-full  bg-black z-[1000] overflow-y-auto">
-            <div
-              className="flex flex-col h-full "
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <div className="flex justify-end space-x-2 p-4 sticky top-0 w-full ">
-                <MdCancel
-                  className="text-white text-5xl cursor-pointer"
-                  onClick={() => setIsMenuOpen(false)}
-                />
-              </div>
-              <nav className="flex-1 overflow-y-auto  px-8  ">
-                <p className="border-white/20 border-b-2"></p>
-                <Link
-                  className="text-white font-Vazirmatn-600 text-[20px] 
-                   border-white/20 border-b-2  p-4 flex gap-4"
-                >
-                  <span>
-                    <FaShareAlt className="mt-1.5" />
-                  </span>
-                  Share
-                </Link>
-                <Link
-                  className="text-white font-Vazirmatn-600 text-[20px] 
-                   border-white/20 border-b-2  p-4 flex gap-4"
-                >
-                  <span>
-                    <FcAbout className="mt-0.5" />
-                  </span>
-                  About
-                </Link>
-                <Link
-                  className="text-white font-Vazirmatn-600 text-[20px] 
-                   border-white/20 border-b-2  p-4 flex gap-4"
-                >
-                  <span>
-                    <MdWorkspacePremium className="mt-0.5" />
-                  </span>
-                  Premium
-                </Link>
-                <Link
-                  className="text-white font-Vazirmatn-600 text-[20px] 
-                   border-white/20 border-b-2  p-4 flex gap-4"
-                >
-                  <span>
-                    <img src={setting} alt="set" className="w-5 h-5 mt-1" />
-                  </span>
-                  Setting
-                </Link>
-                <Link
-                  className="text-white font-Vazirmatn-600 text-[20px] 
-                   border-white/20 border-b-2  p-4 flex gap-4"
-                >
-                  <span>
-                    <img src={logout} alt="lg" className="w-5 h-5 mt-1" />
-                  </span>
-                  Logout
-                </Link>
-
-                <div className="border-white/20 border-b-2  p-4">
-                  <h2 className="text-[#EE10B0] text-[14px] pb-4">Library</h2>
-                  <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
-                    <span>
-                      <img src={recent} alt="m" className="w-[23px] h-[20px]" />
-                    </span>
-                    Recently Added
-                  </button>
-                  <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
-                    <span>
-                      <img src={most} alt="m" className="w-[23px] h-[20px]" />
-                    </span>
-                    Most played
-                  </button>
-                </div>
-                <div className="border-white/20 border-b-2  p-4">
-                  <h2 className="text-[#EE10B0] text-[14px] pb-4">
-                    Playlist and favorite
-                  </h2>
-                  <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
-                    <span>
-                      <img src={fav} alt="m" className="w-[23px] h-[20px]" />
-                    </span>
-                    Your favorites
-                  </button>
-                  <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
-                    <span>
-                      <img
-                        src={addplay}
-                        alt="m"
-                        className="w-[23px] h-[20px]"
-                      />
-                    </span>
-                    Add playlist
-                  </button>
-                </div>
-              </nav>
-            </div>
+          <div>
+            <Menu />
           </div>
-        )}
+        </div>
+
         <div>
           <div className=" w-full h-fit pb-6 shadow-lg  bg-gradient-to-r from-blue to-lightblue ">
             <div className="lg:flex justify-between items-center">
@@ -554,6 +440,11 @@ const Albums = () => {
             <Song />
           </div>
         </div>
+        {(isLoggedIn || isGoogleLogin) && (
+          <div className="fixed bottom-24 left-0 right-0   bg-[#252525] rounded-md z-auto border-t border-gray-700 lg:hidden">
+            <AudioMusic />
+          </div>
+        )}
 
         <div className=" lg:hidden sticky bottom-0 z-50 bg-blackbg">
           {optionData.map((section, sectionIndex) => (

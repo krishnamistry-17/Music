@@ -10,33 +10,16 @@ import VideoMusic from "./VideoMusic";
 import AlbumsTop from "./AlbumsTop";
 import MoodPlay from "../Discover/MoodPlay";
 import Billie from "./Billie";
-import { toast } from "react-toastify";
-import AudioMusic from "./AudioMusic";
-import { useAuth } from "../Context/AuthContext";
 
 const Home = () => {
-  const { isLoggedIn, isGoogleLogin } = useAuth();
-
   return (
     <>
-      <div className=" relative ">
-        <div className="lg:flex hidden">
-          <div className=" fixed top-0 bottom-0 bg-gray-900 z-40">
-            <SideBar />
-          </div>
-
-          <div className="ml-[300px] w-full pb-[80px]">
-            {" "}
-            <Content />
-          </div>
+      <div>
+        <div className="lg:block hidden">
+          <Content />
         </div>
-        {(isLoggedIn || isGoogleLogin) && (
-          <div className="fixed bottom-0 left-0 right-0 h-[80px] bg-[#181818] z-50 border-t border-gray-700 lg:block hidden">
-            <AudioMusic />
-          </div>
-        )}
       </div>
-      
+
       <div className="lg:hidden">
         <div className="sticky top-0 z-[5000]">
           <HomeSideBar />

@@ -12,7 +12,7 @@ import { MdOutlineFullscreen } from "react-icons/md";
 import { IoMdVolumeMute } from "react-icons/io";
 import { IoMdVolumeOff } from "react-icons/io";
 
-const AudioMusic = () => {
+const AlbumPlay = () => {
   const {
     currentSong,
     isPlaying,
@@ -60,7 +60,7 @@ const AudioMusic = () => {
     >
       <div className="flex gap-2">
         <img
-          src={currentSong?.songImage}
+          src={currentSong?.song?.songImage[0]}
           alt={currentSong?.title || "Song"}
           className="w-[50px] h-[50px] rounded-[5px] object-cover"
         />
@@ -216,4 +216,4 @@ const AudioMusic = () => {
   );
 };
 
-export default AudioMusic;
+export default AlbumPlay;

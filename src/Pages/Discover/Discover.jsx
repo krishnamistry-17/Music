@@ -17,7 +17,7 @@ const Discover = () => {
         <div>
           <SideBar />
         </div>
-        <div className="lg:ml-[300px]">
+        <div>
           <DisContent />
         </div>
       </div>

@@ -5,12 +5,35 @@ import top8 from "../../assets/images/top8.png";
 import top9 from "../../assets/images/top9.png";
 import top10 from "../../assets/images/top10.png";
 import plus from "../../assets/svgs/plus.svg";
+import { useDispatch } from "react-redux";
+import apiInstance from "../../../utils/axios";
+import { apiRoutes } from "../Component/Constants/apiRoutes";
+import { useSong } from "../Context/SongContext";
+import { getallAlbum } from "../Redux/Action/action";
 
 const AlbumsTop = () => {
+  const {
+    songs,
+    setSongs,
+    playSongAt,
+    isPlaying,
+    setIsPlaying,
+    setCurrentIndex,
+    audioRef,
+    currentIndex,
+  } = useSong();
+
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
 
-  const data = [
+  const [data, setData] = useState([]);
+  console.log("data>>>>Album :", data);
+
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const data1 = [
     { image: top6, para: "Adele 21", head: "Adele" },
     { image: top7, para: "Scorpion", head: "Drake" },
     { image: top8, para: "Harry’s House", head: "Harry Styles" },
@@ -20,6 +43,7 @@ const AlbumsTop = () => {
     { image: top7, para: "Scorpion", head: "Drake" },
     { image: top6, para: "Adele 21", head: "Adele" },
   ];
+
   const data3 = [
     { image: top6, para: "Adele 21", head: "Adele" },
     { image: top7, para: "Scorpion", head: "Drake" },
@@ -30,6 +54,11 @@ const AlbumsTop = () => {
     { image: top7, para: "Scorpion", head: "Drake" },
     { image: top6, para: "Adele 21", head: "Adele" },
   ];
+
+  localStorage.setItem(
+    "accessToken",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmRmYTI3NmU5OTIzZjQxYmE3OGFhZiIsImlhdCI6MTc1MzE1NjIwNiwiZXhwIjoxNzUzMjQyNjA2fQ.VTGoK1HaDYv44bdVGe2tJdG3EUHVPXNak34O8l6JInY"
+  );
 
   useEffect(() => {
     const updateCount = () => {
@@ -43,6 +72,37 @@ const AlbumsTop = () => {
     window.addEventListener("resize", updateCount);
     return () => window.removeEventListener("resize", updateCount);
   }, []);
+
+  useEffect(() => {
+    async function fetchData() {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        console.warn("No token found, skipping API call");
+        setError("Unauthorized: Please login first");
+        setLoading(false);
+        return;
+      }
+      try {
+        const response = await apiInstance.get(apiRoutes.GET_ALL_DATA);
+        setData(response.data.data);
+        setSongs(response.data.data);
+        dispatch(getallAlbum());
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, [setSongs]);
+
+  if (error) {
+    return <div>Error...</div>;
+  }
+
+  if (loading) {
+    return <div>Loading..</div>;
+  }
 
   return (
     <div>
@@ -61,19 +121,24 @@ const AlbumsTop = () => {
           className=" hidden md:grid lg:grid-cols-6 md:grid-cols-4 gap-[24px] overflow-x-auto "
           style={{ scrollbarWidth: "none" }}
         >
-          {(isOpen ? data : data.slice(0, visibleCount)).map((item, index) => (
-            <div key={index}>
-              <div className="bg-[#1F1F1F] w-[174.4px] h-[222px] p-[8px]  rounded-[8px] ">
-                <img src={item.image} alt="a1" className="" />
-                <p className="text-white text-[16px] font-Vazirmatn-500 pt-[8px] ">
-                  {item.para}
-                </p>
-                <p className="text-white text-[12px] font-Vazirmatn-300 pt-[4px] opacity-80 ">
-                  {item.head}
-                </p>
-              </div>
-            </div>
-          ))}
+          {Array.isArray(data) &&
+            (isOpen ? data : data.slice(0, visibleCount)).map((item, index) => {
+              const extra = data1[index];
+
+              return (
+                <div key={item._id || index}>
+                  <div className="bg-[#1F1F1F] w-[174.4px] h-[222px] p-[8px]  rounded-[8px] ">
+                    <img src={item.albumImages?.[0]} alt="a1" className="" />
+                    <p className="text-white text-[16px] font-Vazirmatn-500 pt-[8px] ">
+                      {item?.title}
+                    </p>
+                    <p className="text-white text-[12px] font-Vazirmatn-300 pt-[4px] opacity-80 ">
+                      {item?.artistId?.name}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
 
           <div
             className="pl-[22px] py-[64px] cursor-pointer "
