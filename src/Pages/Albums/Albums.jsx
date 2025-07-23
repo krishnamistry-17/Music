@@ -18,7 +18,7 @@ import palbum from "../../assets/svgs/palbum.svg";
 import plib from "../../assets/svgs/plib.svg";
 import part from "../../assets/svgs/part.svg";
 import song from "../../assets/images/song.png";
-import { Link, useNavigate } from "react-router-dom";
+import { data, Link, useNavigate } from "react-router-dom";
 import bluedot from "../../assets/svgs/bluedot.svg";
 import poption from "../../assets/svgs/poption.svg";
 import music1 from "../../assets/images/music1.jpg";
@@ -52,15 +52,16 @@ import { useAlbum } from "../Context/AlbumContext";
 import { useParams } from "react-router-dom";
 
 const Albums = () => {
-  const { albumId } = useParams();
-  const { currentAlbum, selectedAlbum } = useAlbum();
+  const { id } = useParams();
+  const { selectedAlbum, album, setAlbum } = useAlbum();
+  // const [album, setAlbum] = useState(null);
+
   const [activeIndex, setActiveIndex] = useState(2);
   const navigate = useNavigate();
   const location = useLocation();
   const [visibleContent, setVisibleContent] = useState();
   const { isLoggedIn, isGoogleLogin, userProfile, logout } = useAuth();
   const [isdisplayDetail, setDisplayDetail] = useState();
-  const [album, setAlbum] = useState(null);
 
   const data1 = [
     {
@@ -255,15 +256,22 @@ const Albums = () => {
     return () => window.removeEventListener("resize", updateContent);
   }, []);
 
+  useEffect(() => {
+    const found = selectedAlbum.find((item) => item._id === id);
+
+    if (!found) {
+      const fallback = data1.find((d) => d._id === id);
+      setAlbum(fallback);
+    } else {
+      setAlbum(found);
+    }
+  }, [id, selectedAlbum]);
+
+  // if (!album) return <div className="text-white">Album not found</div>;
+
   const handleBack = () => {
     navigate("/");
   };
-
-  useEffect(() => {
-    if (selectedAlbum && selectedAlbum.id === albumId) {
-      setAlbum(selectedAlbum);
-    }
-  }, [albumId, selectedAlbum]);
 
   return (
     <div>
@@ -345,7 +353,11 @@ const Albums = () => {
             <div className="lg:flex justify-between items-center">
               <div className="lg:flex pl-[43px] gap-14 md:w-[712px]">
                 <div>
-                  <img src={album?.albumImages} alt="song" />
+                  <img
+                    src={album?.albumImages || song}
+                    alt="song"
+                    className="w-[300px] h-[239px]"
+                  />
                 </div>
                 <div>
                   <h2 className=" text-white md:text-[40px] font-Vazirmatn-800 text-[22px] ">
@@ -355,11 +367,12 @@ const Albums = () => {
                     </span>
                   </h2>
                   <p className=" text-white text-[20px] font-Vazirmatn-600 py-[44px]">
-                    {album?.artistId?.bio}
+                    {album?.artistId?.bio ||
+                      "tate mcree, nightmares, the neighberhood, doja cat and ..."}
                   </p>
                   <div className="flex justify-between items-center w-[204px] pb-10">
                     <p className="text-white font-Vazirmatn-600 text-[20px]">
-                      20 songs
+                      {album?.songs?.length || 2} songs
                     </p>
                     <img src={pdot} alt="pd" />
                     <p className="text-white font-Vazirmatn-600 text-[20px]">

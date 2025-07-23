@@ -1,232 +1,173 @@
-// import React, { useEffect, useRef, useState } from "react";
-// import { useSong } from "../Context/SongContext";
-// import { FaShuffle } from "react-icons/fa6";
-// import { GiPreviousButton } from "react-icons/gi";
-// import { GiNextButton } from "react-icons/gi";
-// import { FaPause } from "react-icons/fa6";
-// import { FaPlay } from "react-icons/fa";
-// import { FaRepeat } from "react-icons/fa6";
-// import { MdLyrics } from "react-icons/md";
-// import { MdOutlineQueueMusic } from "react-icons/md";
-// import { MdOutlineFullscreen } from "react-icons/md";
-// import { IoMdVolumeMute } from "react-icons/io";
-// import { IoMdVolumeOff } from "react-icons/io";
-
-// const AlbumPlay = () => {
-//   const {
-//     currentSong,
-//     isPlaying,
-//     setIsPlaying,
-//     playNext,
-//     playPrevious,
-//     isShuffle,
-//     setIsShuffle,
-//     isRepeat,
-//     setIsRepeat,
-//     audioRef,
-//   } = useSong();
-
-//   const progressRef = useRef(null);
-//   const [currentTime, setCurrentTime] = useState(0);
-//   const [duration, setDuration] = useState(0);
-//   const [volume, setVolume] = useState(0);
-//   const [ismuted, setIsMuted] = useState(false);
-
-//   const handleVolumeChange = (e) => {
-//     //handle the volume change
-//     const newVolume = parseFloat(e.target.value);
-//     setVolume(newVolume);
-//     if (audioRef.current) {
-//       audioRef.current.volume = newVolume;
-//     }
-//   };
-
-//   const toggleMute = () => {
-//     audioRef.current.muted = !audioRef.current.muted;
-//     setIsMuted(audioRef.current.muted);
-//   };
-
-//   const togglePlay = () => setIsPlaying((p) => !p);
-
-//   const onVolumeChange = (e) =>
-//     (audioRef.current.volume = parseFloat(e.target.value));
-
-//   return (
-//     <div
-//       className=" text-white p-3
-//     grid md:grid-cols-3 grid-cols-2 
-//     justify-between items-center 
-//     lg:gap-60 rounded-md shadow-md "
-//     >
-//       <div className="flex gap-2">
-//         <img
-//           src={currentSong?.song?.songImage[0]}
-//           alt={currentSong?.title || "Song"}
-//           className="w-[50px] h-[50px] rounded-[5px] object-cover"
-//         />
-//         <div className="flex flex-col py-1">
-//           <p className="lg:text-[18px] text-[16px] font-Vazirmatn-500  truncate max-w-xs">
-//             {currentSong?.title}
-//           </p>
-//           <p className="lg:text-[14px] text-[12px] font-Vazirmatn-300 text-white truncate max-w-xs">
-//             {currentSong?.artistId?.name}
-//           </p>
-//         </div>
-//       </div>
-
-//       <div>
-//         <div className="flex items-center gap-5 ">
-//           {/* Shuffle */}
-//           <div onClick={() => setIsShuffle((s) => !s)}>
-//             <FaShuffle
-//               className={`w-[20px] h-[20px] cursor-pointer md:block hidden ${
-//                 isShuffle ? "text-green-400" : ""
-//               }`}
-//             />
-//           </div>
-
-//           {/* Previous */}
-//           <div onClick={playPrevious} className="cursor-pointer">
-//             <GiPreviousButton className="w-[20px] h-[20px]" />
-//           </div>
-
-//           {/* Play/Pause */}
-//           <div
-//             className="lg:bg-white rounded-full md:p-4 p-1 cursor-pointer"
-//             onClick={togglePlay}
-//           >
-//             {isPlaying ? (
-//               <FaPause className="lg:text-black md:w-[20px] md:h-[20px]" />
-//             ) : (
-//               <FaPlay className="lg:text-black md:w-[20px] md:h-[20px]" />
-//             )}
-//           </div>
-
-//           {/* Next */}
-//           <div onClick={playNext} className="cursor-pointer">
-//             <GiNextButton className="w-[20px] h-[20px]" />
-//           </div>
-
-//           {/* Repeat */}
-//           <div onClick={() => setIsRepeat((r) => !r)}>
-//             <FaRepeat
-//               className={`w-[20px] h-[20px] cursor-pointer md:block hidden ${
-//                 isRepeat ? "text-green-400" : ""
-//               }`}
-//             />
-//           </div>
-//         </div>
-
-//         {/* Progress Bar */}
-//         <div className="flex items-center gap-4 mt-1 lg:-ml-19">
-//           <div>
-//             <span className="md:block hidden">
-//               {Math.floor(currentTime / 60)}:
-//               {String(Math.floor(currentTime % 60)).padStart(2, "0")}
-//             </span>
-//           </div>
-
-//           <div className="flex-1">
-//             <input
-//               type="range"
-//               ref={progressRef}
-//               min="0"
-//               max={duration}
-//               value={currentTime}
-//               onChange={(e) => {
-//                 const newTime = Number(e.target.value);
-//                 audioRef.current.currentTime = newTime;
-//                 setCurrentTime(newTime);
-//               }}
-//               className="w-full"
-//             />
-//           </div>
-//           <div>
-//             <span className="md:block hidden">
-//               {Math.floor(duration / 60)}:
-//               {String(Math.floor(duration % 60)).padStart(2, "0")}
-//             </span>
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Audio and Side Controls */}
-//       <audio
-//         ref={audioRef}
-//         src={currentSong?.cloudinaryUrl}
-//         preload="metadata"
-//         onLoadedMetadata={(e) => {
-//           const duration = e.target.duration;
-//           setDuration(duration);
-//           progressRef.current.max = duration;
-//         }}
-//         onTimeUpdate={(e) => {
-//           const currentTime = e.target.currentTime;
-//           setCurrentTime(currentTime);
-//           if (progressRef.current) {
-//             progressRef.current.value = currentTime;
-//           }
-//         }}
-//         onEnded={() => {
-//           if (isRepeat) {
-//             audioRef.current.currentTime = 0;
-//             audioRef.current.play();
-//           } else {
-//             playNext();
-//           }
-//         }}
-//       />
-
-//       <div className="md:flex hidden items-center gap-3">
-//         <div>
-//           <MdLyrics className="w-[20px] h-[20px] lg:block hidden" />
-//         </div>
-//         <div>
-//           <MdOutlineQueueMusic className="w-[23px] h-[23px] lg:block hidden" />
-//         </div>
-//         <div className="flex items-center gap-2">
-//           <div onClick={toggleMute}>
-//             {ismuted ? (
-//               <div>
-//                 {" "}
-//                 <IoMdVolumeOff className="w-[23px] h-[23px]" />
-//               </div>
-//             ) : (
-//               <div>
-//                 <IoMdVolumeMute className="w-[23px] h-[23px]" />
-//               </div>
-//             )}
-//           </div>
-//           <div>
-//             <input
-//               type="range"
-//               min="0"
-//               max="1"
-//               step="0.01"
-//               value={volume}
-//               onChange={handleVolumeChange}
-//             />
-//           </div>
-//         </div>
-//         <div>
-//           <MdOutlineFullscreen className="w-[23px] h-[23px]" />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AlbumPlay;
-
-
-
-
-import React from 'react'
+import React, { useEffect, useRef, useState } from "react";
+import { useSong } from "../Context/SongContext";
+import { FaShuffle } from "react-icons/fa6";
+import { GiPreviousButton } from "react-icons/gi";
+import { GiNextButton } from "react-icons/gi";
+import { FaPause } from "react-icons/fa6";
+import { FaPlay } from "react-icons/fa";
+import { FaRepeat } from "react-icons/fa6";
+import { MdLyrics } from "react-icons/md";
+import { MdOutlineQueueMusic } from "react-icons/md";
+import { MdOutlineFullscreen } from "react-icons/md";
+import { IoMdVolumeMute } from "react-icons/io";
+import { IoMdVolumeOff } from "react-icons/io";
+import { useAlbum } from "../Context/AlbumContext";
+import albumSingle from "../albumSingle";
 
 const AlbumPlay = () => {
-  return (
-    <div className='text-white'>AlbumPlay</div>
-  )
-}
+  const {
+    currentAlbum,
+    isPlaying,
+    setIsPlaying,
+    playNext,
+    playPrevious,
+    playSongAt,
+    isShuffle,
+    setIsShuffle,
+    isRepeat,
+    setIsRepeat,
+    audioRef,
+  } = useAlbum();
 
-export default AlbumPlay
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(0.8);
+  const [isMuted, setIsMuted] = useState(false);
+  const progressRef = useRef(null);
+
+  useEffect(() => {
+    if (!audioRef.current) return;
+    const audio = audioRef.current;
+    audio.volume = volume;
+    const onTime = () => setCurrentTime(audio.currentTime);
+    const onLoaded = () => {
+      setDuration(audio.duration);
+      progressRef.current.max = audio.duration;
+    };
+    audio.addEventListener("timeupdate", onTime);
+    audio.addEventListener("loadedmetadata", onLoaded);
+    return () => {
+      audio.removeEventListener("timeupdate", onTime);
+      audio.removeEventListener("loadedmetadata", onLoaded);
+    };
+  }, [audioRef, volume]);
+
+  const togglePlay = () => setIsPlaying((p) => !p);
+
+  const toggleMute = () => {
+    setIsMuted((m) => !m);
+    audioRef.current.muted = !isMuted;
+  };
+
+  const handleVolumeChange = (e) => {
+    const v = parseFloat(e.target.value);
+    setVolume(v);
+    audioRef.current.volume = v;
+  };
+
+  const formatted = (time) =>
+    `${Math.floor(time / 60)}:${String(Math.floor(time % 60)).padStart(
+      2,
+      "0"
+    )}`;
+
+  if (!currentAlbum) return null;
+
+  return (
+    <div
+      className="text-white p-3
+    grid md:grid-cols-3 grid-cols-2 
+    justify-between items-center 
+  rounded-md shadow-md"
+    >
+      <audio ref={audioRef} src={currentAlbum?.cloudinaryUrl?.[0]} />
+
+      {/* Left */}
+      <div className="flex items-center gap-3">
+        <img
+          src={currentAlbum.songImage?.[0]}
+          alt={currentAlbum.title}
+          className="w-[50px] h-[50px] rounded"
+        />
+        <div>
+          <p className="text-white">{currentAlbum.title}</p>
+        </div>
+      </div>
+
+      {/* Middle (controls) */}
+      <div>
+        <div className="flex items-center justify-center gap-4">
+          <FaShuffle
+            className={`cursor-pointer ${
+              isShuffle ? "text-green-400" : "text-white"
+            }`}
+            onClick={() => setIsShuffle(!isShuffle)}
+          />
+          <GiPreviousButton
+            className="cursor-pointer text-white"
+            onClick={playPrevious}
+          />
+          <div
+            className="bg-white rounded-full p-2 cursor-pointer"
+            onClick={togglePlay}
+          >
+            {isPlaying ? (
+              <FaPause className="text-black" />
+            ) : (
+              <FaPlay className="text-black" />
+            )}
+          </div>
+          <GiNextButton
+            className="cursor-pointer text-white"
+            onClick={playNext}
+          />
+          <FaRepeat
+            className={`cursor-pointer ${
+              isRepeat ? "text-green-400" : "text-white"
+            }`}
+            onClick={() => setIsRepeat(!isRepeat)}
+          />
+        </div>
+        {/* Progress bar and time */}
+        <div className="col-span-1 mt-4 flex justify-between items-center text-white text-sm">
+          <span>{formatted(currentTime)}</span>
+          <input
+            type="range"
+            ref={progressRef}
+            min="0"
+            max={duration || 0}
+            value={currentTime}
+            onChange={(e) => {
+              audioRef.current.currentTime = e.target.value;
+              setCurrentTime(e.target.value);
+            }}
+            className="flex-1 mx-4"
+          />
+          <span>{formatted(duration)}</span>
+        </div>
+      </div>
+
+      {/* Right (volume + expand) */}
+      <div className="flex items-center justify-end gap-4">
+        <button onClick={toggleMute}>
+          {isMuted ? (
+            <IoMdVolumeOff className="text-white" />
+          ) : (
+            <IoMdVolumeMute className="text-white" />
+          )}
+        </button>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={volume}
+          onChange={handleVolumeChange}
+        />
+        <MdOutlineFullscreen className="text-white cursor-pointer" />
+      </div>
+    </div>
+  );
+};
+
+export default AlbumPlay;

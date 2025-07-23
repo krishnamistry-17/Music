@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Home from "./Pages/Home/Home";
 import Artist from "./Pages/Artist/Artist";
 import Albums from "./Pages/Albums/Albums";
@@ -6,13 +6,10 @@ import Discover from "./Pages/Discover/Discover";
 import Footer from "./Pages/Footer/Footer";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import Bg from "./Pages/Home/Bg";
 import HomeNav from "./Pages/Home/HomeNav";
 import { AuthProvider, useAuth } from "./Pages/Context/AuthContext";
 import LoginSmall from "./Pages/Home/LoginSmall";
 import SignUpSmall from "./Pages/Home/SignUpSmall";
-import Login from "./Pages/Home/Login";
-import SignUp from "./Pages/Home/SignUp";
 import Favorites from "./Pages/Favorites/Favorites";
 import { SongProvider } from "./Pages/Context/SongContext";
 import { FavProvider } from "./Pages/Context/FavContext";
@@ -20,16 +17,18 @@ import SideBar from "./Pages/SideBar/SideBar";
 import AudioMusic from "./Pages/Home/AudioMusic";
 import AlbumPlay from "./Pages/Albums/AlbumPlay";
 import useIsLargeScreen from "./Pages/Context/useIsLargeScreen";
-import { AlbumProvider, useAlbum } from "./Pages/Context/AlbumContext";
+import { AlbumProvider } from "./Pages/Context/AlbumContext";
+import Song from "./Pages/Albums/Song";
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
-  const { currentAlbumIndex } = useAlbum();
+
   const { isLoggedIn, isGoogleLogin } = useAuth();
   const showHomeNav = ["/discover"].includes(location.pathname);
   const showAudio = (isLoggedIn || isGoogleLogin) && location.pathname === "/";
   const showOtherMusic =
-    (isLoggedIn || isGoogleLogin) && location.pathname === "/album";
+    (isLoggedIn || isGoogleLogin) &&
+    (location.pathname === "/album" || location.pathname.startsWith("/album/"));
   const hasBottomPlayer = showAudio || showOtherMusic;
 
   return (
@@ -69,6 +68,7 @@ function LayoutWrapper({ children }) {
 
 function App() {
   const isLarge = useIsLargeScreen();
+
   return (
     <div className="min-h-screen flex flex-col">
       <BrowserRouter>
@@ -81,7 +81,8 @@ function App() {
                     <Routes>
                       <Route path="/" element={<Home />} />
                       <Route path="/discover" element={<Discover />} />
-                      <Route path="/album" element={<Albums />} />
+                      <Route path="/album" element={<Albums album={Song} />} />
+                      <Route path="/album/:id" element={<Albums />} />
                       <Route path="/artist" element={<Artist />} />
                       <Route path="/login" element={<LoginSmall />} />
                       <Route path="/signup" element={<SignUpSmall />} />
@@ -92,7 +93,8 @@ function App() {
                   <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/discover" element={<Discover />} />
-                    <Route path="/album" element={<Albums />} />
+                    <Route path="/album" element={<Albums />} />{" "}
+                    <Route path="/album/:id" element={<Albums />} />{" "}
                     <Route path="/artist" element={<Artist />} />
                     <Route path="/login" element={<LoginSmall />} />
                     <Route path="/signup" element={<SignUpSmall />} />
@@ -100,7 +102,6 @@ function App() {
                   </Routes>
                 )}
                 <ToastContainer />
-                {/* Don't show Footer on small because SmallFooter is already handled in pages */}
                 {isLarge && <Footer />}
               </FavProvider>
             </SongProvider>

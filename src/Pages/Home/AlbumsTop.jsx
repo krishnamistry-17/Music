@@ -14,13 +14,13 @@ import { useNavigate } from "react-router-dom";
 import { useAlbum } from "../Context/AlbumContext";
 
 const AlbumsTop = () => {
-  const { setAlbums, selectedAlbum, setSelectedAlbum } = useAlbum();
+  const { setSelectedAlbum, currentAlbum, selectedAlbumId } = useAlbum();
 
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
 
   const [data, setData] = useState([]);
-  console.log("data :", data);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -28,7 +28,7 @@ const AlbumsTop = () => {
 
   localStorage.setItem(
     "accessToken",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmRmYTI3NmU5OTIzZjQxYmE3OGFhZiIsImlhdCI6MTc1MzE1NjIwNiwiZXhwIjoxNzUzMjQyNjA2fQ.VTGoK1HaDYv44bdVGe2tJdG3EUHVPXNak34O8l6JInY"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1MzI0MzI5NiwiZXhwIjoxNzUzMzI5Njk2fQ.g_B7bQOiUUxS2JuSUQrcnrNey8yKCANhgjvXftGkwoo"
   );
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const AlbumsTop = () => {
       try {
         const response = await apiInstance.get(apiRoutes.GET_ALL_DATA);
         setData(response.data.data);
-        setAlbums(response.data.data);
+        setSelectedAlbum(response.data.data);
         dispatch(getallAlbum());
       } catch (error) {
         setError(error);
@@ -65,13 +65,16 @@ const AlbumsTop = () => {
       }
     }
     fetchData();
-  }, [setAlbums]);
+  }, [setSelectedAlbum]);
 
-  const handleAlbum = () => {
-    setSelectedAlbum(data);
-    navigate(`/album/${data.id}`);
+  // const handleAlbum = (album) => {
+  //   setSelectedAlbum((prev) => [...prev, album]); // optional, depends on how you're managing this
+  //   navigate(`/album/${album._id}`);
+  // };
+
+  const handleAlbum = (albumId) => {
+    navigate(`/album/${albumId}`);
   };
-
   return (
     <div>
       <div>
@@ -95,7 +98,7 @@ const AlbumsTop = () => {
                 <div key={item._id || index}>
                   <div
                     className="bg-[#1F1F1F] w-[174.4px] h-[222px] p-[8px]  rounded-[8px] "
-                    onClick={handleAlbum}
+                    onClick={() => handleAlbum(item._id)}
                   >
                     <img src={item.albumImages?.[0]} alt="a1" className="" />
                     <p className="text-white text-[16px] font-Vazirmatn-500 pt-[8px] ">
