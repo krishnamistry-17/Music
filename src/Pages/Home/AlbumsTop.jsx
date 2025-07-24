@@ -133,7 +133,7 @@ const AlbumsTop = () => {
                 <div key={item._id || index}>
                   <div
                     className="bg-[#1F1F1F] w-[140px] h-[185px]  rounded-[10px] py-[4px] px-[8px]"
-                    onClick={() => handleAlbum()}
+                    onClick={() => handleAlbum(item._id)}
                   >
                     <img src={item.albumImages?.[0]} alt="a1" className="]" />
                     <div>

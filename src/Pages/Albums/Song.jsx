@@ -55,6 +55,7 @@ const Song = () => {
     setSelectedAlbumId,
     audioRef,
     selectedAlbumId,
+    setAllAlbums,
   } = useAlbum();
 
   const { id } = useParams(); // URL param
@@ -167,6 +168,7 @@ const Song = () => {
         const albums = response.data.data;
         setData(albums);
         setAlbum(albums);
+        // setAllAlbums(albums);
         dispatch(getallAlbum());
 
         if (!id && albums.length > 0) {
@@ -196,7 +198,6 @@ const Song = () => {
   const filteredAlbum = Array.isArray(album)
     ? album.filter((a) => a._id === id)
     : [];
-  console.log("filteredAlbum :", filteredAlbum);
 
   if (error) {
     return <div>Error...</div>;
@@ -242,6 +243,17 @@ const Song = () => {
     }
   };
 
+  if (!id) {
+    const defaultAlbum = album.find(
+      (a) => a._id === "6864de81b5cb32f97e53b1b4"
+    );
+    if (defaultAlbum) {
+      navigate(`/album/${defaultAlbum._id}`, { replace: true });
+    } else if (album.length > 0) {
+      navigate(`/album/${album[0]._id}`, { replace: true }); // fallback
+    }
+  }
+
   const albumsToShow = id ? album.filter((item) => item._id === id) : album;
 
   const togglePlay = () => setIsPlaying((p) => !p);
@@ -282,12 +294,12 @@ const Song = () => {
 
         <div className="flex pt-[15px] mt-[-17px] px-2">
           <div className="flex flex-col items-center mt-4 md:mr-4 mr-3">
-            {!id ? (
-              <div>
-                {albumSingle?.songs?.map((album, index) => (
-                  <p className="lg:text-[24px] text-[16px] font-Vazirmatn-600 text-white lg:py-[19px] py-[25px]">
+            <div>
+              {filteredAlbum?.map((album) =>
+                album.songs?.map((song, index) => (
+                  <p className="lg:text-[24px] text-[16px] font-Vazirmatn-600 text-white lg:py-[12px] py-[17px]">
                     <div
-                      key={album._id}
+                      key={song._id}
                       className="flex items-center gap-3 py-2"
                     >
                       {(isLoggedIn || isGoogleLogin) && (
@@ -312,286 +324,131 @@ const Song = () => {
                       )}
                     </div>
                   </p>
-                ))}
-              </div>
-            ) : (
-              <div>
-                {filteredAlbum?.map((album) =>
-                  album.songs?.map((song, index) => (
-                    <p className="lg:text-[24px] text-[16px] font-Vazirmatn-600 text-white lg:py-[12px] py-[25px]">
-                      <div
-                        key={song._id}
-                        className="flex items-center gap-3 py-2"
-                      >
-                        {(isLoggedIn || isGoogleLogin) && (
-                          <div
-                            onClick={() => {
-                              togglePlay();
-                              setSelectedAlbumId(index);
-                            }}
-                          >
-                            {selectedAlbumId === index ? (
-                              isPlaying ? (
-                                <FaPause className="text-white w-[20px] h-[20px]" />
-                              ) : (
-                                <FaPlay className="text-white w-[20px] h-[20px]" />
-                              )
-                            ) : (
-                              <p className="lg:text-[24px] text-[16px] font-Vazirmatn-600 text-white">
-                                {index + 1}
-                              </p>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    </p>
-                  ))
-                )}
-              </div>
-            )}
+                ))
+              )}
+            </div>
           </div>
 
-          {!id ? (
-            <div>
-              {" "}
-              <div className="pb-[15px] pt-[15px]">
-                {albumSingle?.songs?.map((song, index) => {
-                  const extra = data1[index];
-                  return (
-                    <>
-                      <div
-                        key={song._id || index}
-                        className="grid grid-cols-4 gap-6 bg-[#1E1E1E] relative mb-4"
-                        onClick={() => handleSongClick(song._id)}
-                      >
-                        {/* Song Image + Title + Artist */}
-                        <div className="flex">
-                          <img
-                            src={song?.songImage?.[0]}
-                            alt="m1"
-                            className="w-[60px] h-[60px] rounded-[5px] border"
-                          />
-                          <div className="md:pl-[23px] pl-1 md:py-[17.5px] pt-[11px]">
-                            <p className="text-white md:text-[20px] font-Vazirmatn-600 text-[15px] truncate">
-                              {song?.title}
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Release Date */}
-                        <div>
-                          <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] lg:block hidden">
-                            {extra.rdate.split("T")[0]}
+          <div>
+            {filteredAlbum.map((albumItem, index) => {
+              const extra = data1[index];
+              return (
+                <div key={albumItem._id || index} className="pt-[15px]">
+                  {albumItem.songs?.map((song, songIndex) => (
+                    <div
+                      key={song._id || songIndex}
+                      className="grid grid-cols-4 gap-6 bg-[#1E1E1E] relative mb-4"
+                      onClick={() => handleSelect(index)}
+                    >
+                      {/* Song Image + Title + Artist */}
+                      <div className="flex">
+                        <img
+                          src={song?.songImage?.[0]}
+                          alt="m1"
+                          className="w-[60px] h-[60px] rounded-[5px] border"
+                        />
+                        <div className="md:pl-[23px] pl-1 md:py-[5px] pt-[11px]">
+                          <p className="text-white md:text-[20px] font-Vazirmatn-600 text-[15px] truncate">
+                            {song?.title}
                           </p>
-                        </div>
-
-                        {/* Album Title */}
-                        <div>
-                          <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] w-[345px] lg:block hidden">
-                            {extra?.album}
+                          <p className="text-white text-[12px] font-Vazirmatn-300 pt-0.5">
+                            {albumItem?.artistId?.name}
                           </p>
-                        </div>
-
-                        {/* Favorite + Duration + Options */}
-                        <div className="flex justify-end lg:gap-2.5 gap-8 py-[17.5px] pr-[9px]">
-                          <div onClick={() => handleClick(index)}>
-                            {isLoggedIn || isGoogleLogin ? (
-                              <img
-                                src={
-                                  selectedId === index
-                                    ? extra?.ffull
-                                    : extra?.fimg
-                                }
-                                alt="fav"
-                                className="lg:block hidden w-[24.24px] h-[25px]"
-                              />
-                            ) : (
-                              <img src={extra?.fimg} alt="fav" />
-                            )}
-                          </div>
-
-                          <div>
-                            <p className="text-white text-[16px] font-Vazirmatn-400">
-                              {song?.duration}
-                            </p>
-                          </div>
-
-                          <div>
-                            <img
-                              src={extra?.voption}
-                              alt="op"
-                              onClick={() =>
-                                setSelectedIndex(
-                                  selectedIndex === index ? null : index
-                                )
-                              }
-                            />
-                            {selectedIndex === index && (
-                              <div className="bg-[#282828] absolute z-50 top-[60px] right-0 max-w-[350px] max-h-[175px] p-4">
-                                <div className="flex gap-2 items-center">
-                                  <img src={plus} alt="ps" />
-                                  <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
-                                    Add to your playlist
-                                  </p>
-                                  <BiSolidRightArrow className="ml-[5px] w-[22px] h-[22px]" />
-                                </div>
-                                <div className="flex gap-2 items-center pt-2">
-                                  <CiSaveUp1 className="text-white w-[22px] h-[22px]" />
-                                  <p
-                                    className="text-white text-[17px] font-Vazirmatn-400 pt-1"
-                                    onClick={() => handleClick(index)}
-                                  >
-                                    Save to liked songs
-                                  </p>
-                                </div>
-                                <div className="flex gap-2 items-center pt-2">
-                                  <img
-                                    src={artist}
-                                    alt="ar"
-                                    className="text-white w-[22px] h-[22px]"
-                                  />
-                                  <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
-                                    Go to Artist
-                                  </p>
-                                </div>
-                                <div className="flex gap-2 items-center pt-2">
-                                  <IoMdShare className="text-white w-[22px] h-[22px]" />
-                                  <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
-                                    Share
-                                  </p>
-                                </div>
-                              </div>
-                            )}
-                          </div>
                         </div>
                       </div>
-                    </>
-                  );
-                })}
-              </div>{" "}
-            </div>
-          ) : (
-            <div>
-              {filteredAlbum.map((albumItem, index) => {
-                const extra = data1[index];
-                return (
-                  <div key={albumItem._id || index} className="pt-[15px]">
-                    {albumItem.songs?.map((song, songIndex) => (
-                      <div
-                        key={song._id || songIndex}
-                        className="grid grid-cols-4 gap-6 bg-[#1E1E1E] relative mb-4"
-                        onClick={() => handleSelect(index)}
-                      >
-                        {/* Song Image + Title + Artist */}
-                        <div className="flex">
-                          <img
-                            src={song?.songImage?.[0]}
-                            alt="m1"
-                            className="w-[60px] h-[60px] rounded-[5px] border"
-                          />
-                          <div className="md:pl-[23px] pl-1 md:py-[5px] pt-[11px]">
-                            <p className="text-white md:text-[20px] font-Vazirmatn-600 text-[15px] truncate">
-                              {song?.title}
-                            </p>
-                            <p className="text-white text-[12px] font-Vazirmatn-300 pt-0.5">
-                              {albumItem?.artistId?.name}
-                            </p>
-                          </div>
-                        </div>
 
-                        {/* Release Date */}
-                        <div>
-                          <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] lg:block hidden">
-                            {albumItem.releaseDate?.split("T")[0]}
-                          </p>
-                        </div>
+                      {/* Release Date */}
+                      <div>
+                        <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] lg:block hidden">
+                          {albumItem.releaseDate?.split("T")[0]}
+                        </p>
+                      </div>
 
-                        {/* Album Title */}
-                        <div>
-                          <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] w-[345px] lg:block hidden">
-                            {extra?.album}
-                          </p>
-                        </div>
+                      {/* Album Title */}
+                      <div>
+                        <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] w-[345px] lg:block hidden">
+                          {extra?.album}
+                        </p>
+                      </div>
 
-                        {/* Favorite + Duration + Options */}
-                        <div className="flex justify-end lg:gap-2.5 gap-8 py-[17.5px] pr-[9px]">
-                          <div onClick={() => handleClick(index)}>
-                            {isLoggedIn || isGoogleLogin ? (
-                              <img
-                                src={
-                                  selectedId === index
-                                    ? extra?.ffull
-                                    : extra?.fimg
-                                }
-                                alt="fav"
-                                className="lg:block hidden w-[24.24px] h-[25px]"
-                              />
-                            ) : (
-                              <img src={extra?.fimg} alt="fav" />
-                            )}
-                          </div>
-
-                          <div>
-                            <p className="text-white text-[16px] font-Vazirmatn-400">
-                              {song?.duration}
-                            </p>
-                          </div>
-
-                          <div>
+                      {/* Favorite + Duration + Options */}
+                      <div className="flex justify-end lg:gap-2.5 gap-8 py-[17.5px] pr-[9px]">
+                        <div onClick={() => handleClick(index)}>
+                          {isLoggedIn || isGoogleLogin ? (
                             <img
-                              src={extra?.voption}
-                              alt="op"
-                              onClick={() =>
-                                setSelectedIndex(
-                                  selectedIndex === index ? null : index
-                                )
+                              src={
+                                selectedId === index
+                                  ? extra?.ffull
+                                  : extra?.fimg
                               }
+                              alt="fav"
+                              className="lg:block hidden w-[24.24px] h-[25px]"
                             />
-                            {selectedIndex === index && (
-                              <div className="bg-[#282828] absolute z-50 top-[60px] right-0 max-w-[350px] max-h-[175px] p-4">
-                                <div className="flex gap-2 items-center">
-                                  <img src={plus} alt="ps" />
-                                  <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
-                                    Add to your playlist
-                                  </p>
-                                  <BiSolidRightArrow className="ml-[5px] w-[22px] h-[22px]" />
-                                </div>
-                                <div className="flex gap-2 items-center pt-2">
-                                  <CiSaveUp1 className="text-white w-[22px] h-[22px]" />
-                                  <p
-                                    className="text-white text-[17px] font-Vazirmatn-400 pt-1"
-                                    onClick={() => handleClick(index)}
-                                  >
-                                    Save to liked songs
-                                  </p>
-                                </div>
-                                <div className="flex gap-2 items-center pt-2">
-                                  <img
-                                    src={artist}
-                                    alt="ar"
-                                    className="text-white w-[22px] h-[22px]"
-                                  />
-                                  <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
-                                    Go to Artist
-                                  </p>
-                                </div>
-                                <div className="flex gap-2 items-center pt-2">
-                                  <IoMdShare className="text-white w-[22px] h-[22px]" />
-                                  <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
-                                    Share
-                                  </p>
-                                </div>
+                          ) : (
+                            <img src={extra?.fimg} alt="fav" />
+                          )}
+                        </div>
+
+                        <div>
+                          <p className="text-white text-[16px] font-Vazirmatn-400">
+                            {song?.duration}
+                          </p>
+                        </div>
+
+                        <div>
+                          <img
+                            src={extra?.voption}
+                            alt="op"
+                            onClick={() =>
+                              setSelectedIndex(
+                                selectedIndex === index ? null : index
+                              )
+                            }
+                          />
+                          {selectedIndex === index && (
+                            <div className="bg-[#282828] absolute z-50 top-[60px] right-0 max-w-[350px] max-h-[175px] p-4">
+                              <div className="flex gap-2 items-center">
+                                <img src={plus} alt="ps" />
+                                <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
+                                  Add to your playlist
+                                </p>
+                                <BiSolidRightArrow className="ml-[5px] w-[22px] h-[22px]" />
                               </div>
-                            )}
-                          </div>
+                              <div className="flex gap-2 items-center pt-2">
+                                <CiSaveUp1 className="text-white w-[22px] h-[22px]" />
+                                <p
+                                  className="text-white text-[17px] font-Vazirmatn-400 pt-1"
+                                  onClick={() => handleClick(index)}
+                                >
+                                  Save to liked songs
+                                </p>
+                              </div>
+                              <div className="flex gap-2 items-center pt-2">
+                                <img
+                                  src={artist}
+                                  alt="ar"
+                                  className="text-white w-[22px] h-[22px]"
+                                />
+                                <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
+                                  Go to Artist
+                                </p>
+                              </div>
+                              <div className="flex gap-2 items-center pt-2">
+                                <IoMdShare className="text-white w-[22px] h-[22px]" />
+                                <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
+                                  Share
+                                </p>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </div>
-                    ))}
-                  </div>
-                );
-              })}
-            </div>
-          )}
+                    </div>
+                  ))}
+                </div>
+              );
+            })}
+          </div>
         </div>
         <div className=" flex justify-center items-center pb-8">
           <button className="bg-darkpink px-4 py-[7px] text-white text-[14px] font-Vazirmatn-400 rounded-[4px]">

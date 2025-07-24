@@ -50,11 +50,12 @@ import AudioMusic from "../Home/AudioMusic";
 import { useAlbum } from "../Context/AlbumContext";
 
 import { useParams } from "react-router-dom";
+import AlbumPlay from "./AlbumPlay";
 
 const Albums = () => {
   const { id } = useParams();
-  const { selectedAlbum, album, setAlbum } = useAlbum();
-  // const [album, setAlbum] = useState(null);
+  const { selectedAlbum, album: allAlbums, setAlbum } = useAlbum();
+  console.log("allAlbums :", allAlbums);
 
   const [activeIndex, setActiveIndex] = useState(2);
   const navigate = useNavigate();
@@ -62,6 +63,9 @@ const Albums = () => {
   const [visibleContent, setVisibleContent] = useState();
   const { isLoggedIn, isGoogleLogin, userProfile, logout } = useAuth();
   const [isdisplayDetail, setDisplayDetail] = useState();
+
+  const [currentAlbum, setCurrentAlbum] = useState(null);
+  console.log("currentAlbum :", currentAlbum);
 
   const data1 = [
     {
@@ -256,22 +260,38 @@ const Albums = () => {
     return () => window.removeEventListener("resize", updateContent);
   }, []);
 
+  // useEffect(() => {
+  //   const found = selectedAlbum.find((item) => item._id === id);
+
+  //   if (!found) {
+  //     const fallback = data1.find((d) => d._id === id);
+  //     setAlbum(fallback);
+  //   } else {
+  //     setAlbum(found);
+  //   }
+  // }, [id, selectedAlbum]);
+
+  // useEffect(() => {
+  //   const foundAlbum = allAlbums.find((item) => item._id === id);
+  //   if (foundAlbum) {
+  //     setCurrentAlbum(foundAlbum);
+  //   }
+  // }, [id, allAlbums]);
+
   useEffect(() => {
-    const found = selectedAlbum.find((item) => item._id === id);
-
-    if (!found) {
-      const fallback = data1.find((d) => d._id === id);
-      setAlbum(fallback);
-    } else {
-      setAlbum(found);
+    if (Array.isArray(allAlbums)) {
+      const foundAlbum = allAlbums.find((album) => album._id === id);
+      if (foundAlbum) {
+        setCurrentAlbum(foundAlbum);
+      }
     }
-  }, [id, selectedAlbum]);
-
-  // if (!album) return <div className="text-white">Album not found</div>;
+  }, [id, allAlbums]);
 
   const handleBack = () => {
     navigate("/");
   };
+
+  const handlePlayAll = () => {};
 
   return (
     <div>
@@ -354,7 +374,7 @@ const Albums = () => {
               <div className="lg:flex pl-[43px] gap-14 md:w-[712px]">
                 <div>
                   <img
-                    src={album?.albumImages || song}
+                    src={currentAlbum?.albumImages?.[0] || song}
                     alt="song"
                     className="w-[300px] h-[239px]"
                   />
@@ -367,12 +387,12 @@ const Albums = () => {
                     </span>
                   </h2>
                   <p className=" text-white text-[20px] font-Vazirmatn-600 py-[44px]">
-                    {album?.artistId?.bio ||
+                    {currentAlbum?.artistId?.bio ||
                       "tate mcree, nightmares, the neighberhood, doja cat and ..."}
                   </p>
                   <div className="flex justify-between items-center w-[204px] pb-10">
                     <p className="text-white font-Vazirmatn-600 text-[20px]">
-                      {album?.songs?.length || 2} songs
+                      {currentAlbum?.songs?.length || 2} songs
                     </p>
                     <img src={pdot} alt="pd" />
                     <p className="text-white font-Vazirmatn-600 text-[20px]">
@@ -381,7 +401,10 @@ const Albums = () => {
                   </div>
                 </div>
               </div>
-              <div className=" lg:pt-[220px] flex gap-4 md:pl-0 pl-10 pt-4 pr-8 pb-10">
+              <div
+                className=" lg:pt-[220px] flex gap-4 md:pl-0 pl-10 pt-4 pr-8 pb-10"
+                onClick={() => handlePlayAll()}
+              >
                 <p className="text-[24px] text-darkpink font-Vazirmatn-600 pt-4">
                   Play All
                 </p>
@@ -407,7 +430,7 @@ const Albums = () => {
             className=" text-bluearrow w-[35px] h-[35px]"
           />
           <h2 className="text-[32px] font-Vazirmatn-800 bg-gradient-to-r from-blue to-darkpink text-transparent bg-clip-text">
-            Album
+            Albums
           </h2>
           <div>
             <Menu />
@@ -424,7 +447,7 @@ const Albums = () => {
               >
                 <div>
                   <img
-                    src={song}
+                    src={currentAlbum?.albumImages?.[0] || song}
                     alt="song"
                     className={`${
                       visibleContent >= 425 ? " w-[160px]" : "w-[200px] mx-8"
@@ -432,21 +455,25 @@ const Albums = () => {
                   />
                 </div>
                 <div className="md:pl-4 pl-3 pt-[27px] mx-8">
-                  <h2 className=" text-white font-Vazirmatn-700 text-[20px] ">
-                    The Eminem Show
+                  <h2 className=" text-white font-Vazirmatn-700 text-[20px] truncate ">
+                    {currentAlbum?.artistId?.bio || "The Eminem Show"}
                   </h2>
                   <div className="flex gap-2.5 pt-4">
-                    <img src={eminem} alt="em" className="w-[36px] h-[36px]" />
+                    <img
+                      src={currentAlbum?.albumImages?.[0] || song}
+                      alt="em"
+                      className="w-[36px] h-[36px] rounded-md"
+                    />
                     <p
                       className="text-white text-[16px] font-Vazirmatn-600 pt-1.5
                     "
                     >
-                      Eminem
+                      {currentAlbum?.artistId?.name || "Eminem"}
                     </p>
                   </div>
                   <div className="flex  items-center gap-4 pt-4">
                     <p className="text-white text-[14px] font-Vazirmatn-800">
-                      20 songs
+                      {currentAlbum?.songs?.length || 2} songs
                     </p>
                     <img src={bluedot} alt="pd" />
                     <p className="text-white text-[14px] font-Vazirmatn-800">
@@ -462,13 +489,17 @@ const Albums = () => {
               </div>
             </div>
           </div>
-          <div className="bg-gradient-to-r from-darkblue to-lightestblue">
+          <div
+            className="bg-gradient-to-r from-darkblue to-lightestblue"
+            style={{ height: "calc(100vh - 198px)", scrollbarWidth: "none" }}
+          >
             <Song />
           </div>
         </div>
+
         {(isLoggedIn || isGoogleLogin) && (
           <div className="fixed bottom-24 left-0 right-0   bg-[#252525] rounded-md z-auto border-t border-gray-700 lg:hidden">
-            <AudioMusic />
+            <AlbumPlay />
           </div>
         )}
 

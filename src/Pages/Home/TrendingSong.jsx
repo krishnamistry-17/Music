@@ -68,15 +68,6 @@ const TrendingSong = () => {
     fetchData();
   }, [setSongs]);
 
-  // const { data, loading, error } = useFetchData({
-  //   endpoint: apiRoutes.GET_ALL_SONG,
-  //   onSuccess: (songs) => {
-  //     setSongs(songs);
-  //     dispatch(getAllSong());
-  //   },
-  //   dependencies: [setSongs],
-  // });
-
   if (!error) {
     return <div>Error...</div>;
   }
@@ -155,7 +146,7 @@ const TrendingSong = () => {
                   key={item.id}
                   className="lg:py-[20px] py-[25px] text-white flex items-center justify-center"
                 >
-                  {(isLoggedIn || isGoogleLogin) && (
+                  {isLoggedIn || isGoogleLogin ? (
                     <div onClick={togglePlay}>
                       {currentIndex === index ? (
                         isPlaying ? (
@@ -168,6 +159,13 @@ const TrendingSong = () => {
                           #{index + 1}
                         </p>
                       )}
+                    </div>
+                  ) : (
+                    <div>
+                      {" "}
+                      <p className="lg:text-[24px] text-[16px] font-Vazirmatn-600">
+                        #{index + 1}
+                      </p>
                     </div>
                   )}
                 </div>

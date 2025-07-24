@@ -15,6 +15,7 @@ import { useAlbum } from "../Context/AlbumContext";
 import albumSingle from "../albumSingle";
 
 const AlbumPlay = () => {
+  
   const {
     currentSong,
     isPlaying,
@@ -74,60 +75,158 @@ const AlbumPlay = () => {
   if (!currentSong) return null;
 
   return (
-    <div
-      className="text-white p-3
-    grid md:grid-cols-3 grid-cols-2 
+    <>
+      <div
+        className="text-white p-3
+    md:grid md:grid-cols-3 hidden
     justify-between items-center 
   rounded-md shadow-md"
-    >
-      <audio ref={audioRef} src={currentSong?.cloudinaryUrl} />
+      >
+        <audio ref={audioRef} src={currentSong?.cloudinaryUrl} />
 
-      {/* Left */}
-      <div className="flex items-center gap-3">
-        <img
-          src={currentSong?.songImage?.[0]}
-          alt={currentSong?.title}
-          className="w-[50px] h-[50px] rounded"
-        />
+        {/* Left */}
+        <div className="flex items-center gap-3">
+          <img
+            src={currentSong?.songImage?.[0]}
+            alt={currentSong?.title}
+            className="w-[50px] h-[50px] rounded"
+          />
 
+          <div>
+            <p className="text-white">{currentSong?.title}</p>
+          </div>
+        </div>
+
+        {/* Middle (controls) */}
         <div>
-          <p className="text-white">{currentSong?.title}</p>
+          <div className="flex items-center justify-center gap-4">
+            <FaShuffle
+              className={`cursor-pointer ${
+                isShuffle ? "text-green-400" : "text-white"
+              }`}
+              onClick={() => setIsShuffle(!isShuffle)}
+            />
+            <GiPreviousButton
+              className="cursor-pointer text-white"
+              onClick={playPrevious}
+            />
+            <div
+              className="bg-white rounded-full p-2 cursor-pointer"
+              onClick={togglePlay}
+            >
+              {isPlaying ? (
+                <FaPause className="text-black" />
+              ) : (
+                <FaPlay className="text-black" />
+              )}
+            </div>
+            <GiNextButton
+              className="cursor-pointer text-white"
+              onClick={playNext}
+            />
+            <FaRepeat
+              className={`cursor-pointer ${
+                isRepeat ? "text-green-400" : "text-white"
+              }`}
+              onClick={() => setIsRepeat(!isRepeat)}
+            />
+          </div>
+          {/* Progress bar and time */}
+          <div className="col-span-1 mt-4 flex justify-between items-center text-white text-sm">
+            <span>{formatted(currentTime)}</span>
+            <input
+              type="range"
+              ref={progressRef}
+              min="0"
+              max={duration || 0}
+              value={currentTime}
+              onChange={(e) => {
+                audioRef.current.currentTime = e.target.value;
+                setCurrentTime(e.target.value);
+              }}
+              className="flex-1 mx-4"
+            />
+            <span>{formatted(duration)}</span>
+          </div>
+        </div>
+
+        {/* Right (volume + expand) */}
+        <div className="md:flex items-center justify-end gap-4 hidden">
+          <button onClick={toggleMute}>
+            {isMuted ? (
+              <IoMdVolumeOff className="text-white" />
+            ) : (
+              <IoMdVolumeMute className="text-white" />
+            )}
+          </button>
+          <input
+            type="range"
+            className="md:block hidden"
+            min="0"
+            max="1"
+            step="0.01"
+            value={volume}
+            onChange={handleVolumeChange}
+          />
+          <MdOutlineFullscreen className="text-white cursor-pointer md:block hidden" />
         </div>
       </div>
+      <div
+        className="text-white p-3
+    md:hidden 
+    justify-between items-center mx-2
+  rounded-md shadow-md"
+      >
+        <audio ref={audioRef} src={currentSong?.cloudinaryUrl} />
+        <div className="flex justify-between items-center">
+          {/* Left */}
+          <div className="flex items-center gap-3">
+            <img
+              src={currentSong?.songImage?.[0]}
+              alt={currentSong?.title}
+              className="w-[50px] h-[50px] rounded"
+            />
 
-      {/* Middle (controls) */}
-      <div>
-        <div className="flex items-center justify-center gap-4">
-          <FaShuffle
-            className={`cursor-pointer ${
-              isShuffle ? "text-green-400" : "text-white"
-            }`}
-            onClick={() => setIsShuffle(!isShuffle)}
-          />
-          <GiPreviousButton
-            className="cursor-pointer text-white"
-            onClick={playPrevious}
-          />
-          <div
-            className="bg-white rounded-full p-2 cursor-pointer"
-            onClick={togglePlay}
-          >
-            {isPlaying ? (
-              <FaPause className="text-black" />
-            ) : (
-              <FaPlay className="text-black" />
-            )}
+            <div>
+              <p className="text-white">{currentSong?.title}</p>
+            </div>
           </div>
-          <GiNextButton
-            className="cursor-pointer text-white"
-            onClick={playNext}
-          />
-          <FaRepeat
-            className={`cursor-pointer ${
-              isRepeat ? "text-green-400" : "text-white"
-            }`}
-            onClick={() => setIsRepeat(!isRepeat)}
-          />
+
+          {/* Middle (controls) */}
+          <div>
+            <div className="flex items-center justify-center gap-4 ">
+              <FaShuffle
+                className={`cursor-pointer hidden ${
+                  isShuffle ? "text-green-400" : "text-white"
+                }`}
+                onClick={() => setIsShuffle(!isShuffle)}
+              />
+              <GiPreviousButton
+                className="cursor-pointer text-white"
+                onClick={playPrevious}
+              />
+              <div
+                className="bg-white rounded-full p-2 cursor-pointer"
+                onClick={togglePlay}
+              >
+                {isPlaying ? (
+                  <FaPause className="text-black" />
+                ) : (
+                  <FaPlay className="text-black" />
+                )}
+              </div>
+              <GiNextButton
+                className="cursor-pointer text-white"
+                onClick={playNext}
+              />
+              <FaRepeat
+                className={`cursor-pointer hidden ${
+                  isRepeat ? "text-green-400" : "text-white"
+                }`}
+                onClick={() => setIsRepeat(!isRepeat)}
+              />
+            </div>
+          </div>
         </div>
         {/* Progress bar and time */}
         <div className="col-span-1 mt-4 flex justify-between items-center text-white text-sm">
@@ -146,28 +245,28 @@ const AlbumPlay = () => {
           />
           <span>{formatted(duration)}</span>
         </div>
+        {/* Right (volume + expand) */}
+        <div className="md:flex items-center justify-end gap-4 hidden">
+          <button onClick={toggleMute}>
+            {isMuted ? (
+              <IoMdVolumeOff className="text-white" />
+            ) : (
+              <IoMdVolumeMute className="text-white" />
+            )}
+          </button>
+          <input
+            type="range"
+            className="md:block hidden"
+            min="0"
+            max="1"
+            step="0.01"
+            value={volume}
+            onChange={handleVolumeChange}
+          />
+          <MdOutlineFullscreen className="text-white cursor-pointer md:block hidden" />
+        </div>
       </div>
-
-      {/* Right (volume + expand) */}
-      <div className="flex items-center justify-end gap-4">
-        <button onClick={toggleMute}>
-          {isMuted ? (
-            <IoMdVolumeOff className="text-white" />
-          ) : (
-            <IoMdVolumeMute className="text-white" />
-          )}
-        </button>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value={volume}
-          onChange={handleVolumeChange}
-        />
-        <MdOutlineFullscreen className="text-white cursor-pointer" />
-      </div>
-    </div>
+    </>
   );
 };
 

@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import apiInstance from "../../../utils/axios";
+import { apiRoutes } from "../Component/Constants/apiRoutes";
 
 const AlbumContext = createContext();
 
@@ -11,14 +13,35 @@ export const AlbumProvider = ({ children }) => {
   const [isShuffle, setIsShuffle] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
   const audioRef = useRef(null);
-  const [album, setAlbum] = useState(null);
+  const [album, setAlbum] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const currentSong = selectedAlbum[selectedAlbumId];
-  console.log("currentSong :", currentSong);
 
-  const filteredAlbum = Array.isArray(album)
-    ? album.filter((a) => a._id === id)
-    : [];
+  useEffect(() => {
+    async function fetchData() {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        console.warn("No token found, skipping API call");
+        setError("Unauthorized: Please login first");
+        setLoading(false);
+        return;
+      }
+      try {
+        const response = await apiInstance.get(apiRoutes.GET_ALL_DATA);
+        const albums = response.data.data;
+        setAlbum(albums);
+        setSelectedAlbum(albums.length > 0 ? albums[0].songs : []);
+        setSelectedAlbumId(0);
+      } catch (error) {
+        setError(error.message || "Failed to fetch albums");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, [id]);
 
   const playSongAt = (index) => {
     if (index >= 0 && index < selectedAlbum.length) {
@@ -77,7 +100,7 @@ export const AlbumProvider = ({ children }) => {
         audioRef,
         album,
         setAlbum,
-        filteredAlbum,
+        loading,error
       }}
     >
       {children}
