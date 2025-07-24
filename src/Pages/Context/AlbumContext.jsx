@@ -13,7 +13,8 @@ export const AlbumProvider = ({ children }) => {
   const audioRef = useRef(null);
   const [album, setAlbum] = useState(null);
 
-  const currentAlbum = selectedAlbum[selectedAlbumId];
+  const currentSong = selectedAlbum[selectedAlbumId];
+  console.log("currentSong :", currentSong);
 
   const filteredAlbum = Array.isArray(album)
     ? album.filter((a) => a._id === id)
@@ -63,7 +64,7 @@ export const AlbumProvider = ({ children }) => {
         setSelectedAlbum,
         selectedAlbumId,
         setSelectedAlbumId,
-        currentAlbum,
+        currentSong,
         playNext,
         playPrevious,
         playSongAt,

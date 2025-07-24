@@ -1,6 +1,6 @@
 import axios from "axios";
-import apiInstance from "../../../utils/axios";
-import { apiRoutes } from "../Component/Constants/apiRoutes";
+import apiInstance from "../../utils/axios";
+import { apiRoutes } from "../Pages/Component/Constants/apiRoutes";
 
 const saveToken = (token) => {
   if (token) {
@@ -33,7 +33,7 @@ export const loginWithGoogle = async (googleAccessToken) => {
   return response.data;
 };
 
-// Logout helper
+// Logout
 export const logout = () => {
   localStorage.removeItem("accessToken");
   sessionStorage.clear();

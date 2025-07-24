@@ -40,9 +40,10 @@ import { useAuth } from "../Context/AuthContext";
 import { useFav } from "../Context/FavContext";
 import { toast } from "react-toastify";
 import { useSong } from "../Context/SongContext";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAlbum } from "../Context/AlbumContext";
 import albumSingle from "../albumSingle";
+import useFetchData from "../../Hooks/useFetchData";
 
 const Song = () => {
   const {
@@ -59,7 +60,7 @@ const Song = () => {
   const { id } = useParams(); // URL param
   const [album, setAlbum] = useState(null);
   const navigate = useNavigate();
-
+  const location = useLocation();
   const [activeIndex, setActiveIndex] = useState(0);
   const [data, setData] = useState([]);
 
@@ -70,11 +71,6 @@ const Song = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  localStorage.setItem(
-    "accessToken",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1MzI0MzI5NiwiZXhwIjoxNzUzMzI5Njk2fQ.g_B7bQOiUUxS2JuSUQrcnrNey8yKCANhgjvXftGkwoo"
-  );
 
   const data1 = [
     {
@@ -168,10 +164,15 @@ const Song = () => {
       }
       try {
         const response = await apiInstance.get(apiRoutes.GET_ALL_DATA);
-        setData(response.data.data);
-        setAlbum(response.data.data);
-        // setSelectedAlbum(response.data.data)
+        const albums = response.data.data;
+        setData(albums);
+        setAlbum(albums);
         dispatch(getallAlbum());
+
+        if (!id && albums.length > 0) {
+          setSelectedAlbum(albums[0].songs || []);
+          setSelectedAlbumId(0); // First song
+        }
       } catch (error) {
         setError(error);
       } finally {
@@ -179,20 +180,23 @@ const Song = () => {
       }
     }
     fetchData();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
-    const found = selectedAlbum.find((item) => item._id === id);
-    setAlbum(found);
-  }, [id, selectedAlbum]);
+    if (id && Array.isArray(data)) {
+      const foundAlbum = data.find((item) => item._id === id);
+      if (foundAlbum) {
+        setSelectedAlbum(foundAlbum.songs || []);
+        setSelectedAlbumId(0);
+        setIsPlaying(true); //start-playing auto
+      }
+    }
+  }, [id, data]);
 
   const filteredAlbum = Array.isArray(album)
     ? album.filter((a) => a._id === id)
     : [];
   console.log("filteredAlbum :", filteredAlbum);
-
-  // if (!album)
-  //   return <div className="text-white">Loading or album not found...</div>;
 
   if (error) {
     return <div>Error...</div>;
@@ -202,32 +206,19 @@ const Song = () => {
     return <div>Loading..</div>;
   }
 
-  // const handleSelect = (index, item) => {
-  //   if (item?.songs?.cloudinaryUrl[0]) {
-  //     toast.warn("This song has no playable audio.");
-  //     return;
-  //   }
-
-  //   if (!isLoggedIn || !isGoogleLogin) {
-  //     toast.warn("Please Log In To Play Music.");
-  //   } else {
-  //     playSongAt(index);
-  //     setSelectedAlbumId(index);
-  //   }
-  // };
-
   const handleSelect = (index) => {
     if (!isLoggedIn && !isGoogleLogin) {
       toast.warn("Please Log In To Play Music.");
       return;
     }
-    const song = filteredAlbum?.songs?.cloudinaryUrl;
+
+    const song = filteredAlbum?.[0]?.songs?.[index];
     if (!song?.cloudinaryUrl) {
       toast.warn("This song has no playable audio.");
       return;
     }
 
-    setSelectedAlbum(album?.songs);
+    setSelectedAlbum(filteredAlbum?.[0]?.songs || []);
     setSelectedAlbumId(index);
     setIsPlaying(true);
   };

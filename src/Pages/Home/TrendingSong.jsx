@@ -12,6 +12,7 @@ import { FaPlay } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useSong } from "../Context/SongContext";
 import { useFav } from "../Context/FavContext";
+// import useFetchData from "../Hooks/useFetchData";
 
 const TrendingSong = () => {
   const {
@@ -32,11 +33,6 @@ const TrendingSong = () => {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  localStorage.setItem(
-    "accessToken",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1MzI0MzI5NiwiZXhwIjoxNzUzMzI5Njk2fQ.g_B7bQOiUUxS2JuSUQrcnrNey8yKCANhgjvXftGkwoo"
-  );
 
   const data1 = [
     { id: 0, fimg: pfav, fullimg: pfull, ptime: "3:26" },
@@ -71,6 +67,15 @@ const TrendingSong = () => {
     }
     fetchData();
   }, [setSongs]);
+
+  // const { data, loading, error } = useFetchData({
+  //   endpoint: apiRoutes.GET_ALL_SONG,
+  //   onSuccess: (songs) => {
+  //     setSongs(songs);
+  //     dispatch(getAllSong());
+  //   },
+  //   dependencies: [setSongs],
+  // });
 
   if (!error) {
     return <div>Error...</div>;

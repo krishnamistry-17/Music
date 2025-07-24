@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import { loginWithEmail, loginWithGoogle } from "../../service/authService";
 
 const Login = ({ onSuccess }) => {
   const [isClicked, setIsClicked] = useState(false);
@@ -62,16 +63,13 @@ const Login = ({ onSuccess }) => {
     setError(null);
 
     try {
-      const loginData = { email: email, password: password };
-      const response = await apiInstance.post(apiRoutes.GET_LOGIN, loginData);
+      const data = await loginWithEmail(email, password);
       setIsLoggedIn(true);
-      if (response.status === 200) {
-        setData(response.data);
-        dispatch(getLogin(response.data));
-        notify();
-        onSuccess();
-        navigate("/album");
-      }
+      setData(data);
+      dispatch(getLogin(data));
+      notify();
+      onSuccess();
+      navigate("/album", { state: { tokenReady: true } });
     } catch (error) {
       setError(error.response?.data?.message || "Login Failed");
     } finally {
@@ -83,22 +81,18 @@ const Login = ({ onSuccess }) => {
 
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      console.log("tokenResponse ", tokenResponse);
-
       try {
-        const Res = await axios.post(
-          "http://192.168.29.45:5000/api/auth/verify-token",
-          {
-            access_token: tokenResponse?.access_token,
-          }
-        );
-        console.log("Res>>>>>", Res);
-        const { name, email, picture } = Res.data;
+        const data = await loginWithGoogle(tokenResponse.access_token);
+        const { name, email, picture } = data;
+
         setIsGoogleLogin(true);
         setUserProfile({ name, email, image: picture });
-        toast.success("Google Login Sucess..");
+
+        toast.success("Google Login Success");
+        navigate("/album", { state: { tokenReady: true } });
       } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
+        toast.error("Google login failed");
       }
     },
     onError: () => {

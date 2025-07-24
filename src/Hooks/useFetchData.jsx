@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import apiInstance from "../../../utils/axios";
+import apiInstance from "../../utils/axios";
 
 const useFetchData = ({ endpoint, onSuccess, onError, dependencies = [] }) => {
   const [loading, setLoading] = useState(true);
@@ -19,11 +19,12 @@ const useFetchData = ({ endpoint, onSuccess, onError, dependencies = [] }) => {
       try {
         const response = await apiInstance.get(endpoint);
         const result = response.data.data;
+        console.log("result :", result);
         setData(result);
         onSuccess && onSuccess(result);
       } catch (err) {
+        console.error("Fetch failed:", err.response || err.message || err);
         setError(err);
-        onError && onError(err);
       } finally {
         setLoading(false);
       }

@@ -16,7 +16,7 @@ import albumSingle from "../albumSingle";
 
 const AlbumPlay = () => {
   const {
-    currentAlbum,
+    currentSong,
     isPlaying,
     setIsPlaying,
     playNext,
@@ -71,7 +71,7 @@ const AlbumPlay = () => {
       "0"
     )}`;
 
-  if (!currentAlbum) return null;
+  if (!currentSong) return null;
 
   return (
     <div
@@ -80,17 +80,18 @@ const AlbumPlay = () => {
     justify-between items-center 
   rounded-md shadow-md"
     >
-      <audio ref={audioRef} src={currentAlbum?.cloudinaryUrl?.[0]} />
+      <audio ref={audioRef} src={currentSong?.cloudinaryUrl} />
 
       {/* Left */}
       <div className="flex items-center gap-3">
         <img
-          src={currentAlbum.songImage?.[0]}
-          alt={currentAlbum.title}
+          src={currentSong?.songImage?.[0]}
+          alt={currentSong?.title}
           className="w-[50px] h-[50px] rounded"
         />
+
         <div>
-          <p className="text-white">{currentAlbum.title}</p>
+          <p className="text-white">{currentSong?.title}</p>
         </div>
       </div>
 

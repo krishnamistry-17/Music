@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { useAlbum } from "../Context/AlbumContext";
 
 const AlbumsTop = () => {
-  const { setSelectedAlbum, currentAlbum, selectedAlbumId } = useAlbum();
+  const { setSelectedAlbum, selectedAlbumId } = useAlbum();
 
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
@@ -25,11 +25,6 @@ const AlbumsTop = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  localStorage.setItem(
-    "accessToken",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1MzI0MzI5NiwiZXhwIjoxNzUzMzI5Njk2fQ.g_B7bQOiUUxS2JuSUQrcnrNey8yKCANhgjvXftGkwoo"
-  );
 
   useEffect(() => {
     const updateCount = () => {
@@ -43,6 +38,11 @@ const AlbumsTop = () => {
     window.addEventListener("resize", updateCount);
     return () => window.removeEventListener("resize", updateCount);
   }, []);
+
+  localStorage.setItem(
+    "accessToken",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1MzMzNTI4NiwiZXhwIjoxNzUzNDIxNjg2fQ.W141LUi9udS3RFw-v1DRAu34G7IItOevZ90TN7PbdH8"
+  );
 
   useEffect(() => {
     async function fetchData() {
@@ -67,14 +67,10 @@ const AlbumsTop = () => {
     fetchData();
   }, [setSelectedAlbum]);
 
-  // const handleAlbum = (album) => {
-  //   setSelectedAlbum((prev) => [...prev, album]); // optional, depends on how you're managing this
-  //   navigate(`/album/${album._id}`);
-  // };
-
   const handleAlbum = (albumId) => {
     navigate(`/album/${albumId}`);
   };
+
   return (
     <div>
       <div>

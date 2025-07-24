@@ -1,10 +1,11 @@
 import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const tokenkey = import.meta.env.VITE_TOKEN;
-const token = localStorage.getItem("accessToken");
 
-//create axios
+if (!BASE_URL) {
+  console.warn("Missing VITE_API_BASE_URL in .env");
+}
+
 const apiInstance = axios.create({
   baseURL: BASE_URL,
   timeout: 20000,
@@ -14,28 +15,26 @@ const apiInstance = axios.create({
   },
 });
 
-//request
+// Request Interceptor: Attach token
 apiInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("accessToken");
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-      console.log("Token added to headers:", token);
-    } else {
-      console.log("No token found");
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-//response
+// Response Interceptor: Handle 401
 apiInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
       localStorage.clear();
       sessionStorage.clear();
+      window.dispatchEvent(new Event("unauthorized"));
     }
     return Promise.reject(error);
   }

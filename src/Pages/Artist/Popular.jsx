@@ -36,10 +36,11 @@ import { getAllArtitst } from "../Redux/Action/action";
 import { useAuth } from "../Context/AuthContext";
 import { useFav } from "../Context/FavContext";
 import { toast } from "react-toastify";
+import useFetchData from "../../Hooks/useFetchData";
 
 const Popular = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
   const { isGoogleLogin, isLoggedIn } = useAuth();
   const { selectedId, setSelectedId } = useFav();
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -54,13 +55,8 @@ const Popular = () => {
   };
 
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  localStorage.setItem(
-    "accessToken",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1MzI0MzI5NiwiZXhwIjoxNzUzMzI5Njk2fQ.g_B7bQOiUUxS2JuSUQrcnrNey8yKCANhgjvXftGkwoo"
-  );
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
 
   const data1 = [
     {
@@ -149,27 +145,34 @@ const Popular = () => {
     },
   ];
 
-  useEffect(() => {
-    async function fetchData() {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        console.warn("No token found, skipping API call");
-        setError("Unauthorized: Please login first");
-        setLoading(false);
-        return;
-      }
-      try {
-        const response = await apiInstance.get(apiRoutes.GET_ALL_ARTIST);
-        setData(response.data.data);
-        dispatch(getAllArtitst());
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const token = localStorage.getItem("accessToken");
+  //     if (!token) {
+  //       console.warn("No token found, skipping API call");
+  //       setError("Unauthorized: Please login first");
+  //       setLoading(false);
+  //       return;
+  //     }
+  //     try {
+  //       const response = await apiInstance.get(apiRoutes.GET_ALL_ARTIST);
+  //       setData(response.data.data);
+  //       dispatch(getAllArtitst());
+  //     } catch (error) {
+  //       setError(error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+  //   fetchData();
+  // }, []);
+
+  const { data, loading, error } = useFetchData({
+    endpoint: apiRoutes.GET_ALL_ARTIST,
+    onSuccess: (artists) => {
+      dispatch(getAllArtitst());
+    },
+  });
 
   if (error) {
     return <div>Error...</div>;
