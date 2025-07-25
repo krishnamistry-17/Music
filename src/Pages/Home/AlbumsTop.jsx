@@ -41,7 +41,7 @@ const AlbumsTop = () => {
 
   localStorage.setItem(
     "accessToken",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1MzMzNTI4NiwiZXhwIjoxNzUzNDIxNjg2fQ.W141LUi9udS3RFw-v1DRAu34G7IItOevZ90TN7PbdH8"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1MzQxNTYyNiwiZXhwIjoxNzUzNTAyMDI2fQ.P-_H2HEja_b8jyKmu1KTKzofF03zcZNQAnqsmS7qr48"
   );
 
   useEffect(() => {

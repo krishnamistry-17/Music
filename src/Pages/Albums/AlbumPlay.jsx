@@ -15,7 +15,6 @@ import { useAlbum } from "../Context/AlbumContext";
 import albumSingle from "../albumSingle";
 
 const AlbumPlay = () => {
-  
   const {
     currentSong,
     isPlaying,

@@ -53,7 +53,7 @@ const AudioMusic = () => {
 
   return (
     <div
-      className=" text-white p-3
+      className=" text-white p-2
     grid md:grid-cols-3 grid-cols-2 
     justify-between items-center 
     lg:gap-60 rounded-md shadow-md "

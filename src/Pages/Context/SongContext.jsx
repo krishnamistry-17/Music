@@ -14,6 +14,7 @@ export const SongProvider = ({ children }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
+  const [allplay, setAllPlay] = useState([]);
   const audioRef = useRef(null);
 
   const currentSong = songs[currentIndex] || null;
@@ -71,6 +72,8 @@ export const SongProvider = ({ children }) => {
         isRepeat,
         setIsRepeat,
         audioRef,
+        allplay,
+        setAllPlay,
       }}
     >
       {children}

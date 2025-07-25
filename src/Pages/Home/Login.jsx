@@ -17,7 +17,7 @@ import { loginWithEmail, loginWithGoogle } from "../../service/authService";
 
 const Login = ({ onSuccess }) => {
   const [isClicked, setIsClicked] = useState(false);
-  const { setIsLoggedIn, setIsGoogleLogin, setUserProfile } = useAuth();
+  const { setIsLoggedIn, setIsGoogleLogin, setUserProfile, login } = useAuth();
 
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
@@ -64,11 +64,12 @@ const Login = ({ onSuccess }) => {
 
     try {
       const data = await loginWithEmail(email, password);
-      setIsLoggedIn(true);
-      setData(data);
-      dispatch(getLogin(data));
-      notify();
-      onSuccess();
+      login(data.token);
+      // setData(data);
+      // dispatch(getLogin(data));
+      // notify();
+      // onSuccess();
+      toast.success("Login Sucessfull");
       navigate("/album", { state: { tokenReady: true } });
     } catch (error) {
       setError(error.response?.data?.message || "Login Failed");
@@ -79,15 +80,16 @@ const Login = ({ onSuccess }) => {
     }
   };
 
-  const login = useGoogleLogin({
+  const loginGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
         const data = await loginWithGoogle(tokenResponse.access_token);
-        const { name, email, picture } = data;
+        const { name, email, picture, token } = data;
 
-        setIsGoogleLogin(true);
-        setUserProfile({ name, email, image: picture });
+        // setIsGoogleLogin(true);
+        // setUserProfile({ name, email, image: picture });
 
+        login(token, { name, email, image: picture }, true);
         toast.success("Google Login Success");
         navigate("/album", { state: { tokenReady: true } });
       } catch (error) {
@@ -179,7 +181,7 @@ const Login = ({ onSuccess }) => {
             <span className="border-t-[1px] block flex-1 border-white"></span>
           </div>
           <div
-            onClick={() => login()}
+            onClick={() => loginGoogle()}
             className="mt-[20px] flex justify-center items-center w-full py-[7px] border-[2px] rounded-[4px] border-white cursor-pointer"
           >
             <img src={google} alt="Google" />

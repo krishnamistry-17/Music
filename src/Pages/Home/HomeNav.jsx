@@ -17,6 +17,10 @@ const HomeNav = ({
   const { isGoogleLogin, userProfile, logout } = useAuth();
   const [isdisplayDetail, setDisplayDetail] = useState();
 
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
     <div>
       <div className="lg:flex hidden items-center gap-[12px] w-full">
@@ -87,7 +91,7 @@ const HomeNav = ({
                         <p className="text-white pt-1.5 ">User Detail</p>
                       </div>
                       <button
-                        onClick={logout}
+                        onClick={handleLogout}
                         className="flex items-center gap-2 text-white hover:text-darkpink pt-1"
                       >
                         <img

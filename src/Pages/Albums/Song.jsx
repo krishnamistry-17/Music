@@ -35,7 +35,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
-import { getallAlbum } from "../Redux/Action/action";
+import { addFavorites, getallAlbum } from "../Redux/Action/action";
 import { useAuth } from "../Context/AuthContext";
 import { useFav } from "../Context/FavContext";
 import { toast } from "react-toastify";
@@ -66,7 +66,9 @@ const Song = () => {
   const [data, setData] = useState([]);
 
   const { isGoogleLogin, isLoggedIn } = useAuth();
-  const { selectedId, setSelectedId } = useFav();
+  const { selectedId, setSelectedId, favorites, setFavorites } = useFav();
+  console.log("favorites :", favorites);
+  console.log("selectedId :", selectedId);
   const [selectedIndex, setSelectedIndex] = useState(null);
 
   const dispatch = useDispatch();
@@ -234,13 +236,17 @@ const Song = () => {
     }
   };
 
-  const handleClick = (index) => {
-    if (!isLoggedIn || !isGoogleLogin) {
-      toast.warn("Please log in to use this feature.");
-    } else {
-      setSelectedId(selectedId === index ? null : index);
-      toast.success("Added to favorites..");
+  const handleClick = (song) => {
+    if (!isLoggedIn && !isGoogleLogin) {
+      toast.warn("Please log in to add favorites.");
+      return;
     }
+
+    // Dispatch action to add favorite song
+    dispatch(addFavorites(song));
+
+    setSelectedId(song._id);
+    toast.success("Song added to favourites");
   };
 
   if (!id) {
@@ -373,11 +379,11 @@ const Song = () => {
 
                       {/* Favorite + Duration + Options */}
                       <div className="flex justify-end lg:gap-2.5 gap-8 py-[17.5px] pr-[9px]">
-                        <div onClick={() => handleClick(index)}>
+                        <div onClick={() => handleClick(song)}>
                           {isLoggedIn || isGoogleLogin ? (
                             <img
                               src={
-                                selectedId === index
+                                favorites.some((fav) => fav._id === song._id)
                                   ? extra?.ffull
                                   : extra?.fimg
                               }

@@ -32,3 +32,24 @@ export const getLogin = (users) => {
     payload: users,
   };
 };
+
+export const getAllFavourites = (id) => {
+  return {
+    type: "GET_ALLFAVOURITES",
+    payload: id,
+  };
+};
+
+export const addFavorites = (song) => {
+  return {
+    type: "ADD_FAVORITES",
+    payload: song,
+  };
+};
+
+export const removeFromFavourite = (removefav) => {
+  return {
+    type: "REMOVE_FAVORITES",
+    payload: removefav,
+  };
+};
