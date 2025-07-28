@@ -55,7 +55,6 @@ import AlbumPlay from "./AlbumPlay";
 const Albums = () => {
   const { id } = useParams();
   const { selectedAlbum, album: allAlbums, setAlbum } = useAlbum();
-  console.log("allAlbums :", allAlbums);
 
   const [activeIndex, setActiveIndex] = useState(2);
   const navigate = useNavigate();
@@ -233,7 +232,7 @@ const Albums = () => {
   const optionData = [
     {
       items: [
-        { img: bhome, activeimg: phome, name: "Home" },
+        { img: bhome, activeimg: phome, name: "Home", path: "/" },
         { img: bdisc, activeimg: pdisc, name: "Discover", path: "/discover" },
         { img: albumb, activeimg: palbum, name: "Album", path: "/album" },
         { img: bartist, activeimg: part, name: "Artist", path: "/artist" },
@@ -252,7 +251,7 @@ const Albums = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     const updateContent = () => {
       const width = window.innerWidth;
-      if (width >= 425) setVisibleContent(425);
+      if (width >= 425 && width <= 992) setVisibleContent(425);
       else setVisibleContent(320);
     };
     updateContent();
@@ -386,7 +385,7 @@ const Albums = () => {
                       mix
                     </span>
                   </h2>
-                  <p className=" text-white text-[20px] font-Vazirmatn-600 py-[44px]">
+                  <p className=" text-white text-[20px] font-Vazirmatn-600 py-[44px] ">
                     {currentAlbum?.artistId?.bio ||
                       "tate mcree, nightmares, the neighberhood, doja cat and ..."}
                   </p>
@@ -442,7 +441,9 @@ const Albums = () => {
             <div className="lg:flex justify-between items-center">
               <div
                 className={`${
-                  visibleContent >= 425 ? "flex p-5" : "block p-5"
+                  visibleContent >= 425 && visibleContent <= 992
+                    ? "flex p-5"
+                    : " p-5"
                 }`}
               >
                 <div>
@@ -455,9 +456,9 @@ const Albums = () => {
                   />
                 </div>
                 <div className="md:pl-4 pl-3 pt-[27px] mx-8">
-                  <h2 className=" text-white font-Vazirmatn-700 text-[20px] truncate ">
+                  <p className=" text-white font-Vazirmatn-700 text-[12px] truncate sm:block hidden">
                     {currentAlbum?.artistId?.bio || "The Eminem Show"}
-                  </h2>
+                  </p>
                   <div className="flex gap-2.5 pt-4">
                     <img
                       src={currentAlbum?.albumImages?.[0] || song}
@@ -503,7 +504,7 @@ const Albums = () => {
           </div>
         )}
 
-        <div className=" lg:hidden sticky bottom-0 z-50 bg-blackbg">
+        <div className=" lg:hidden sticky bottom-0 z-auto bg-blackbg">
           {optionData.map((section, sectionIndex) => (
             <div
               key={sectionIndex}

@@ -13,10 +13,7 @@ import SmallFooter from "../Footer/SmallFooter";
 const Discover = () => {
   return (
     <div>
-      <div className="lg:flex hidden">
-        <div>
-          <SideBar />
-        </div>
+      <div className="lg:block hidden">
         <div>
           <DisContent />
         </div>

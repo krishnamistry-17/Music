@@ -17,7 +17,7 @@ const SmallFooter = () => {
   const optionData = [
     {
       items: [
-        { img: bhome, activeimg: phome, name: "Home" },
+        { img: bhome, activeimg: phome, name: "Home", path: "/" },
         { img: bdisc, activeimg: pdisc, name: "Discover", path: "/discover" },
         { img: albumb, activeimg: palbum, name: "Album", path: "/album" },
         { img: bartist, activeimg: part, name: "Artist", path: "/artist" },

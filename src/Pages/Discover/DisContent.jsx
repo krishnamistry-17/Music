@@ -13,8 +13,6 @@ const DisContent = () => {
   const tabsectionRef = useRef(null);
 
   const [activeTab, setActiveTab] = useState("signup");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  console.log("isLoggedIn :", isLoggedIn);
 
   const handleSucess = () => {
     setIsLoggedIn(true);
@@ -29,18 +27,6 @@ const DisContent = () => {
 
   return (
     <div>
-      {/* <div className="pt-[64px] pl-[50px] pr-[89px]">
-        <div>
-          <HomeNav
-            tabsectionRef={tabsectionRef}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            scrollToTabs={scrollToTabs}
-            isLoggedIn={isLoggedIn}
-            setIsLoggedIn={setIsLoggedIn}
-          />
-        </div>
-      </div> */}
       <div className="pt-[23px] pl-[12px] pr-[64px]">
         <MusicGeners searchQuery={inputvalue} />
       </div>

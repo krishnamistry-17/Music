@@ -8,4 +8,6 @@ export const apiRoutes = {
   ADD_FAVOURITES: "/favourite/add-to-favourite",
   GET_ALLFAVORITES: "/favourite/get-all-favourite-current-user",
   GET_SPECIFICFAV: "/favourite/get-favourite-specific-song",
+  REMOVE_FAV: "/favourite/remove-favourite",
+  GET_GENRE: "/genre/get-all-genre",
 };

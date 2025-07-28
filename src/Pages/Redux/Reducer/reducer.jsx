@@ -14,7 +14,7 @@ const initialState = {
   id: [],
   songId: [],
   favorites: [],
-  removefav: [],
+  genere: [],
 };
 
 const MusicReducer = (state = initialState, action) => {
@@ -38,11 +38,23 @@ const MusicReducer = (state = initialState, action) => {
       return { ...state, id: [...state.id, action.payload] };
 
     case "ADD_FAVORITES":
-      console.log("Reducer recied>>>>>>>", action.payload);
-      return { ...state, favorites: [...state.favorites, action.payload] };
+      const alreadyExists = state.favorites.some(
+        (fav) => fav._id === action.payload._id
+      );
+      return alreadyExists
+        ? state
+        : { ...state, favorites: [...state.favorites, action.payload] };
 
     case "REMOVE_FAVORITES":
-      return { ...state, removefav: [...state.removefav, action.payload] };
+      return {
+        ...state,
+        favorites: state.favorites.filter(
+          (song) => song._id !== action.payload._id
+        ),
+      };
+
+    case "GET_GENERE":
+      return { ...state, genere: [...state.genere, action.payload] };
 
     default:
       return state;

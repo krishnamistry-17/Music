@@ -1,17 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import pfav from "../../assets/svgs/pfav.svg";
 import pfull from "../../assets/svgs/pffav.svg";
 import plus from "../../assets/svgs/plus.svg";
 import { FaPause } from "react-icons/fa6";
 import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
-import { getAllSong } from "../Redux/Action/action";
+import { addFavorites, getAllSong } from "../Redux/Action/action";
 import { useAuth } from "../Context/AuthContext";
 import { FaPlay } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useSong } from "../Context/SongContext";
 import { useFav } from "../Context/FavContext";
+import { useParams } from "react-router-dom";
 // import useFetchData from "../Hooks/useFetchData";
 
 const TrendingSong = () => {
@@ -26,13 +27,20 @@ const TrendingSong = () => {
     currentIndex,
   } = useSong();
 
+  const { id } = useParams();
   const { selectedId, setSelectedId } = useFav();
+
   const { isLoggedIn, isGoogleLogin } = useAuth();
 
+  const favorites = useSelector((state) => state.favorites);
+
   const [data, setData] = useState([]);
+  console.log("data >>>trend:", data);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const dispatch = useDispatch();
 
   const data1 = [
     { id: 0, fimg: pfav, fullimg: pfull, ptime: "3:26" },
@@ -56,8 +64,10 @@ const TrendingSong = () => {
       }
       try {
         const response = await apiInstance.get(apiRoutes.GET_ALL_SONG);
-        setData(response.data.data);
-        setSongs(response.data.data);
+        const albums = response.data.data;
+        setData(albums);
+        setSongs(albums);
+
         dispatch(getAllSong());
       } catch (error) {
         setError(error);
@@ -68,12 +78,12 @@ const TrendingSong = () => {
     fetchData();
   }, [setSongs]);
 
-  if (!error) {
-    return <div>Error...</div>;
+  if (error) {
+    return <div className="text-white">Error...</div>;
   }
 
   if (loading) {
-    return <div>Loading..</div>;
+    return <div className="text-white">Loading..</div>;
   }
 
   const handleSelect = (index, item) => {
@@ -82,7 +92,7 @@ const TrendingSong = () => {
       return;
     }
 
-    if (!isLoggedIn || !isGoogleLogin) {
+    if (!isLoggedIn && !isGoogleLogin) {
       toast.warn("Please Log In To Play Music.");
     } else {
       playSongAt(index);
@@ -90,13 +100,15 @@ const TrendingSong = () => {
     }
   };
 
-  const handleClick = (index) => {
-    if (!isLoggedIn || !isGoogleLogin) {
-      toast.warn("Please log in to use this feature.");
-    } else {
-      setSelectedId(selectedId === index ? null : index);
-      toast.success("Added to favorites..");
+  const handleClick = (song) => {
+    if (!isGoogleLogin && !isLoggedIn) {
+      toast.warn("Please log in to add favorites");
+      return;
     }
+
+    dispatch(addFavorites(song));
+    setSelectedId(song._id);
+    toast.success("Song added to favorites");
   };
 
   const togglePlay = () => setIsPlaying((p) => !p);
@@ -107,7 +119,7 @@ const TrendingSong = () => {
         <p className="text-white text-[32px] font-Vazirmatn-700">
           Trending <span className="text-darkpink">Songs</span>
         </p>
-        <div className=" ">
+        <div>
           <div className="flex justify-between items-end md:px-5 ">
             <div>
               <p></p>
@@ -143,7 +155,7 @@ const TrendingSong = () => {
             <div className="flex flex-col items-center mt-4 md:mr-4 mr-3">
               {data?.map((item, index) => (
                 <div
-                  key={item.id}
+                  key={item._id}
                   className="lg:py-[20px] py-[25px] text-white flex items-center justify-center"
                 >
                   {isLoggedIn || isGoogleLogin ? (
@@ -212,14 +224,14 @@ const TrendingSong = () => {
 
                         <div
                           className="flex justify-end lg:gap-2.5 gap-8 py-[17.5px] pr-[9px]"
-                          onClick={() => handleClick(index)}
+                          onClick={() => handleClick(item)}
                         >
                           {isLoggedIn || isGoogleLogin ? (
                             <div>
                               {" "}
                               <img
                                 src={
-                                  selectedId === index
+                                  favorites.some((fav) => fav._id === item._id)
                                     ? extra?.fullimg
                                     : extra?.fimg
                                 }

@@ -8,9 +8,12 @@ import AlbumsTop from "./AlbumsTop";
 import MoodPlay from "../Discover/MoodPlay";
 import TrendingSong from "./TrendingSong";
 import Platform from "./Platform";
+import { useAuth } from "../Context/AuthContext";
 
 const Content = () => {
   const tabsectionRef = useRef(null);
+
+  const { setIsLoggedIn } = useAuth();
 
   const [activeTab, setActiveTab] = useState("signup");
 

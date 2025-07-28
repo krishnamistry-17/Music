@@ -29,10 +29,10 @@ import music6 from "../../assets/images/music6.jpg";
 // import music19 from "../../assets/images/music19.png";
 // import music20 from "../../assets/images/music20.jpg";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
-import { getAllArtitst } from "../Redux/Action/action";
+import { addFavorites, getAllArtitst } from "../Redux/Action/action";
 import { useAuth } from "../Context/AuthContext";
 import { useFav } from "../Context/FavContext";
 import { toast } from "react-toastify";
@@ -45,16 +45,9 @@ const Popular = () => {
   const { selectedId, setSelectedId } = useFav();
   const [selectedIndex, setSelectedIndex] = useState(null);
 
-  const handleClick = (index) => {
-    if (!isLoggedIn || !isGoogleLogin) {
-      toast.warn("Please log in to use this feature.");
-    } else {
-      setSelectedId(selectedId === index ? null : index);
-      toast.success("Added to favorites..");
-    }
-  };
-
   const dispatch = useDispatch();
+
+  const favorites = useSelector((state) => state.favorites);
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
 
@@ -145,6 +138,11 @@ const Popular = () => {
     },
   ];
 
+  localStorage.setItem(
+    "accessToken",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1MzY3NTY3OCwiZXhwIjoxNzUzNzYyMDc4fQ.hI-LhoC-TG1lK8fEqATg7LB8GrCZV8qIRN58w_lYAx0"
+  );
+
   // useEffect(() => {
   //   async function fetchData() {
   //     const token = localStorage.getItem("accessToken");
@@ -175,12 +173,22 @@ const Popular = () => {
   });
 
   if (error) {
-    return <div>Error...</div>;
+    return <div className="text-white">Error...</div>;
   }
 
   if (loading) {
-    return <div>Loading..</div>;
+    return <div className="text-white">Loading..</div>;
   }
+
+  const handleClick = (song) => {
+    if (!isGoogleLogin && !isLoggedIn) {
+      toast.warn("Please log in to add favorites");
+      return;
+    }
+    dispatch(addFavorites(song));
+    setSelectedId(song._id);
+    toast.success("Song added to favorites");
+  };
 
   return (
     <div>
@@ -275,13 +283,15 @@ const Popular = () => {
                         </div>
 
                         <div className="flex justify-end lg:gap-2.5 gap-9 py-[17.5px] lg:pr-5">
-                          <div onClick={() => handleClick(index)}>
+                          <div onClick={() => handleClick(item)}>
                             {isLoggedIn || isGoogleLogin ? (
                               <div>
                                 {" "}
                                 <img
                                   src={
-                                    selectedId === index
+                                    favorites.some(
+                                      (fav) => fav._id === item._id
+                                    )
                                       ? extra?.ffull
                                       : extra?.fimg
                                   }

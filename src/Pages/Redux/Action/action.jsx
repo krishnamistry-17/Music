@@ -47,9 +47,16 @@ export const addFavorites = (song) => {
   };
 };
 
-export const removeFromFavourite = (removefav) => {
+export const removeFromFavourites = (song) => {
   return {
     type: "REMOVE_FAVORITES",
-    payload: removefav,
+    payload: song,
+  };
+};
+
+export const getAllGenere = (genere) => {
+  return {
+    type: "GET_GENERE",
+    payload: genere,
   };
 };

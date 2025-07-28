@@ -19,6 +19,8 @@ import AlbumPlay from "./Pages/Albums/AlbumPlay";
 import useIsLargeScreen from "./Pages/Context/useIsLargeScreen";
 import { AlbumProvider } from "./Pages/Context/AlbumContext";
 import Song from "./Pages/Albums/Song";
+import DisPlay from "./Pages/Discover/DisPlay";
+import { GenereProvider } from "./Pages/Context/GenereContext";
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
@@ -29,6 +31,8 @@ function LayoutWrapper({ children }) {
   const showOtherMusic =
     (isLoggedIn || isGoogleLogin) &&
     (location.pathname === "/album" || location.pathname.startsWith("/album/"));
+  const showOtherMusic1 =
+    (isLoggedIn || isGoogleLogin) && location.pathname === "/discover";
   const hasBottomPlayer = showAudio || showOtherMusic;
 
   return (
@@ -60,6 +64,12 @@ function LayoutWrapper({ children }) {
               <AlbumPlay />
             </div>
           )}
+
+          {showOtherMusic1 && (
+            <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#181818] border-t border-gray-700">
+              <DisPlay />
+            </div>
+          )}
         </div>
       </div>
     </>
@@ -75,35 +85,40 @@ function App() {
         <AuthProvider>
           <AlbumProvider>
             <SongProvider>
-              <FavProvider>
-                {isLarge ? (
-                  <LayoutWrapper>
+              <GenereProvider>
+                <FavProvider>
+                  {isLarge ? (
+                    <LayoutWrapper>
+                      <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/discover" element={<Discover />} />
+                        <Route
+                          path="/album"
+                          element={<Albums album={Song} />}
+                        />
+                        <Route path="/album/:id" element={<Albums />} />
+                        <Route path="/artist" element={<Artist />} />
+                        <Route path="/login" element={<LoginSmall />} />
+                        <Route path="/signup" element={<SignUpSmall />} />
+                        <Route path="/favorites" element={<Favorites />} />
+                      </Routes>
+                    </LayoutWrapper>
+                  ) : (
                     <Routes>
                       <Route path="/" element={<Home />} />
                       <Route path="/discover" element={<Discover />} />
-                      <Route path="/album" element={<Albums album={Song} />} />
-                      <Route path="/album/:id" element={<Albums />} />
+                      <Route path="/album" element={<Albums />} />{" "}
+                      <Route path="/album/:id" element={<Albums />} />{" "}
                       <Route path="/artist" element={<Artist />} />
                       <Route path="/login" element={<LoginSmall />} />
                       <Route path="/signup" element={<SignUpSmall />} />
                       <Route path="/favorites" element={<Favorites />} />
                     </Routes>
-                  </LayoutWrapper>
-                ) : (
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/discover" element={<Discover />} />
-                    <Route path="/album" element={<Albums />} />{" "}
-                    <Route path="/album/:id" element={<Albums />} />{" "}
-                    <Route path="/artist" element={<Artist />} />
-                    <Route path="/login" element={<LoginSmall />} />
-                    <Route path="/signup" element={<SignUpSmall />} />
-                    <Route path="/favorites" element={<Favorites />} />
-                  </Routes>
-                )}
-                <ToastContainer />
-                {isLarge && <Footer />}
-              </FavProvider>
+                  )}
+                  <ToastContainer />
+                  {isLarge && <Footer />}
+                </FavProvider>
+              </GenereProvider>
             </SongProvider>
           </AlbumProvider>
         </AuthProvider>

@@ -23,6 +23,8 @@ const Menu = () => {
   const handleToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  const navigate = useNavigate();
   return (
     <div>
       <div>
@@ -31,7 +33,10 @@ const Menu = () => {
           <IoMenu className="text-darkpink w-[35px] h-[35px]" />
         </button>
         {isMenuOpen && (
-          <div className="fixed top-0 left-0 w-full h-full  bg-black z-[1000] overflow-y-auto">
+          <div
+            className="fixed top-0 left-0 w-full h-full  bg-black z-[1000] overflow-y-auto"
+            // style={{ height: "calc(100vh - 198px)", scrollbarWidth: "none" }}
+          >
             <div
               className="flex flex-col h-full "
               onClick={() => setIsMenuOpen(false)}
@@ -142,7 +147,10 @@ const Menu = () => {
                   <h2 className="text-[#EE10B0] text-[14px] pb-4">
                     Playlist and favorite
                   </h2>
-                  <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
+                  <button
+                    className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 "
+                    onClick={() => navigate("/favorites")}
+                  >
                     <span>
                       <img src={fav} alt="m" className="w-[23px] h-[20px]" />
                     </span>
