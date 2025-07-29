@@ -10,20 +10,6 @@ import HomeNav from "../Home/HomeNav";
 
 const DisContent = () => {
   const [inputvalue, setInputValue] = useState("");
-  const tabsectionRef = useRef(null);
-
-  const [activeTab, setActiveTab] = useState("signup");
-
-  const handleSucess = () => {
-    setIsLoggedIn(true);
-  };
-
-  const scrollToTabs = () => {
-    tabsectionRef.current?.scrollIntoView({
-      behaviour: "smooth",
-      block: "end",
-    });
-  };
 
   return (
     <div>

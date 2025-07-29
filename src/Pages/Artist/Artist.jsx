@@ -387,7 +387,7 @@ const Artist = () => {
           <Fans />
         </div>
 
-        <div className=" lg:hidden sticky bottom-0 z-50 bg-blackbg">
+        <div className=" lg:hidden sticky bottom-0 z-auto bg-blackbg">
           {optionData.map((section, sectionIndex) => (
             <div
               key={sectionIndex}

@@ -14,20 +14,6 @@ import music3 from "../../assets/images/music3.png";
 import music4 from "../../assets/images/music4.png";
 import music5 from "../../assets/images/music5.png";
 import music6 from "../../assets/images/music6.jpg";
-// import music7 from "../../assets/images/music7.png";
-// import music8 from "../../assets/images/music8.jpg";
-// import music9 from "../../assets/images/music9.jpg";
-// import music10 from "../../assets/images/music10.jpg";
-// import music11 from "../../assets/images/music11.jpg";
-// import music12 from "../../assets/images/music12.jpg";
-// import music13 from "../../assets/images/music13.jpg";
-// import music14 from "../../assets/images/music14.png";
-// import music15 from "../../assets/images/music15.png";
-// import music16 from "../../assets/images/music16.jpg";
-// import music17 from "../../assets/images/music17.png";
-// import music18 from "../../assets/images/music18.jpg";
-// import music19 from "../../assets/images/music19.png";
-// import music20 from "../../assets/images/music20.jpg";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import apiInstance from "../../../utils/axios";
@@ -138,32 +124,12 @@ const Popular = () => {
     },
   ];
 
-  localStorage.setItem(
-    "accessToken",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1MzY3NTY3OCwiZXhwIjoxNzUzNzYyMDc4fQ.hI-LhoC-TG1lK8fEqATg7LB8GrCZV8qIRN58w_lYAx0"
-  );
-
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const token = localStorage.getItem("accessToken");
-  //     if (!token) {
-  //       console.warn("No token found, skipping API call");
-  //       setError("Unauthorized: Please login first");
-  //       setLoading(false);
-  //       return;
-  //     }
-  //     try {
-  //       const response = await apiInstance.get(apiRoutes.GET_ALL_ARTIST);
-  //       setData(response.data.data);
-  //       dispatch(getAllArtitst());
-  //     } catch (error) {
-  //       setError(error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    localStorage.setItem(
+      "accessToken",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1Mzc2MTQ1MCwiZXhwIjoxNzUzODQ3ODUwfQ.D768Gk5N9HzV3FRXpsuJn90uSubsqmOabk1PmFDcfRI"
+    );
+  }, []);
 
   const { data, loading, error } = useFetchData({
     endpoint: apiRoutes.GET_ALL_ARTIST,

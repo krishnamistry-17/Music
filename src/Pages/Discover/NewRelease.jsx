@@ -13,6 +13,7 @@ import { getAllSong } from "../Redux/Action/action";
 import { toast } from "react-toastify";
 import { useAuth } from "../Context/AuthContext";
 import { useSong } from "../Context/SongContext";
+import { usePlayerSource } from "../Context/PlayerSourceContext";
 
 const NewRelease = () => {
   const {
@@ -25,13 +26,13 @@ const NewRelease = () => {
     audioRef,
     currentIndex,
   } = useSong();
+  const { setSource } = usePlayerSource();
   const { id } = useParams();
   const { isLoggedIn, isGoogleLogin } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
 
   const [data, setData] = useState([]);
-  console.log("data >>>new release:", data);
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -65,7 +66,7 @@ const NewRelease = () => {
   useEffect(() => {
     localStorage.setItem(
       "accessToken",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1MzY3NTY3OCwiZXhwIjoxNzUzNzYyMDc4fQ.hI-LhoC-TG1lK8fEqATg7LB8GrCZV8qIRN58w_lYAx0"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1Mzc2MTQ1MCwiZXhwIjoxNzUzODQ3ODUwfQ.D768Gk5N9HzV3FRXpsuJn90uSubsqmOabk1PmFDcfRI"
     );
   }, []);
 
@@ -113,8 +114,11 @@ const NewRelease = () => {
     if (!isLoggedIn && !isGoogleLogin) {
       toast.warn("Please Log In To Play Music.");
     } else {
+      setSongs(data);
       playSongAt(index);
+      setSource("newrelease");
       setCurrentIndex(index);
+      setIsPlaying(true);
     }
   };
 
@@ -181,7 +185,10 @@ const NewRelease = () => {
         >
           {data.map((item, index) => (
             <div key={item._id || index}>
-              <div className="bg-[#1F1F1F] w-[130px] h-[185px]  rounded-[10px] py-[4px] px-[8px]">
+              <div
+                className="bg-[#1F1F1F] w-[130px] h-[185px]  rounded-[10px] py-[4px] px-[8px]"
+                onClick={() => handleSelect(index, item._id)}
+              >
                 <img src={item.songImage?.[0]} alt="a1" className="]" />
                 <div>
                   <p className="text-white text-[14px] font-Vazirmatn-500 pt-[8px]">

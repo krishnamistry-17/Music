@@ -6,7 +6,11 @@ import plus from "../../assets/svgs/plus.svg";
 import { FaPause } from "react-icons/fa6";
 import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
-import { addFavorites, getAllSong } from "../Redux/Action/action";
+import {
+  addFavorites,
+  getAllSong,
+  removeFromFavourites,
+} from "../Redux/Action/action";
 import { useAuth } from "../Context/AuthContext";
 import { FaPlay } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -106,9 +110,15 @@ const TrendingSong = () => {
       return;
     }
 
-    dispatch(addFavorites(song));
-    setSelectedId(song._id);
-    toast.success("Song added to favorites");
+    if (selectedId === song._id) {
+      dispatch(removeFromFavourites(song));
+      setSelectedId(null);
+      toast.success("Song removed from favorites");
+    } else {
+      dispatch(addFavorites(song));
+      setSelectedId(song._id);
+      toast.success("Song added to favorites");
+    }
   };
 
   const togglePlay = () => setIsPlaying((p) => !p);

@@ -13,7 +13,7 @@ const Billie = () => {
           className="sm:h-[260px] h-[215px] rounded-[5px] w-full"
         />
 
-        <div className=" absolute p-[16px] top-4">
+        <div className=" absolute p-[16px] top-4 z-auto">
           <p className="sm:text-[20px] text-[14px] font-Vazirmatn-600 text-white">
             Billie Eilish
           </p>

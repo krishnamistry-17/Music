@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import SignUp from "./SignUp";
 import Login from "./Login";
+import ForgetPassword from "./ForgetPassword";
 
 const Platform = ({ tabsectionRef, onLoginSuccess, scrollToTabs }) => {
   const [activeTab, setActiveTab] = useState("signup");
@@ -20,6 +21,7 @@ const Platform = ({ tabsectionRef, onLoginSuccess, scrollToTabs }) => {
             <span className="text-darkblue">Login button.</span>
           </p>
         </div>
+
         <div className="w-[476.5px] rounded-[12px] bg-bgpink">
           <div className="py-[16px] px-[25px]">
             <Tabs>
@@ -52,9 +54,15 @@ const Platform = ({ tabsectionRef, onLoginSuccess, scrollToTabs }) => {
                 </TabList>
 
                 {activeTab === "signup" && (
-                  <SignUp onSuccess={() => setActiveTab("login")} />
+                  <SignUp
+                    onSuccess={() => setActiveTab("login")}
+                    onForgotPassword={() => setActiveTab("forgot")}
+                  />
                 )}
                 {activeTab === "login" && <Login onSuccess={onLoginSuccess} />}
+                {activeTab === "forgot" && (
+                  <ForgetPassword onBackToLogin={() => setActiveTab("login")} />
+                )}
               </div>
             </Tabs>
           </div>

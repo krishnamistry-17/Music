@@ -11,6 +11,12 @@ import { MdOutlineQueueMusic } from "react-icons/md";
 import { MdOutlineFullscreen } from "react-icons/md";
 import { IoMdVolumeMute } from "react-icons/io";
 import { IoMdVolumeOff } from "react-icons/io";
+import pfav from "../../assets/svgs/pfav.svg";
+import pfull from "../../assets/svgs/pffav.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { addFavorites, removeFromFavourites } from "../Redux/Action/action";
+import { toast } from "react-toastify";
+import { useFav } from "../Context/FavContext";
 
 const AudioMusic = () => {
   const {
@@ -31,6 +37,10 @@ const AudioMusic = () => {
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0);
   const [ismuted, setIsMuted] = useState(false);
+  const { selectedId, setSelectedId } = useFav();
+  const favourites = useSelector((state) => state.favorites);
+
+  const dispatch = useDispatch();
 
   const handleVolumeChange = (e) => {
     //handle the volume change
@@ -51,14 +61,28 @@ const AudioMusic = () => {
   const onVolumeChange = (e) =>
     (audioRef.current.volume = parseFloat(e.target.value));
 
+  const handleClick = (song) => {
+    const isFav = favourites.some((fav) => fav._id === song._id);
+
+    if (isFav) {
+      dispatch(removeFromFavourites(song));
+      setSelectedId(null);
+      toast.success("Song removed from favourites..");
+    } else {
+      dispatch(addFavorites(song));
+      setSelectedId(song._id);
+      toast.success("Song added to favourites");
+    }
+  };
+
   return (
     <div
-      className=" text-white p-2
+      className=" text-white p-4 gap-6
     grid md:grid-cols-3 grid-cols-2 
     justify-between items-center 
     lg:gap-60 rounded-md shadow-md "
     >
-      <div className="flex gap-2">
+      <div className="flex gap-2 items-center">
         <img
           src={currentSong?.songImage}
           alt={currentSong?.title || "Song"}
@@ -68,9 +92,25 @@ const AudioMusic = () => {
           <p className="lg:text-[18px] text-[16px] font-Vazirmatn-500  truncate max-w-xs">
             {currentSong?.title}
           </p>
-          <p className="lg:text-[14px] text-[12px] font-Vazirmatn-300 text-white truncate max-w-xs">
-            {currentSong?.artistId?.name}
-          </p>
+          <div className="flex gap-2">
+            <p className="lg:text-[14px] text-[12px] font-Vazirmatn-300 text-white truncate max-w-xs">
+              {currentSong?.artistId?.name}
+            </p>
+            {/*Fav */}
+            <div>
+              <div onClick={() => handleClick(currentSong)}>
+                <img
+                  src={
+                    favourites.some((fav) => fav._id === currentSong._id)
+                      ? pfull
+                      : pfav
+                  }
+                  alt="fav"
+                  className="w-[18px] h-[18px] sm:hidden"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -115,12 +155,27 @@ const AudioMusic = () => {
               }`}
             />
           </div>
+
+          {/*Fav */}
+          <div>
+            <div onClick={() => handleClick(currentSong)}>
+              <img
+                src={
+                  favourites.some((fav) => fav._id === currentSong._id)
+                    ? pfull
+                    : pfav
+                }
+                alt="fav"
+                className="sm:block hidden"
+              />
+            </div>
+          </div>
         </div>
 
         {/* Progress Bar */}
         <div className="flex items-center gap-4 mt-1 lg:-ml-19">
           <div>
-            <span className="md:block hidden">
+            <span className="sm:block hidden">
               {Math.floor(currentTime / 60)}:
               {String(Math.floor(currentTime % 60)).padStart(2, "0")}
             </span>
@@ -142,7 +197,7 @@ const AudioMusic = () => {
             />
           </div>
           <div>
-            <span className="md:block hidden">
+            <span className="sm:block hidden">
               {Math.floor(duration / 60)}:
               {String(Math.floor(duration % 60)).padStart(2, "0")}
             </span>

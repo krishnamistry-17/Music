@@ -39,10 +39,12 @@ const AlbumsTop = () => {
     return () => window.removeEventListener("resize", updateCount);
   }, []);
 
-  localStorage.setItem(
-    "accessToken",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1MzY3NTY3OCwiZXhwIjoxNzUzNzYyMDc4fQ.hI-LhoC-TG1lK8fEqATg7LB8GrCZV8qIRN58w_lYAx0"
-  );
+  useEffect(() => {
+    localStorage.setItem(
+      "accessToken",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1Mzc2MTQ1MCwiZXhwIjoxNzUzODQ3ODUwfQ.D768Gk5N9HzV3FRXpsuJn90uSubsqmOabk1PmFDcfRI"
+    );
+  }, []);
 
   useEffect(() => {
     async function fetchData() {

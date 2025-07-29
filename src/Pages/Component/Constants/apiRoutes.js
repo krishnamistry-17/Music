@@ -5,6 +5,7 @@ export const apiRoutes = {
   GET_SIGNUP: "/users/signup",
   GET_LOGIN: "/users/login",
   GET_GLOGIN: "/users/google",
+  FORGOT_PASSWORD: "/admins/forgot-password",
   ADD_FAVOURITES: "/favourite/add-to-favourite",
   GET_ALLFAVORITES: "/favourite/get-all-favourite-current-user",
   GET_SPECIFICFAV: "/favourite/get-favourite-specific-song",

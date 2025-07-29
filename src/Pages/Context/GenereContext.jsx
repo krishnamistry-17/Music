@@ -9,18 +9,17 @@ export const GenereProvider = ({ children }) => {
   const { id } = useParams();
   const [selectedAlbumGenere, setSelectedAlbumGenere] = useState([]);
   const [selectedAlbumGenId, setSelectedAlbumGenId] = useState(0);
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+
   const [isShuffle, setIsShuffle] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
   const audioRef = useRef(null);
   const [album, setAlbum] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // const [selectedAlbumGenere, setSelectedAlbumGenere] = useState([]); // array of songs
-  // const [currentSongIndex, setCurrentSongIndex] = useState(0);
-  // const [isPlaying, setIsPlaying] = useState(false);
 
-  const currentSong = selectedAlbumGenere[selectedAlbumGenId];
+  const currentSong = selectedAlbumGenere?.[currentSongIndex];
 
   useEffect(() => {
     async function fetchData() {
@@ -54,21 +53,19 @@ export const GenereProvider = ({ children }) => {
   };
 
   const playNext = () => {
-    if (selectedAlbumGenere.length === 0) return;
-
-    if (isShuffle) {
-      const rand = Math.floor(Math.random() * selectedAlbumGenere.length);
-      setSelectedAlbumGenId(rand);
+    if (currentSongIndex < selectedAlbumGenere.length - 1) {
+      setCurrentSongIndex(currentSongIndex + 1); //next song
+      setIsPlaying(true); //play next song auto
     } else {
-      setSelectedAlbumGenId((prev) => (prev + 1) % selectedAlbumGenere.length);
+      setCurrentSongIndex(0);
+      setIsPlaying(true);
     }
   };
   const playPrevious = () => {
-    if (selectedAlbum.length === 0) return;
-    setSelectedAlbumGenId(
-      (prev) =>
-        (prev - 1 + selectedAlbumGenere.length) % selectedAlbumGenere.length
-    );
+    if (currentSongIndex > 0) {
+      setCurrentSongIndex(currentSongIndex - 1);
+      setIsPlaying(true);
+    }
   };
 
   useEffect(() => {
@@ -91,6 +88,8 @@ export const GenereProvider = ({ children }) => {
         setSelectedAlbumGenere,
         selectedAlbumGenId,
         setSelectedAlbumGenId,
+        currentSongIndex,
+        setCurrentSongIndex,
         currentSong,
         playNext,
         playPrevious,

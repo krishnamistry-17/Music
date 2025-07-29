@@ -15,7 +15,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { loginWithEmail, loginWithGoogle } from "../../service/authService";
 
-const Login = ({ onSuccess }) => {
+const Login = ({ onSuccess, onForgotPassword }) => {
   const [isClicked, setIsClicked] = useState(false);
   const { setIsLoggedIn, setIsGoogleLogin, setUserProfile, login } = useAuth();
 
@@ -169,9 +169,12 @@ const Login = ({ onSuccess }) => {
             </div>
           </div>
           <div>
-            <a className="text-white text-[16px] font-Vazirmatn-500 underline hover:text-darkblue">
+            <button
+              className="text-white text-[16px] font-Vazirmatn-500 underline hover:text-darkblue"
+              onClick={onForgotPassword}
+            >
               Forgot Password
-            </a>
+            </button>
           </div>
           <div className="flex items-center justify-center pt-[12px]">
             <span className="border-t-[1px] block flex-1 border-white"></span>

@@ -12,29 +12,29 @@ import { useParams } from "react-router-dom";
 import { useGenere } from "../Context/GenereContext";
 import { useAuth } from "../Context/AuthContext";
 import { toast } from "react-toastify";
+import { usePlayerSource } from "../Context/PlayerSourceContext";
 
 const MusicGeners = () => {
   const {
     selectedAlbumGenere,
     setSelectedAlbumGenere,
-    selectedAlbumGenId,
     setSelectedAlbumGenId,
     setIsPlaying,
+    selectedAlbumGenId,
+    currentSong,
   } = useGenere();
 
-  console.log("selectedAlbumGenere :", selectedAlbumGenere);
   const { id } = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
   const [album, setAlbum] = useState(null);
   const [data, setData] = useState([]);
-  console.log("data>>>>genree :", data);
+  const { setSource } = usePlayerSource();
   const { isGoogleLogin, isLoggedIn } = useAuth();
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
-  const currentSong = selectedAlbumGenere?.[currentSongIndex];
 
   const dispatch = useDispatch();
 
@@ -64,7 +64,7 @@ const MusicGeners = () => {
   useEffect(() => {
     localStorage.setItem(
       "accessToken",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1MzY3NTY3OCwiZXhwIjoxNzUzNzYyMDc4fQ.hI-LhoC-TG1lK8fEqATg7LB8GrCZV8qIRN58w_lYAx0"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1Mzc2MTQ1MCwiZXhwIjoxNzUzODQ3ODUwfQ.D768Gk5N9HzV3FRXpsuJn90uSubsqmOabk1PmFDcfRI"
     );
   }, []);
 
@@ -107,10 +107,6 @@ const MusicGeners = () => {
     return <p className="text-white">Loading</p>;
   }
 
-  // const filteredAlbum = Array.isArray(album)
-  //   ? album.filter((a) => a._id === id)
-  //   : [];
-
   const handleSelect = (index) => {
     if (!isLoggedIn && !isGoogleLogin) {
       toast.warn("Please Log In To Play Music.");
@@ -118,23 +114,24 @@ const MusicGeners = () => {
     }
 
     const selectedGenre = data[index];
+
     if (!selectedGenre) {
       toast.warn("Selected genre is invalid.");
       return;
     }
 
-    // Assuming each genre has a 'songs' array
-    const songToPlay = selectedGenre.songs?.[0]; // pick first song in that genre, or add UI to pick song later
+    const songToPlay = selectedGenre.songs?.[0];
 
     if (!songToPlay?.cloudinaryUrl) {
       toast.warn("This song has no playable audio.");
       return;
     }
 
-    setSelectedAlbumGenere(selectedGenre.songs); // store array of songs
+    setSelectedAlbumGenere(selectedGenre.songs);
     setSelectedAlbumGenId(index);
+    setSource("musicgeners");
     setIsPlaying(true);
-    setCurrentSongIndex(0); // You need this state in your context or component to track which song is playing
+    setCurrentSongIndex(0);
   };
 
   return (
@@ -163,6 +160,7 @@ const MusicGeners = () => {
               <img src={item.genreImage?.[0]} alt="img1" />
             </div>
           ))}
+
         <div
           className="pl-[69px] py-[31px] cursor-pointer "
           onClick={() => setIsOpen(!isOpen)}
@@ -176,6 +174,32 @@ const MusicGeners = () => {
         </div>
       </div>
 
+      {/* <div className="grid grid-cols-1 gap-4">
+        {selectedAlbumGenere.map((item, index) => {
+          return (
+            <div
+              key={item._id || index}
+              className=" border border-gray-700 p-4 rounded bg-[#1E1E1E] flex justify-between"
+            >
+              <div className="flex items-center gap-4">
+                <div>
+                  <img
+                    src={item?.songImage}
+                    alt="image"
+                    className="w-[60px] h-[60px] rounded object-cover border"
+                  />
+                </div>
+                <div>
+                  <p className="text-white">{item.title} </p>
+                  <p className="text-white">{item.duration}</p>
+                </div>
+              </div>
+              <div></div>
+            </div>
+          );
+        })}
+      </div> */}
+
       <div className="md:hidden">
         <div
           className=" flex gap-3 overflow-x-auto pt-5"
@@ -185,7 +209,10 @@ const MusicGeners = () => {
             data.map((item, index) => {
               const extra = data3[index];
               return (
-                <div key={item._id || index}>
+                <div
+                  key={item._id || index}
+                  onClick={() => handleSelect(index)}
+                >
                   <div className="bg-[#1F1F1F] w-[150.67px] h-[165px] p-2 rounded-[8px] ">
                     <div className="p-2">
                       <img
