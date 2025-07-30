@@ -5,9 +5,6 @@ import google from "../../assets/svgs/google.svg";
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { getLogin } from "../Redux/Action/action";
-import apiInstance from "../../../utils/axios";
-import { apiRoutes } from "../Component/Constants/apiRoutes";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
@@ -73,10 +70,7 @@ const Login = ({ onSuccess, onForgotPassword }) => {
     onSuccess: async (tokenResponse) => {
       try {
         const data = await loginWithGoogle(tokenResponse.access_token);
-        const { name, email, picture, token } = data;
-
-        // setIsGoogleLogin(true);
-        // setUserProfile({ name, email, image: picture });
+        const { name, email, picture, token } = data
 
         login(token, { name, email, image: picture }, true);
         toast.success("Google Login Success");

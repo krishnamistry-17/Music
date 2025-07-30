@@ -47,6 +47,13 @@ export const getForgot = (email) => {
   };
 };
 
+export const getReset = (password) => {
+  return {
+    type: "RESET_PASSWORD",
+    payload: password,
+  };
+};
+
 export const getAllFavourites = (id) => {
   return {
     type: "GET_ALLFAVOURITES",

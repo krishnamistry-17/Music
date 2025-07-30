@@ -9,7 +9,6 @@ import plus from "../../assets/svgs/plus.svg";
 const WeeklyTop = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
-  
 
   const data = [
     { image: week1, para: "Whatever It Takes", head: "Imagne Dragons" },

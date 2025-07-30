@@ -17,6 +17,7 @@ const initialState = {
   genere: [],
   list: [],
   email: [],
+  password: [],
 };
 
 const MusicReducer = (state = initialState, action) => {
@@ -38,6 +39,9 @@ const MusicReducer = (state = initialState, action) => {
 
     case "GET_FORGOT":
       return { ...state, email: [...state.email, action.payload] };
+
+    case "RESET_PASSWORD":
+      return { ...state, password: [...state.password, action.payload] };
 
     case "GET_ALLFAVOURITES":
       return { ...state, id: [...state.id, action.payload] };

@@ -296,7 +296,7 @@ const Song = () => {
           </div>
         </div>
 
-        <div className="flex pt-[15px] mt-[-17px] px-2">
+        <div className="flex px-2">
           <div className="flex flex-col items-center mt-4 md:mr-4 mr-3">
             <div>
               {filteredAlbum?.map((album) =>
@@ -332,8 +332,7 @@ const Song = () => {
               )}
             </div>
           </div>
-
-          <div>
+          <div className=" text-white w-full grid grid-cols-1">
             {filteredAlbum.map((albumItem, index) => {
               const extra = data1[index];
               return (
@@ -342,7 +341,7 @@ const Song = () => {
                     <>
                       <div
                         key={song._id || songIndex}
-                        className="md:grid grid-cols-4 gap-6 bg-[#1E1E1E] relative mb-4 hidden"
+                        className="sm:grid grid-cols-4 gap-6 bg-[#1E1E1E] relative mb-4 hidden"
                         onClick={() => handleSelect(index)}
                       >
                         {/* Song Image + Title + Artist */}
@@ -496,7 +495,15 @@ const Song = () => {
                                     </p>
                                     <BiSolidRightArrow className="ml-[5px] w-[20px] h-[20px]" />
                                   </div>
-
+                                  <div
+                                    className="flex gap-2 items-center pt-2"
+                                    onClick={() => handleClick(song)}
+                                  >
+                                    <CiSaveUp1 className="text-white w-[22px] h-[22px]" />
+                                    <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
+                                      Save to favourites
+                                    </p>
+                                  </div>
                                   <div className="flex gap-2 items-center pt-2">
                                     <img
                                       src={artist}
@@ -527,6 +534,7 @@ const Song = () => {
             })}
           </div>
         </div>
+
         <div className=" flex justify-center items-center pb-8 pt-8">
           <button className="bg-darkpink px-4 py-[7px] text-white text-[14px] font-Vazirmatn-400 rounded-[4px]">
             Show More

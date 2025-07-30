@@ -19,7 +19,7 @@ const AllFavorites = () => {
 
   const dispatch = useDispatch();
 
-  if (!favorites.length) {
+  if (!favorites.length === 0) {
     return <div className="text-white">No favorite songs yet.</div>;
   }
 

@@ -4,8 +4,15 @@ import passwordp from "../../assets/svgs/password.svg";
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { toast } from "react-toastify";
+import apiInstance from "../../../utils/axios";
+import { apiRoutes } from "../Component/Constants/apiRoutes";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const ResetPassword = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const token = searchParams.get("token");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -17,15 +24,35 @@ const ResetPassword = () => {
   };
 
   useEffect(() => {
-    const handleReset = async () => {
-      if (!password && !confirmPassword) {
-        toast.warn("Please fill all details");
-      }
-      if (password !== confirmPassword) {
-        toast.error("Password do not match!");
-      }
-    };
-  });
+    if (!token) {
+      toast.error("Invalid or missing reset token");
+      navigate(onBackToLogin);
+    }
+  }, [token, navigate]);
+
+  const handleReset = async () => {
+    if (!password && !confirmPassword) {
+      toast.warn("Please fill all details");
+      return;
+    }
+    if (password !== confirmPassword) {
+      toast.error("Password do not match!");
+      return;
+    }
+    try {
+      const response = await apiInstance.post(apiRoutes.RESET_PASSWORD, {
+        token: token,
+        newPassword: password,
+        confirmPassword: confirmPassword,
+      });
+      console.log("response >>>:", response);
+      toast.success("Password reset successfully");
+      navigate("/");
+    } catch (error) {
+      console.error("Reset Error", error);
+      toast.error(error.response?.data?.message);
+    }
+  };
 
   return (
     <div>
@@ -36,35 +63,74 @@ const ResetPassword = () => {
               <IoIosArrowBack />
               <p className="text-white">Reset Password</p>
             </div>
-            <p className="text-white text-[16px] font-Vazirmatn-500">
-              Password
-            </p>
-            <div
-              className="flex justify-between w-full h-[40px]  border-[2px] rounded-[4px]
+
+            <div className="mb-2">
+              <p className="text-white text-[16px] font-Vazirmatn-500">
+                New Password
+              </p>
+              <div
+                className="flex justify-between w-full h-[40px]  border-[2px] rounded-[4px]
                                      border-bordercolor mt-[8px] py-[8px] "
-            >
-              <div className="flex pl-[8px]">
-                <img src={passwordp} alt="password" />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  placeholder="Enter Your Password"
-                  className=" opacity-75 pl-[4px] text-[12px] font-Vazirmatn-400 text-white w-full
+              >
+                <div className="flex pl-[8px]">
+                  <img src={passwordp} alt="password" />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter Your Password"
+                    className=" opacity-75 pl-[4px] text-[12px] font-Vazirmatn-400 text-white w-full
                                       focus:ring-0 focus:outline-none focus:shadow-none
                                      "
-                />
+                  />
+                </div>
+                <div className="flex justify-end mr-4" onClick={togglePassword}>
+                  {isClicked && showPassword ? (
+                    <div>
+                      <FaEye className="text-white" />
+                    </div>
+                  ) : (
+                    <div>
+                      {" "}
+                      <FaEyeSlash className="text-white" />
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className="flex justify-end mr-4" onClick={togglePassword}>
-                {isClicked && showPassword ? (
-                  <div>
-                    <FaEye className="text-white" />
-                  </div>
-                ) : (
-                  <div>
-                    {" "}
-                    <FaEyeSlash className="text-white" />
-                  </div>
-                )}
+            </div>
+
+            <div className="mb-2">
+              <p className="text-white text-[16px] font-Vazirmatn-500">
+                Confirm New Password
+              </p>
+              <div
+                className="flex justify-between w-full h-[40px]  border-[2px] rounded-[4px]
+                                     border-bordercolor mt-[8px] py-[8px] "
+              >
+                <div className="flex pl-[8px]">
+                  <img src={passwordp} alt="password" />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Enter Your Password"
+                    className=" opacity-75 pl-[4px] text-[12px] font-Vazirmatn-400 text-white w-full
+                                      focus:ring-0 focus:outline-none focus:shadow-none
+                                     "
+                  />
+                </div>
+                <div className="flex justify-end mr-4" onClick={togglePassword}>
+                  {isClicked && showPassword ? (
+                    <div>
+                      <FaEye className="text-white" />
+                    </div>
+                  ) : (
+                    <div>
+                      {" "}
+                      <FaEyeSlash className="text-white" />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -73,6 +139,7 @@ const ResetPassword = () => {
                 <button
                   className="text-[18px] text-white font-Vazirmatn-500 text-center py-[8px] px-[181.75px]"
                   type="submit"
+                  onClick={handleReset}
                 >
                   Reset Password
                 </button>

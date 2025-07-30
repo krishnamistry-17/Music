@@ -34,7 +34,7 @@ import part from "../../assets/svgs/part.svg";
 import bdisc from "../../assets/svgs/bdisc.svg";
 import albumb from "../../assets/svgs/albumb.svg";
 import discb from "../../assets/svgs/discb.svg";
-import { data, Link, useNavigate } from "react-router-dom";
+import { data, Link, useNavigate, useParams } from "react-router-dom";
 import Popular from "./Popular";
 import ArtAlbum from "./ArtAlbum";
 import SingleSong from "./SingleSong";
@@ -44,11 +44,17 @@ import { useLocation } from "react-router-dom";
 import SideBar from "../SideBar/SideBar";
 import { useAuth } from "../Context/AuthContext";
 import Menu from "../SideBar/Menu";
+import { useArtist } from "../Context/ArtistContext";
 
 const Artist = () => {
+  const { id } = useParams();
+  const { album: allAlbums } = useArtist();
+
   const [activeIndex, setActiveIndex] = useState(2);
-  const { isLoggedIn, isGoogleLogin, userProfile, logout } = useAuth();
+  const { isLoggedIn, isGoogleLogin, logout } = useAuth();
   const [isdisplayDetail, setDisplayDetail] = useState();
+
+  const [currentAlbum, setCurrentAlbum] = useState(null);
 
   const navigate = useNavigate();
   const location = useLocation();

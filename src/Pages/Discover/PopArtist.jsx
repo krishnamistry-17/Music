@@ -6,23 +6,23 @@ import artist44 from "../../assets/images/artist44.png";
 import artist55 from "../../assets/images/artist55.png";
 import artist66 from "../../assets/images/artist66.png";
 import plus from "../../assets/svgs/plus.svg";
+import useFetchData from "../../Hooks/useFetchData";
+import { apiRoutes } from "../Component/Constants/apiRoutes";
+import { useDispatch } from "react-redux";
+import { getAllArtitst } from "../Redux/Action/action";
+import apiInstance from "../../../utils/axios";
+import { useArtist } from "../Context/ArtistContext";
+import { useNavigate } from "react-router-dom";
 
 const PopArtist = ({ searchQuery }) => {
+  const { selectedArtist, setSelectedArtist } = useArtist();
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
 
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const data = [
-    { image: artist11, para: "Eminiem" },
-    { image: artist22, para: "The Weekend" },
-    { image: artist33, para: "Adele" },
-    { image: artist44, para: "Lana Del Ray" },
-    { image: artist55, para: "Harry Styles" },
-    { image: artist66, para: "Billie Eilish" },
-    { image: artist33, para: "Adele" },
-    { image: artist22, para: "The Weekend" },
-    { image: artist11, para: "Eminiem" },
-  ];
   const data3 = [
     { image: artist11, para: "Eminiem" },
     { image: artist22, para: "The Weekend" },
@@ -34,6 +34,10 @@ const PopArtist = ({ searchQuery }) => {
     { image: artist22, para: "The Weekend" },
     { image: artist11, para: "Eminiem" },
   ];
+
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const updateCount = () => {
@@ -48,11 +52,40 @@ const PopArtist = ({ searchQuery }) => {
     return () => window.removeEventListener("resize", updateCount);
   }, []);
 
-  const allArtists = ["Eminiem", "The Weekend", "Adele", "Billie Eilish"];
+  useEffect(() => {
+    async function fetchData() {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        console.warn("No token found, skipping API call");
+        setError("Unauthorized: Please login first");
+        setLoading(false);
+        return;
+      }
+      try {
+        const response = await apiInstance.get(apiRoutes.GET_ALL_ARTIST);
+        setData(response.data.data);
+        setSelectedArtist(response.data.data);
+        dispatch(getAllArtitst());
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, [setSelectedArtist]);
 
-  const filteredArtists = allArtists.filter((artist) =>
-    artist.toLowerCase().includes(searchQuery?.toLowerCase())
-  );
+  if (error) {
+    return <div className="text-white">Error...</div>;
+  }
+
+  if (loading) {
+    return <div className="text-white">Loading..</div>;
+  }
+
+  const handleArtist = (artistId) => {
+    navigate(`/artist/${artistId}`);
+  };
 
   return (
     <div>
@@ -72,21 +105,17 @@ const PopArtist = ({ searchQuery }) => {
           className=" hidden md:grid lg:grid-cols-6 md:grid-cols-4 gap-[24px] overflow-x-auto"
           style={{ scrollbarWidth: "none" }}
         >
-          {(isOpen ? data : data.slice(0, visibleCount)).map((item, index) => (
-            <div key={index}>
-              <div className=" ">
-                <div className="">
-                  <img src={item.image} alt="a1" className="pl-4" />
+          {Array.isArray(data) &&
+            (isOpen ? data : data.slice(0, visibleCount)).map((item, index) => (
+              <div key={item._id || index}>
+                <div onClick={() => handleArtist(item._id)}>
+                  <img src={item.artistImage?.[0]} alt="a1" className="pl-4" />
                   <p className="text-white text-[16px] font-Vazirmatn-500 pt-[23px] text-center">
-                    {filteredArtists.map((artist, index) => (
-                      <div key={index}>{artist.para}</div>
-                    ))}
-                    {item.para}
+                    {item?.name}
                   </p>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
 
           <div
             className="pl-[24px] py-[64px] cursor-pointer "
@@ -106,17 +135,17 @@ const PopArtist = ({ searchQuery }) => {
           className=" flex gap-3 overflow-x-auto pt-5"
           style={{ scrollbarWidth: "none" }}
         >
-          {data3.map((item, index) => (
-            <div key={index}>
-              <div className=" ">
+          {data.map((item, index) => (
+            <div key={item._id || index}>
+              <div onClick={() => handleArtist(item._id)}>
                 <div className="p-2">
                   <img
-                    src={item.image}
+                    src={item.artistImage?.[0]}
                     alt="a1"
                     className="  max-w-[175px] max-h-[100px]"
                   />
                   <p className="text-white text-[12px] font-Vazirmatn-300 pt-[23px]  text-center">
-                    {item.para}
+                    {item.name}
                   </p>
                 </div>
               </div>

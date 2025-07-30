@@ -46,7 +46,7 @@ const DisPlay = () => {
   const favorites = useSelector((state) => state.favorites);
 
   const dispatch = useDispatch();
- 
+
   useEffect(() => {
     if (!audioRef.current) return;
     const audio = audioRef.current;
@@ -143,6 +143,20 @@ const DisPlay = () => {
           <div className="flex flex-col py-1">
             <div>
               <p className="text-white">{currentSong?.title}</p>
+              {/*Fav */}
+              <div>
+                <div onClick={() => handleClick(currentSong)}>
+                  <img
+                    src={
+                      favorites.some((fav) => fav._id === currentSong._id)
+                        ? pfull
+                        : pfav
+                    }
+                    alt="fav"
+                    className="w-[18px] h-[18px] md:hidden"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -34,7 +34,7 @@ const Menu = () => {
         </button>
         {isMenuOpen && (
           <div
-            className="fixed top-0 left-0 w-full h-full  bg-black z-50 overflow-y-auto"
+            className="fixed top-0 left-0 w-full h-full  bg-black z-auto overflow-y-auto"
             // style={{ height: "calc(100vh - 198px)", scrollbarWidth: "none" }}
           >
             <div

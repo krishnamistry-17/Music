@@ -6,10 +6,11 @@ export const apiRoutes = {
   GET_LOGIN: "/users/login",
   GET_GLOGIN: "/users/google",
   FORGOT_PASSWORD: "/admins/forgot-password",
+  RESET_PASSWORD: "/admins/reset-password",
   ADD_FAVOURITES: "/favourite/add-to-favourite",
   GET_ALLFAVORITES: "/favourite/get-all-favourite-current-user",
   GET_SPECIFICFAV: "/favourite/get-favourite-specific-song",
   REMOVE_FAV: "/favourite/remove-favourite",
   GET_GENRE: "/genre/get-all-genre",
-  GET_ALLPLAYLIST: "/playlist/get-all-playlist"
+  GET_ALLPLAYLIST: "/playlist/get-all-playlist",
 };

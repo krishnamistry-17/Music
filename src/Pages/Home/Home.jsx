@@ -3,7 +3,6 @@ import SideBar from "../SideBar/SideBar";
 import Content from "./Content";
 import HomeSideBar from "./HomeSideBar";
 import SmallFooter from "../Footer/SmallFooter";
-import WeeklyTop from "./WeeklyTop";
 import NewRelease from "../Discover/NewRelease";
 import PopArtist from "../Discover/PopArtist";
 import VideoMusic from "./VideoMusic";
@@ -16,6 +15,7 @@ import { useAuth } from "../Context/AuthContext";
 import AudioMusic from "./AudioMusic";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
 import Playmood from "../Discover/Playmood";
+import WeeklyTop from "./WeeklyTop";
 
 const Home = () => {
   const { isLoggedIn, isGoogleLogin } = useAuth();
@@ -74,13 +74,13 @@ const Home = () => {
         </div>
 
         {(isLoggedIn || isGoogleLogin) && (
-          <div className="fixed bottom-25 left-0 right-0 z-50  bg-[#252525] rounded-md  border-t border-gray-700 lg:hidden">
+          <div className="fixed bottom-25 left-0 right-0 z-40  bg-[#252525] rounded-md  border-t border-gray-700 lg:hidden">
             {source === "newrelease" && <AudioMusic />}
             {source === "moodplay" && <Playmood />}
           </div>
         )}
 
-        <div className="fixed bottom-0 left-0 right-0 z-40">
+        <div className="fixed bottom-0 left-0 right-0 z-auto">
           <SmallFooter />
         </div>
       </div>

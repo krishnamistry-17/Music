@@ -28,6 +28,9 @@ import {
 } from "./Pages/Context/PlayerSourceContext";
 import { MoodProvider } from "./Pages/Context/MoodContext";
 import Playmood from "./Pages/Discover/Playmood";
+import ResetPassword from "./Pages/Home/ResetPassword";
+import { ArtistProvider } from "./Pages/Context/ArtistContext";
+import Popular from "./Pages/Artist/Popular";
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
@@ -96,21 +99,53 @@ function App() {
       <BrowserRouter>
         <AuthProvider>
           <AlbumProvider>
-            <SongProvider>
-              <GenereProvider>
-                <MoodProvider>
-                  <FavProvider>
-                    <PlayerSourceProvider>
-                      {isLarge ? (
-                        <LayoutWrapper>
+            <ArtistProvider>
+              <SongProvider>
+                <GenereProvider>
+                  <MoodProvider>
+                    <FavProvider>
+                      <PlayerSourceProvider>
+                        {isLarge ? (
+                          <LayoutWrapper>
+                            <Routes>
+                              <Route path="/" element={<Home />} />
+                              <Route path="/discover" element={<Discover />} />
+                              <Route
+                                path="/album"
+                                element={<Albums album={Song} />}
+                              />
+                              <Route path="/album/:id" element={<Albums />} />
+                              <Route
+                                path="/artist"
+                                element={<Artist album={Popular} />}
+                              />
+                              <Route path="/artist/:id" element={<Artist />} />
+                              {/* <Route
+                              path="/reset-password"
+                              element={<ResetPassword />}
+                            /> */}
+                              <Route
+                                path="/reset-password"
+                                element={<ResetPassword />}
+                              />
+                              <Route path="/login" element={<LoginSmall />} />
+                              <Route path="/signup" element={<SignUpSmall />} />
+                              <Route
+                                path="/forgotpassword"
+                                element={<ForgetPassword />}
+                              />
+                              <Route
+                                path="/favorites"
+                                element={<Favorites />}
+                              />
+                            </Routes>
+                          </LayoutWrapper>
+                        ) : (
                           <Routes>
                             <Route path="/" element={<Home />} />
                             <Route path="/discover" element={<Discover />} />
-                            <Route
-                              path="/album"
-                              element={<Albums album={Song} />}
-                            />
-                            <Route path="/album/:id" element={<Albums />} />
+                            <Route path="/album" element={<Albums />} />{" "}
+                            <Route path="/album/:id" element={<Albums />} />{" "}
                             <Route path="/artist" element={<Artist />} />
                             <Route path="/login" element={<LoginSmall />} />
                             <Route path="/signup" element={<SignUpSmall />} />
@@ -120,30 +155,15 @@ function App() {
                             />
                             <Route path="/favorites" element={<Favorites />} />
                           </Routes>
-                        </LayoutWrapper>
-                      ) : (
-                        <Routes>
-                          <Route path="/" element={<Home />} />
-                          <Route path="/discover" element={<Discover />} />
-                          <Route path="/album" element={<Albums />} />{" "}
-                          <Route path="/album/:id" element={<Albums />} />{" "}
-                          <Route path="/artist" element={<Artist />} />
-                          <Route path="/login" element={<LoginSmall />} />
-                          <Route path="/signup" element={<SignUpSmall />} />
-                          <Route
-                            path="/forgotpassword"
-                            element={<ForgetPassword />}
-                          />
-                          <Route path="/favorites" element={<Favorites />} />
-                        </Routes>
-                      )}
-                      <ToastContainer />
-                      {isLarge && <Footer />}
-                    </PlayerSourceProvider>
-                  </FavProvider>
-                </MoodProvider>
-              </GenereProvider>
-            </SongProvider>
+                        )}
+                        <ToastContainer />
+                        {isLarge && <Footer />}
+                      </PlayerSourceProvider>
+                    </FavProvider>
+                  </MoodProvider>
+                </GenereProvider>
+              </SongProvider>
+            </ArtistProvider>
           </AlbumProvider>
         </AuthProvider>
       </BrowserRouter>

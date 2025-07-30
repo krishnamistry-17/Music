@@ -61,11 +61,10 @@ const Albums = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [visibleContent, setVisibleContent] = useState();
-  const { isLoggedIn, isGoogleLogin, userProfile, logout } = useAuth();
+  const { isLoggedIn, isGoogleLogin, logout } = useAuth();
   const [isdisplayDetail, setDisplayDetail] = useState();
 
   const [currentAlbum, setCurrentAlbum] = useState(null);
-
 
   const data1 = [
     {

@@ -20,7 +20,6 @@ import { toast } from "react-toastify";
 import { useMood } from "../Context/MoodContext";
 
 const Playmood = () => {
-    
   const {
     currentSong,
     isPlaying,
@@ -142,6 +141,20 @@ const Playmood = () => {
           <div className="flex flex-col py-1">
             <div>
               <p className="text-white">{currentSong?.title}</p>
+              {/*Fav */}
+              <div>
+                <div onClick={() => handleClick(currentSong)}>
+                  <img
+                    src={
+                      favorites.some((fav) => fav._id === currentSong._id)
+                        ? pfull
+                        : pfav
+                    }
+                    alt="fav"
+                    className="w-[18px] h-[18px] md:hidden"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -151,7 +164,7 @@ const Playmood = () => {
             {/* Shuffle */}
             <div>
               <FaShuffle
-                className={`cursor-pointer ${
+                className={`cursor-pointer md:block hidden ${
                   isShuffle ? "text-green-400" : "text-white"
                 }`}
                 onClick={() => setIsShuffle(!isShuffle)}

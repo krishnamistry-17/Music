@@ -74,13 +74,13 @@ const Discover = () => {
         </div>
 
         {(isLoggedIn || isGoogleLogin) && (
-          <div className="fixed bottom-25 left-0 right-0 z-50 bg-[#252525] rounded-md border-t border-gray-700 lg:hidden">
+          <div className="fixed bottom-25 left-0 right-0 z-40 bg-[#252525] rounded-md border-t border-gray-700 lg:hidden">
             {source === "musicgeners" && <DisPlay />}
             {source === "moodplay" && <Playmood />}
           </div>
         )}
 
-        <div className="fixed bottom-0 left-0 right-0 z-40 bg-blackbg">
+        <div className="fixed bottom-0 left-0 right-0 z-auto bg-blackbg">
           <SmallFooter />
         </div>
       </div>
