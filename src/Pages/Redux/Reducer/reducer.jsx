@@ -15,6 +15,8 @@ const initialState = {
   songId: [],
   favorites: [],
   genere: [],
+  list: [],
+  email: [],
 };
 
 const MusicReducer = (state = initialState, action) => {
@@ -33,6 +35,9 @@ const MusicReducer = (state = initialState, action) => {
 
     case "GET_LOGIN":
       return { ...state, users: action.payload };
+
+    case "GET_FORGOT":
+      return { ...state, email: [...state.email, action.payload] };
 
     case "GET_ALLFAVOURITES":
       return { ...state, id: [...state.id, action.payload] };
@@ -55,6 +60,9 @@ const MusicReducer = (state = initialState, action) => {
 
     case "GET_GENERE":
       return { ...state, genere: [...state.genere, action.payload] };
+
+    case "GET_ALL_PLAYLIST":
+      return { ...state, list: [...state.list, action.payload] };
 
     default:
       return state;

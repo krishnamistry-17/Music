@@ -26,6 +26,8 @@ import {
   PlayerSourceProvider,
   usePlayerSource,
 } from "./Pages/Context/PlayerSourceContext";
+import { MoodProvider } from "./Pages/Context/MoodContext";
+import Playmood from "./Pages/Discover/Playmood";
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
@@ -77,6 +79,7 @@ function LayoutWrapper({ children }) {
             <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#181818] border-t border-gray-700">
               {source === "newrelease" && <AudioMusic />}
               {source === "musicgeners" && <DisPlay />}
+              {source === "moodplay" && <Playmood />}
             </div>
           )}
         </div>
@@ -95,18 +98,35 @@ function App() {
           <AlbumProvider>
             <SongProvider>
               <GenereProvider>
-                <FavProvider>
-                  <PlayerSourceProvider>
-                    {isLarge ? (
-                      <LayoutWrapper>
+                <MoodProvider>
+                  <FavProvider>
+                    <PlayerSourceProvider>
+                      {isLarge ? (
+                        <LayoutWrapper>
+                          <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/discover" element={<Discover />} />
+                            <Route
+                              path="/album"
+                              element={<Albums album={Song} />}
+                            />
+                            <Route path="/album/:id" element={<Albums />} />
+                            <Route path="/artist" element={<Artist />} />
+                            <Route path="/login" element={<LoginSmall />} />
+                            <Route path="/signup" element={<SignUpSmall />} />
+                            <Route
+                              path="/forgotpassword"
+                              element={<ForgetPassword />}
+                            />
+                            <Route path="/favorites" element={<Favorites />} />
+                          </Routes>
+                        </LayoutWrapper>
+                      ) : (
                         <Routes>
                           <Route path="/" element={<Home />} />
                           <Route path="/discover" element={<Discover />} />
-                          <Route
-                            path="/album"
-                            element={<Albums album={Song} />}
-                          />
-                          <Route path="/album/:id" element={<Albums />} />
+                          <Route path="/album" element={<Albums />} />{" "}
+                          <Route path="/album/:id" element={<Albums />} />{" "}
                           <Route path="/artist" element={<Artist />} />
                           <Route path="/login" element={<LoginSmall />} />
                           <Route path="/signup" element={<SignUpSmall />} />
@@ -116,27 +136,12 @@ function App() {
                           />
                           <Route path="/favorites" element={<Favorites />} />
                         </Routes>
-                      </LayoutWrapper>
-                    ) : (
-                      <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/discover" element={<Discover />} />
-                        <Route path="/album" element={<Albums />} />{" "}
-                        <Route path="/album/:id" element={<Albums />} />{" "}
-                        <Route path="/artist" element={<Artist />} />
-                        <Route path="/login" element={<LoginSmall />} />
-                        <Route path="/signup" element={<SignUpSmall />} />
-                        <Route
-                          path="/forgotpassword"
-                          element={<ForgetPassword />}
-                        />
-                        <Route path="/favorites" element={<Favorites />} />
-                      </Routes>
-                    )}
-                    <ToastContainer />
-                    {isLarge && <Footer />}
-                  </PlayerSourceProvider>
-                </FavProvider>
+                      )}
+                      <ToastContainer />
+                      {isLarge && <Footer />}
+                    </PlayerSourceProvider>
+                  </FavProvider>
+                </MoodProvider>
               </GenereProvider>
             </SongProvider>
           </AlbumProvider>

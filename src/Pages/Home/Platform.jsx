@@ -54,12 +54,14 @@ const Platform = ({ tabsectionRef, onLoginSuccess, scrollToTabs }) => {
                 </TabList>
 
                 {activeTab === "signup" && (
-                  <SignUp
-                    onSuccess={() => setActiveTab("login")}
+                  <SignUp onSuccess={() => setActiveTab("login")} />
+                )}
+                {activeTab === "login" && (
+                  <Login
+                    onSuccess={onLoginSuccess}
                     onForgotPassword={() => setActiveTab("forgot")}
                   />
                 )}
-                {activeTab === "login" && <Login onSuccess={onLoginSuccess} />}
                 {activeTab === "forgot" && (
                   <ForgetPassword onBackToLogin={() => setActiveTab("login")} />
                 )}

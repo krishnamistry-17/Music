@@ -12,10 +12,12 @@ import DisPlay from "./DisPlay";
 import { useAuth } from "../Context/AuthContext";
 import search from "../../assets/svgs/bsearch.svg";
 import Menu from "../SideBar/Menu";
+import Playmood from "./Playmood";
+import { usePlayerSource } from "../Context/PlayerSourceContext";
 
 const Discover = () => {
   const { isLoggedIn, isGoogleLogin } = useAuth();
-
+  const { source } = usePlayerSource();
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
@@ -29,11 +31,11 @@ const Discover = () => {
       </div>
 
       <div className="lg:hidden">
-        <div className=" flex justify-between items-center px-4 py-2 sticky top-0 z-50  bg-blackbg">
+        <div className="flex justify-between items-center px-4 py-2 sticky top-0 z-50 bg-blackbg">
           <img
             src={search}
             alt="back"
-            className=" text-bluearrow w-[35px] h-[35px]"
+            className="text-bluearrow w-[35px] h-[35px]"
           />
           <h2 className="text-[32px] font-Vazirmatn-800 text-darkpink">
             Dis<span className="text-blue">cover</span>
@@ -42,14 +44,17 @@ const Discover = () => {
             <Menu />
           </div>
         </div>
-        <div style={{ height: "calc(100vh - 220px)", scrollbarWidth: "none" }}>
+
+        <div
+          style={{
+            height: "calc(100vh - 64px)",
+            overflowY: "auto",
+            paddingBottom: "220px",
+            scrollbarWidth: "none",
+          }}
+        >
           <div className="pt-[28px] pl-[24px]">
             <MusicGeners />
-            {(isLoggedIn || isGoogleLogin) && (
-              <div className="fixed bottom-24 left-0 right-0 z-50   bg-[#252525] rounded-md  border-t border-gray-700 lg:hidden">
-                <DisPlay />
-              </div>
-            )}
           </div>
           <div className="pt-[28px] pl-[24px]">
             <MoodPlay />
@@ -66,9 +71,17 @@ const Discover = () => {
           <div className="pt-[28px] pl-[24px]">
             <TopAlbums />
           </div>
-          <div className=" sticky bottom-0 z-auto">
-            <SmallFooter />
+        </div>
+
+        {(isLoggedIn || isGoogleLogin) && (
+          <div className="fixed bottom-25 left-0 right-0 z-50 bg-[#252525] rounded-md border-t border-gray-700 lg:hidden">
+            {source === "musicgeners" && <DisPlay />}
+            {source === "moodplay" && <Playmood />}
           </div>
+        )}
+
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-blackbg">
+          <SmallFooter />
         </div>
       </div>
     </div>

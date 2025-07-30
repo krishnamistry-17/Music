@@ -19,6 +19,13 @@ export const getAllSong = (song) => {
   };
 };
 
+export const getAllPlaylist = (list) => {
+  return {
+    type: "GET_ALL_PLAYLIST",
+    payload: list,
+  };
+};
+
 export const getSignUp = (user) => {
   return {
     type: "GET_SIGNUP",
@@ -30,6 +37,13 @@ export const getLogin = (users) => {
   return {
     type: "GET_LOGIN",
     payload: users,
+  };
+};
+
+export const getForgot = (email) => {
+  return {
+    type: "GET_FORGOT",
+    payload: email,
   };
 };
 

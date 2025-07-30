@@ -17,7 +17,7 @@ import { loginWithEmail, loginWithGoogle } from "../../service/authService";
 
 const Login = ({ onSuccess, onForgotPassword }) => {
   const [isClicked, setIsClicked] = useState(false);
-  const { setIsLoggedIn, setIsGoogleLogin, setUserProfile, login } = useAuth();
+  const { login } = useAuth();
 
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,17 +37,6 @@ const Login = ({ onSuccess, onForgotPassword }) => {
   };
 
   const dispatch = useDispatch();
-
-  const notify = () =>
-    toast.success("Login successful!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
 
   const navigate = useNavigate();
 
@@ -168,31 +157,32 @@ const Login = ({ onSuccess, onForgotPassword }) => {
               </button>
             </div>
           </div>
-          <div>
-            <button
-              className="text-white text-[16px] font-Vazirmatn-500 underline hover:text-darkblue"
-              onClick={onForgotPassword}
-            >
-              Forgot Password
-            </button>
-          </div>
-          <div className="flex items-center justify-center pt-[12px]">
-            <span className="border-t-[1px] block flex-1 border-white"></span>
-            <span className="text-white leading-[3px] block px-5 text-[16px] font-Vazirmatn-500">
-              Or
-            </span>
-            <span className="border-t-[1px] block flex-1 border-white"></span>
-          </div>
-          <div
-            onClick={() => loginGoogle()}
-            className="mt-[20px] flex justify-center items-center w-full py-[7px] border-[2px] rounded-[4px] border-white cursor-pointer"
-          >
-            <img src={google} alt="Google" />
-            <p className="text-[16px] text-white font-Vazirmatn-500 text-justify pl-[6.25px]">
-              Sign in with Google
-            </p>
-          </div>
         </form>
+        <div>
+          <button
+            className="text-white text-[16px] font-Vazirmatn-500 underline hover:text-darkblue"
+            onClick={onForgotPassword}
+          >
+            Forgot Password
+          </button>
+        </div>
+
+        <div className="flex items-center justify-center pt-[12px]">
+          <span className="border-t-[1px] block flex-1 border-white"></span>
+          <span className="text-white leading-[3px] block px-5 text-[16px] font-Vazirmatn-500">
+            Or
+          </span>
+          <span className="border-t-[1px] block flex-1 border-white"></span>
+        </div>
+        <div
+          onClick={() => loginGoogle()}
+          className="mt-[20px] flex justify-center items-center w-full py-[7px] border-[2px] rounded-[4px] border-white cursor-pointer"
+        >
+          <img src={google} alt="Google" />
+          <p className="text-[16px] text-white font-Vazirmatn-500 text-justify pl-[6.25px]">
+            Sign in with Google
+          </p>
+        </div>
       </div>
     </div>
   );

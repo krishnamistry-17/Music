@@ -4,7 +4,7 @@ const PlayerSourceContext = createContext();
 
 export const PlayerSourceProvider = ({ children }) => {
   const [source, setSource] = useState("musicgeners");
-  console.log("source :", source);
+ 
 
   return (
     <PlayerSourceContext.Provider value={{ source, setSource }}>
@@ -17,16 +17,18 @@ export const usePlayerSource = () => useContext(PlayerSourceContext);
 
 //if from diffrent route shows diff file then this
 // import { useLocation } from "react-router-dom";
-// import { useEffect, useState } from "react";
+// import { createContext, useContext, useEffect, useState } from "react";
 
-// const PlayerSourceProvider = ({ children }) => {
+// const PlayerSourceContext = createContext();
+
+// export const PlayerSourceProvider = ({ children }) => {
 //   const [source, setSource] = useState("");
 //   const location = useLocation();
 
 //   useEffect(() => {
 //     if (location.pathname === "/discover") {
 //       setSource("musicgeners");
-//     } else if (location.pathname === "/new") {
+//     } else if (location.pathname === "/") {
 //       setSource("newrelease");
 //     } else {
 //       setSource(""); // or some default
@@ -39,3 +41,5 @@ export const usePlayerSource = () => useContext(PlayerSourceContext);
 //     </PlayerSourceContext.Provider>
 //   );
 // };
+
+// export const usePlayerSource = useContext(PlayerSourceContext);

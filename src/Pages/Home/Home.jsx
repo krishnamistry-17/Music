@@ -14,9 +14,12 @@ import search from "../../assets/svgs/bsearch.svg";
 import Menu from "../SideBar/Menu";
 import { useAuth } from "../Context/AuthContext";
 import AudioMusic from "./AudioMusic";
+import { usePlayerSource } from "../Context/PlayerSourceContext";
+import Playmood from "../Discover/Playmood";
 
 const Home = () => {
   const { isLoggedIn, isGoogleLogin } = useAuth();
+  const { source } = usePlayerSource();
   return (
     <>
       <div>
@@ -39,17 +42,19 @@ const Home = () => {
             <Menu />
           </div>
         </div>
-        <div style={{ height: "calc(100vh - 220px)", scrollbarWidth: "none" }}>
+        <div
+          style={{
+            height: "calc(100vh - 64px)",
+            scrollbarWidth: "none",
+            overflowY: "auto",
+            paddingBottom: "220px",
+          }}
+        >
           <div className="pt-[28px] pl-[24px]">
             <WeeklyTop />
           </div>
           <div className="pt-[28px] pl-[24px]">
             <NewRelease />
-            {(isLoggedIn || isGoogleLogin) && (
-              <div className="fixed bottom-24 left-0 right-0 z-auto   bg-[#252525] rounded-md  border-t border-gray-700 lg:hidden">
-                <AudioMusic />
-              </div>
-            )}
           </div>
           <div className="pt-[28px] pl-[24px]">
             <PopArtist />
@@ -66,9 +71,17 @@ const Home = () => {
           <div className="pt-[28px] pl-[24px]">
             <MoodPlay />
           </div>
-          <div className="sticky bottom-0 z-auto">
-            <SmallFooter />
+        </div>
+
+        {(isLoggedIn || isGoogleLogin) && (
+          <div className="fixed bottom-25 left-0 right-0 z-50  bg-[#252525] rounded-md  border-t border-gray-700 lg:hidden">
+            {source === "newrelease" && <AudioMusic />}
+            {source === "moodplay" && <Playmood />}
           </div>
+        )}
+
+        <div className="fixed bottom-0 left-0 right-0 z-40">
+          <SmallFooter />
         </div>
       </div>
     </>

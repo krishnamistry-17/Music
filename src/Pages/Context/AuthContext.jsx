@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [isAuthChecked, setIsAuthChecked] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
   const [isGoogleLogin, setIsGoogleLogin] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -57,6 +58,8 @@ export const AuthProvider = ({ children }) => {
       value={{
         isLoggedIn,
         isGoogleLogin,
+        forgotEmail,
+        setForgotEmail,
         userProfile,
         login,
         logout,

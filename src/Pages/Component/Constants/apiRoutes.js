@@ -11,4 +11,5 @@ export const apiRoutes = {
   GET_SPECIFICFAV: "/favourite/get-favourite-specific-song",
   REMOVE_FAV: "/favourite/remove-favourite",
   GET_GENRE: "/genre/get-all-genre",
+  GET_ALLPLAYLIST: "/playlist/get-all-playlist"
 };

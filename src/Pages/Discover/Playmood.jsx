@@ -17,24 +17,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { useFav } from "../Context/FavContext";
 import { addFavorites, removeFromFavourites } from "../Redux/Action/action";
 import { toast } from "react-toastify";
+import { useMood } from "../Context/MoodContext";
 
-const DisPlay = () => {
+const Playmood = () => {
+    
   const {
     currentSong,
     isPlaying,
     setIsPlaying,
     playNext,
     playPrevious,
-    playSongAt,
     isShuffle,
     setIsShuffle,
     isRepeat,
     setIsRepeat,
     audioRef,
-    setCurrentSongIndex,
-    selectedAlbumGenere,
-    currentSongIndex,
-  } = useGenere();
+  } = useMood();
+  console.log("currentSong :", currentSong);
 
   const { selectedId, setSelectedId } = useFav();
   const [currentTime, setCurrentTime] = useState(0);
@@ -46,7 +45,7 @@ const DisPlay = () => {
   const favorites = useSelector((state) => state.favorites);
 
   const dispatch = useDispatch();
- 
+
   useEffect(() => {
     if (!audioRef.current) return;
     const audio = audioRef.current;
@@ -302,4 +301,4 @@ const DisPlay = () => {
   );
 };
 
-export default DisPlay;
+export default Playmood;

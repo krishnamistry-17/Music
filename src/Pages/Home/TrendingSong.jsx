@@ -39,7 +39,6 @@ const TrendingSong = () => {
   const favorites = useSelector((state) => state.favorites);
 
   const [data, setData] = useState([]);
-  console.log("data >>>trend:", data);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

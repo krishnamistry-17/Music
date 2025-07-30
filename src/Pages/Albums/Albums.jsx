@@ -51,6 +51,7 @@ import { useAlbum } from "../Context/AlbumContext";
 
 import { useParams } from "react-router-dom";
 import AlbumPlay from "./AlbumPlay";
+import SmallFooter from "../Footer/SmallFooter";
 
 const Albums = () => {
   const { id } = useParams();
@@ -64,7 +65,7 @@ const Albums = () => {
   const [isdisplayDetail, setDisplayDetail] = useState();
 
   const [currentAlbum, setCurrentAlbum] = useState(null);
-  console.log("currentAlbum :", currentAlbum);
+
 
   const data1 = [
     {
@@ -258,24 +259,6 @@ const Albums = () => {
     window.addEventListener("resize", updateContent);
     return () => window.removeEventListener("resize", updateContent);
   }, []);
-
-  // useEffect(() => {
-  //   const found = selectedAlbum.find((item) => item._id === id);
-
-  //   if (!found) {
-  //     const fallback = data1.find((d) => d._id === id);
-  //     setAlbum(fallback);
-  //   } else {
-  //     setAlbum(found);
-  //   }
-  // }, [id, selectedAlbum]);
-
-  // useEffect(() => {
-  //   const foundAlbum = allAlbums.find((item) => item._id === id);
-  //   if (foundAlbum) {
-  //     setCurrentAlbum(foundAlbum);
-  //   }
-  // }, [id, allAlbums]);
 
   useEffect(() => {
     if (Array.isArray(allAlbums)) {
@@ -492,7 +475,7 @@ const Albums = () => {
           </div>
           <div
             className="bg-gradient-to-r from-darkblue to-lightestblue"
-            style={{ height: "calc(100vh - 198px)", scrollbarWidth: "none" }}
+            style={{ height: "calc(100vh - 64px)", scrollbarWidth: "none" }}
           >
             <Song />
           </div>
@@ -504,45 +487,8 @@ const Albums = () => {
           </div>
         )}
 
-        <div className=" lg:hidden sticky bottom-0 z-auto bg-blackbg">
-          {optionData.map((section, sectionIndex) => (
-            <div
-              key={sectionIndex}
-              className="flex justify-between items-center p-4 "
-            >
-              {section.items.map((item, index) => {
-                const isActive =
-                  activeIndex === `${sectionIndex}-${index}` ||
-                  location.pathname.startsWith(item.path);
-
-                return (
-                  <div
-                    key={`${sectionIndex}-${index}`}
-                    className="flex flex-col items-center cursor-pointer"
-                    onClick={() => {
-                      setActiveIndex(`${sectionIndex}-${index}`);
-                      if (item.path) {
-                        navigate(item.path);
-                      }
-                    }}
-                  >
-                    <img
-                      src={isActive ? item.activeimg : item.img}
-                      alt={item.name}
-                      className="w-13 h-10"
-                    />
-                    <div
-                      className={`text-[12px] pt-[13px] ${
-                        isActive ? "text-darkpink" : "text-darkblue"
-                      }`}
-                    >
-                      {item.name}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          ))}
+        <div className=" lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-blackbg">
+          <SmallFooter />
         </div>
       </div>
     </div>

@@ -146,7 +146,7 @@ const Song = () => {
   useEffect(() => {
     localStorage.setItem(
       "accessToken",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1Mzc2MTQ1MCwiZXhwIjoxNzUzODQ3ODUwfQ.D768Gk5N9HzV3FRXpsuJn90uSubsqmOabk1PmFDcfRI"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1Mzg0NzU1MCwiZXhwIjoxNzUzOTMzOTUwfQ.IGb5Pqsv_rXqMy3ivD2g4h07S8GnZElQ7hQ7ukTnaeU"
     );
   }, []);
 
@@ -301,7 +301,7 @@ const Song = () => {
             <div>
               {filteredAlbum?.map((album) =>
                 album.songs?.map((song, index) => (
-                  <p className="lg:text-[24px] text-[16px] font-Vazirmatn-600 text-white lg:py-[12px] py-[17px]">
+                  <p className="lg:text-[24px] text-[16px] font-Vazirmatn-600 text-white lg:py-[12px] py-[21px]">
                     <div
                       key={song._id}
                       className="flex items-center gap-3 py-2"
@@ -527,7 +527,7 @@ const Song = () => {
             })}
           </div>
         </div>
-        <div className=" flex justify-center items-center pb-8 pt-2">
+        <div className=" flex justify-center items-center pb-8 pt-8">
           <button className="bg-darkpink px-4 py-[7px] text-white text-[14px] font-Vazirmatn-400 rounded-[4px]">
             Show More
           </button>
