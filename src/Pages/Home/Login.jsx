@@ -56,7 +56,7 @@ const Login = ({ onSuccess, onForgotPassword }) => {
       // notify();
       // onSuccess();
       toast.success("Login Sucessfull");
-      navigate("/album", { state: { tokenReady: true } });
+      navigate("/", { state: { tokenReady: true } });
     } catch (error) {
       setError(error.response?.data?.message || "Login Failed");
     } finally {
@@ -70,11 +70,11 @@ const Login = ({ onSuccess, onForgotPassword }) => {
     onSuccess: async (tokenResponse) => {
       try {
         const data = await loginWithGoogle(tokenResponse.access_token);
-        const { name, email, picture, token } = data
+        const { name, email, picture, token } = data;
 
         login(token, { name, email, image: picture }, true);
         toast.success("Google Login Success");
-        navigate("/album", { state: { tokenReady: true } });
+        navigate("/", { state: { tokenReady: true } });
       } catch (error) {
         console.error(error.message);
         toast.error("Google login failed");

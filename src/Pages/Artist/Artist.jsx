@@ -45,61 +45,20 @@ import SideBar from "../SideBar/SideBar";
 import { useAuth } from "../Context/AuthContext";
 import Menu from "../SideBar/Menu";
 import { useArtist } from "../Context/ArtistContext";
+import SmallFooter from "../Footer/SmallFooter";
+import PlayArtist from "./PlayArtist";
+import { usePlayerSource } from "../Context/PlayerSourceContext";
 
 const Artist = () => {
   const { id } = useParams();
-  const { album: allAlbums } = useArtist();
-
+  const { album: allAlbums, currentAlbum, setCurrentAlbum } = useArtist();
+  const { source, setSource } = usePlayerSource();
   const [activeIndex, setActiveIndex] = useState(2);
   const { isLoggedIn, isGoogleLogin, logout } = useAuth();
   const [isdisplayDetail, setDisplayDetail] = useState();
 
-  const [currentAlbum, setCurrentAlbum] = useState(null);
-
   const navigate = useNavigate();
   const location = useLocation();
-
-  const menuData = [
-    {
-      title: "Menu",
-      items: [
-        { img: home, name: "Home" },
-        { img: wdis, name: "Discover", path: "/discover" },
-        { img: album, name: "Album", path: "/album" },
-        { img: artist, name: "Artist", path: "/artist" },
-      ],
-    },
-    {
-      title: "Library",
-      items: [
-        { img: recent, name: "Recently Added" },
-        { img: most, name: "Most Played" },
-      ],
-    },
-    {
-      title: "Playlist and Favorite",
-      items: [
-        { img: fav, name: "Your Favorites" },
-        { img: yourplay, name: "Your Playlist" },
-        {
-          img: addplay,
-          npimg: wplay,
-          name: "Add Playlist",
-        },
-      ],
-    },
-    {
-      title: "General",
-      items: [
-        { img: setting, name: "Setting" },
-        {
-          img: logout,
-          nlimg: wlog,
-          name: "Logout",
-        },
-      ],
-    },
-  ];
 
   const data1 = [
     {
@@ -216,25 +175,31 @@ const Artist = () => {
     },
   ];
 
-  const optionData = [
-    {
-      items: [
-        { img: bhome, activeimg: phome, name: "Home" },
-        { img: bdisc, activeimg: pdisc, name: "Discover", path: "/discover" },
-        { img: albumb, activeimg: palbum, name: "Album", path: "/album" },
-        { img: bartist, activeimg: part, name: "Artist", path: "/artist" },
-        { img: discb, activeimg: plib, name: "Library", path: "/library" },
-      ],
-    },
-  ];
-
   const handleClick = () => {
-    navigate("/album");
+    navigate("/");
   };
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
+  useEffect(() => {
+    if (!id) {
+      setSource("popular");
+    }
+  }, [id]);
+  console.log('id :', id);
+
+  useEffect(() => {
+    if (Array.isArray(allAlbums)) {
+      const foundAlbum = allAlbums.find((album) => album._id === id);
+
+      if (foundAlbum) {
+        setCurrentAlbum(foundAlbum);
+        setSource("popular");
+      }
+    }
+  }, [id, allAlbums]);
 
   return (
     <div>
@@ -317,14 +282,14 @@ const Artist = () => {
               </div>
             </div>
             <img
-              src={artist0}
+              src={currentAlbum?.artistImage?.[0] || artist0}
               alt="art"
-              className="md:h-[422px] md:w-[1230px] -mt-11  rounded-[10px] relative z-0 shadow-l
+              className="md:h-[422px] md:w-full -mt-11  rounded-[10px] relative z-0 shadow-l
 "
             />
             <div className=" relative z-20  bottom-32 pl-5">
               <h2 className="text-white text-[96px] font-Vazirmatn-900">
-                Eminem
+                {currentAlbum?.name || "Eminem"}
               </h2>
             </div>
           </div>
@@ -362,76 +327,52 @@ const Artist = () => {
           </div>
         </div>
 
-        <div>
-          <img
-            src={artist0}
-            alt="art"
-            className=" rounded-[10px] pt-8 drop-shadow-lg px-2 relative z-0 shadow-l"
-          />
-          <div className=" flex justify-between items-center px-4 relative z-10 bottom-13">
-            <h2 className="text-white text-[32px] font-Vazirmatn-800">
-              Eminem
-            </h2>
-            <img src={right} alt="rite" />
+        <div
+          style={{
+            height: "calc(100vh - 64px)",
+            scrollbarWidth: "none",
+            overflowY: "auto",
+            paddingBottom: "220px",
+          }}
+        >
+          <div>
+            <img
+              src={currentAlbum?.artistImage?.[0] || artist0}
+              alt="art"
+              className=" rounded-[10px] pt-8 drop-shadow-lg px-2 relative z-0 shadow-l"
+            />
+            <div className=" flex gap-4 justify-end items-center px-4 relative z-10 bottom-13">
+              <h2 className="text-white sm:text-[32px] text-[25px] font-Vazirmatn-800">
+                {currentAlbum?.name || " Eminem"}
+              </h2>
+              <img src={right} alt="rite" />
+            </div>
+          </div>
+
+          <div>
+            <Popular />
+          </div>
+
+          <div>
+            <ArtAlbum />
+          </div>
+          <div>
+            <SingleSong />
+          </div>
+          <div>
+            <ArtistPlay />
+          </div>
+          <div>
+            <Fans />
           </div>
         </div>
-
-        <div>
-          <Popular />
-        </div>
-
-        <div>
-          <ArtAlbum />
-        </div>
-        <div>
-          <SingleSong />
-        </div>
-        <div>
-          <ArtistPlay />
-        </div>
-        <div>
-          <Fans />
-        </div>
-
-        <div className=" lg:hidden sticky bottom-0 z-auto bg-blackbg">
-          {optionData.map((section, sectionIndex) => (
-            <div
-              key={sectionIndex}
-              className="flex justify-between items-center p-4 "
-            >
-              {section.items.map((item, index) => {
-                const isActive =
-                  activeIndex === `${sectionIndex}-${index}` ||
-                  location.pathname.startsWith(item.path);
-
-                return (
-                  <div
-                    key={`${sectionIndex}-${index}`}
-                    className="flex flex-col items-center cursor-pointer"
-                    onClick={() => {
-                      setActiveIndex(`${sectionIndex}-${index}`);
-                      if (item.path) {
-                        navigate(item.path);
-                      }
-                    }}
-                  >
-                    <img
-                      src={isActive ? item.activeimg : item.img}
-                      alt={item.name}
-                      className="w-13 h-10"
-                    />
-                    <div
-                      className={`text-[12px] pt-1 ${
-                        isActive ? "text-darkpink" : "text-darkblue"
-                      }`}
-                    >
-                      {item.name}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          ))}
+        {(isLoggedIn || isGoogleLogin) && (
+          <div className="fixed bottom-25 left-0 right-0 z-40  bg-[#252525] rounded-md  border-t border-gray-700 lg:hidden">
+            {source === "popular" && <PlayArtist />}
+          </div>
+        )}
+        <div className=" fixed bottom-0 left-0 right-0 z-auto ">
+          <SmallFooter />
         </div>
       </div>
     </div>

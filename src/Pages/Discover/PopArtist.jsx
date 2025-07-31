@@ -13,12 +13,13 @@ import { getAllArtitst } from "../Redux/Action/action";
 import apiInstance from "../../../utils/axios";
 import { useArtist } from "../Context/ArtistContext";
 import { useNavigate } from "react-router-dom";
+import { usePlayerSource } from "../Context/PlayerSourceContext";
 
 const PopArtist = ({ searchQuery }) => {
   const { selectedArtist, setSelectedArtist } = useArtist();
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
-
+  const { setSource } = usePlayerSource();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -85,6 +86,7 @@ const PopArtist = ({ searchQuery }) => {
 
   const handleArtist = (artistId) => {
     navigate(`/artist/${artistId}`);
+    setSource("popular");
   };
 
   return (

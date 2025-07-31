@@ -3,8 +3,7 @@ import React, { createContext, useContext, useState } from "react";
 const PlayerSourceContext = createContext();
 
 export const PlayerSourceProvider = ({ children }) => {
-  const [source, setSource] = useState("musicgeners");
- 
+  const [source, setSource] = useState();
 
   return (
     <PlayerSourceContext.Provider value={{ source, setSource }}>

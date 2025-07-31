@@ -2,37 +2,53 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
+import { useLocation } from "react-router-dom";
 
 const ArtistContext = createContext();
 
 export const ArtistProvider = ({ children }) => {
-  const { id } = useParams();
+  // Inside ArtistProvider:
+  const location = useLocation();
+  const id = location.pathname.split("/artist/")[1]; // works for /artist/:id or undefined
+
   const [selectedArtist, setSelectedArtist] = useState([]);
   const [selectedArtistId, setSelectedArtistId] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
+  const [currentAlbum, setCurrentAlbum] = useState(null);
+
   const [isRepeat, setIsRepeat] = useState(false);
   const audioRef = useRef(null);
   const [album, setAlbum] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  //   const currentSong = selectedArtist[selectedArtistId];
+  const currentSong = selectedArtist?.[selectedArtistId] || null;
 
   useEffect(() => {
     async function fetchData() {
       const token = localStorage.getItem("accessToken");
       if (!token) {
-        console.warn("No token found, skipping API call");
         setError("Unauthorized: Please login first");
         setLoading(false);
         return;
       }
+
       try {
         const response = await apiInstance.get(apiRoutes.GET_ALL_ARTIST);
         const albums = response.data.data;
         setAlbum(albums);
-        setSelectedArtist(albums.length > 0 ? albums[0].songs : []);
+
+        let matchedAlbum;
+
+        if (id) {
+          matchedAlbum = albums.find((a) => a.artistId._id === id);
+        } else {
+          matchedAlbum = albums[0]; // default album
+        }
+
+        console.log("songs>>>default :", matchedAlbum?.songs);
+        setSelectedArtist(matchedAlbum?.songs || []);
         setSelectedArtistId(0);
       } catch (error) {
         setError(error.message || "Failed to fetch albums");
@@ -40,6 +56,7 @@ export const ArtistProvider = ({ children }) => {
         setLoading(false);
       }
     }
+
     fetchData();
   }, [id]);
 
@@ -87,7 +104,9 @@ export const ArtistProvider = ({ children }) => {
         setSelectedArtist,
         selectedArtistId,
         setSelectedArtistId,
-        // currentSong,
+        currentSong,
+        currentAlbum,
+        setCurrentAlbum,
         playNext,
         playPrevious,
         playSongAt,

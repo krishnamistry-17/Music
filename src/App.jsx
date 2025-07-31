@@ -31,22 +31,39 @@ import Playmood from "./Pages/Discover/Playmood";
 import ResetPassword from "./Pages/Home/ResetPassword";
 import { ArtistProvider } from "./Pages/Context/ArtistContext";
 import Popular from "./Pages/Artist/Popular";
+import PlayArtist from "./Pages/Artist/PlayArtist";
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
 
   const { isLoggedIn, isGoogleLogin } = useAuth();
   const { source } = usePlayerSource();
+  console.log("source>>>>>> :", source);
 
   const showHomeNav = ["/discover"].includes(location.pathname);
+
   const showAudio = (isLoggedIn || isGoogleLogin) && location.pathname === "/";
+
   const showOtherMusic =
     (isLoggedIn || isGoogleLogin) &&
     (location.pathname === "/album" || location.pathname.startsWith("/album/"));
 
+  const showOtherMusic1 =
+    (isLoggedIn || isGoogleLogin) &&
+    (location.pathname === "/artist" ||
+      location.pathname.startsWith("/artist/"));
   const showDisplay = (isGoogleLogin || isLoggedIn) && !!source;
 
-  const hasBottomPlayer = showAudio || showOtherMusic || showDisplay;
+  const hasBottomPlayer =
+    showAudio || showOtherMusic || showOtherMusic1 || showDisplay;
+
+  console.log({
+    pathname: location.pathname,
+    isLoggedIn,
+    isGoogleLogin,
+    source,
+    showOtherMusic1,
+  });
 
   return (
     <>
@@ -85,6 +102,12 @@ function LayoutWrapper({ children }) {
               {source === "moodplay" && <Playmood />}
             </div>
           )}
+
+          {showOtherMusic1 && (
+            <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#181818] border-t border-gray-700">
+              {source === "popular" && <PlayArtist />}
+            </div>
+          )}
         </div>
       </div>
     </>
@@ -115,10 +138,7 @@ function App() {
                                 element={<Albums album={Song} />}
                               />
                               <Route path="/album/:id" element={<Albums />} />
-                              <Route
-                                path="/artist"
-                                element={<Artist album={Popular} />}
-                              />
+                              <Route path="/artist" element={<Artist />} />
                               <Route path="/artist/:id" element={<Artist />} />
                               {/* <Route
                               path="/reset-password"
@@ -147,6 +167,7 @@ function App() {
                             <Route path="/album" element={<Albums />} />{" "}
                             <Route path="/album/:id" element={<Albums />} />{" "}
                             <Route path="/artist" element={<Artist />} />
+                            <Route path="/artist/:id" element={<Artist />} />
                             <Route path="/login" element={<LoginSmall />} />
                             <Route path="/signup" element={<SignUpSmall />} />
                             <Route
