@@ -38,7 +38,6 @@ function LayoutWrapper({ children }) {
 
   const { isLoggedIn, isGoogleLogin } = useAuth();
   const { source } = usePlayerSource();
-  console.log("source>>>>>> :", source);
 
   const showHomeNav = ["/discover"].includes(location.pathname);
 
@@ -56,14 +55,6 @@ function LayoutWrapper({ children }) {
 
   const hasBottomPlayer =
     showAudio || showOtherMusic || showOtherMusic1 || showDisplay;
-
-  console.log({
-    pathname: location.pathname,
-    isLoggedIn,
-    isGoogleLogin,
-    source,
-    showOtherMusic1,
-  });
 
   return (
     <>

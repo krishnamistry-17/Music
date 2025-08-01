@@ -26,6 +26,7 @@ export const loginWithGoogle = async (googleAccessToken) => {
       access_token: googleAccessToken,
     }
   );
+  console.log("response :", response);
   const { token } = response.data;
 
   saveToken(token);

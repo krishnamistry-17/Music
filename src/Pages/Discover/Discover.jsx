@@ -14,6 +14,7 @@ import search from "../../assets/svgs/bsearch.svg";
 import Menu from "../SideBar/Menu";
 import Playmood from "./Playmood";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
+import AudioMusic from "../Home/AudioMusic";
 
 const Discover = () => {
   const { isLoggedIn, isGoogleLogin } = useAuth();
@@ -77,6 +78,7 @@ const Discover = () => {
           <div className="fixed bottom-25 left-0 right-0 z-40 bg-[#252525] rounded-md border-t border-gray-700 lg:hidden">
             {source === "musicgeners" && <DisPlay />}
             {source === "moodplay" && <Playmood />}
+            {source === "newrelease" && <AudioMusic />}
           </div>
         )}
 

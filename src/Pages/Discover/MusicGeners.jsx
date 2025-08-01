@@ -15,20 +15,15 @@ import { toast } from "react-toastify";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
 
 const MusicGeners = () => {
-  const {
-    selectedAlbumGenere,
-    setSelectedAlbumGenere,
-    setSelectedAlbumGenId,
-    setIsPlaying,
-    selectedAlbumGenId,
-    currentSong,
-  } = useGenere();
+  const { setSelectedAlbumGenere, setSelectedAlbumGenId, setIsPlaying } =
+    useGenere();
 
   const { id } = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
   const [album, setAlbum] = useState(null);
   const [data, setData] = useState([]);
+
   const { setSource } = usePlayerSource();
   const { isGoogleLogin, isLoggedIn } = useAuth();
 
@@ -64,7 +59,7 @@ const MusicGeners = () => {
   useEffect(() => {
     localStorage.setItem(
       "accessToken",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1MzkzMzg3OSwiZXhwIjoxNzU0MDIwMjc5fQ.ZNGbKs9VpnYXHok4y7Sfa8Xr5jwgwOsxeJ5amyF7wyI"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1NDA1MjMwNywiZXhwIjoxNzU0MTM4NzA3fQ.5jEeWa51qYK4n-LNK-yMs0errkZBFyA7wm89AAjxQ8s"
     );
   }, []);
 

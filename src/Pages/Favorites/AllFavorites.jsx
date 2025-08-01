@@ -10,11 +10,11 @@ import { useNavigate } from "react-router-dom";
 
 const AllFavorites = () => {
   const { selectedId, setSelectedId } = useFav();
-  console.log("selectedId :", selectedId);
+
   const navigate = useNavigate();
   // Access favorites from Redux store
   const favorites = useSelector((state) => state.favorites);
-  console.log("favorites>>>>> :", favorites);
+
   const removefav = useSelector((state) => state.removefav);
 
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ const AllFavorites = () => {
   };
   return (
     <div>
-      <div className="flex gap-3">
+      <div className="flex gap-3 overflow-visible">
         <div className="lg:hidden items-center py-4 pl-1">
           <img
             onClick={handleBack}

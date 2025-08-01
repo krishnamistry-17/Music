@@ -32,8 +32,6 @@ const Playmood = () => {
     setIsRepeat,
     audioRef,
   } = useMood();
-  console.log("currentSong :", currentSong);
-
   const { selectedId, setSelectedId } = useFav();
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -151,7 +149,7 @@ const Playmood = () => {
                         : pfav
                     }
                     alt="fav"
-                    className="w-[18px] h-[18px] md:hidden"
+                    className="w-[18px] h-[18px] sm:hidden"
                   />
                 </div>
               </div>
@@ -211,7 +209,7 @@ const Playmood = () => {
                       : pfav
                   }
                   alt="fav"
-                  className=""
+                  className="md:block hidden"
                 />
               </div>
             </div>

@@ -62,7 +62,7 @@ const Home = () => {
           <div className="pt-[28px] pl-[24px]">
             <VideoMusic />
           </div>
-          <div className="pt-[28px] ">
+          <div className="pt-[32px] ">
             <Billie />
           </div>
           <div className="pt-[28px] pl-[24px]">

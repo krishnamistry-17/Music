@@ -51,10 +51,6 @@ const Login = ({ onSuccess, onForgotPassword }) => {
     try {
       const data = await loginWithEmail(email, password);
       login(data.token);
-      // setData(data);
-      // dispatch(getLogin(data));
-      // notify();
-      // onSuccess();
       toast.success("Login Sucessfull");
       navigate("/", { state: { tokenReady: true } });
     } catch (error) {

@@ -15,11 +15,12 @@ import { useAuth } from "../Context/AuthContext";
 import LsSidebar from "../SideBar/LsSideBar";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import { loginWithEmail, loginWithGoogle } from "../../service/authService";
 
-const LoginSmall = ({ onSuccess }) => {
+const LoginSmall = ({ onSuccess, onForgotPassword }) => {
   const [isClicked, setIsClicked] = useState(false);
   const { setIsLoggedIn, setIsGoogleLogin, setUserProfile } = useAuth();
-
+  const { login } = useAuth();
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -64,16 +65,14 @@ const LoginSmall = ({ onSuccess }) => {
     setError(null);
 
     try {
-      const loginData = { email: email, password: password };
-      const response = await apiInstance.post(apiRoutes.GET_LOGIN, loginData);
-      setIsLoggedIn(true);
-      if (response.status === 200) {
-        setData(response.data);
-        dispatch(getLogin(response.data));
-        notify();
-        onSuccess();
-        navigate("/album");
-      }
+      const data = await loginWithEmail(email, password);
+      login(data.token);
+      // setData(data);
+      // dispatch(getLogin(data));
+      // notify();
+      // onSuccess();
+      toast.success("Login Sucessfull");
+      navigate("/", { state: { tokenReady: true } });
     } catch (error) {
       setError(error.response?.data?.message || "Login Failed");
     } finally {
@@ -83,24 +82,18 @@ const LoginSmall = ({ onSuccess }) => {
     }
   };
 
-  const login = useGoogleLogin({
+  const loginGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      console.log("tokenResponse ", tokenResponse);
-
       try {
-        const Res = await axios.post(
-          "http://192.168.29.45:5000/api/auth/verify-token",
-          {
-            access_token: tokenResponse?.access_token,
-          }
-        );
-        console.log("Res>>>>>", Res);
-        const { name, email, picture } = Res.data;
-        setIsGoogleLogin(true);
-        setUserProfile({ name, email, image: picture });
-        toast.success("Google Login Sucess..");
+        const data = await loginWithGoogle(tokenResponse.access_token);
+        const { name, email, picture, token } = data;
+
+        login(token, { name, email, image: picture }, true);
+        toast.success("Google Login Success");
+        navigate("/", { state: { tokenReady: true } });
       } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
+        toast.error("Google login failed");
       }
     },
     onError: () => {
@@ -192,9 +185,12 @@ const LoginSmall = ({ onSuccess }) => {
             </div>
           </div>
           <div>
-            <a className="text-white text-[16px] font-Vazirmatn-500 underline hover:text-darkblue">
+            <button
+              onClick={onForgotPassword}
+              className="text-white text-[16px] font-Vazirmatn-500 underline hover:text-darkblue"
+            >
               Forgot Password
-            </a>
+            </button>
           </div>
           <div className="flex items-center justify-center pt-[12px]">
             <span className="border-t-[1px] block flex-1 border-white"></span>
@@ -204,7 +200,7 @@ const LoginSmall = ({ onSuccess }) => {
             <span className="border-t-[1px] block flex-1 border-white"></span>
           </div>
           <div
-            onClick={() => login()}
+            onClick={() => loginGoogle()}
             className="mt-[20px] flex justify-center items-center w-full py-[7px] border-[2px] rounded-[4px] border-white "
           >
             <img src={google} alt="ggle" />

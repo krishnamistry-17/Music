@@ -1,21 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import search from "../../assets/svgs/search.svg";
 import { useAuth } from "../Context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import profile from "../../assets/svgs/profile.svg";
 import logoutbtn from "../../assets/svgs/logout.svg";
-const HomeNav = ({
-  inputvalue,
-  setInputValue,
-  tabsectionRef,
-  activeTab,
-  scrollToTabs,
-  setActiveTab,
-}) => {
+const HomeNav = ({ inputvalue, setInputValue, tabsectionRef }) => {
   const { isLoggedIn } = useAuth();
-
+  const navigate = useNavigate();
   const { isGoogleLogin, userProfile, logout } = useAuth();
+  const [activeTab, setActiveTab] = useState("signup");
   const [isdisplayDetail, setDisplayDetail] = useState();
+
+  const scrollToTabs = () => {
+    tabsectionRef?.current?.scrollIntoView({
+      behaviour: "smooth",
+      block: "end",
+    });
+  };
 
   const handleLogout = () => {
     logout();
@@ -112,6 +113,7 @@ const HomeNav = ({
                 onClick={() => {
                   scrollToTabs();
                   setActiveTab("login");
+                  navigate("/");
                 }}
                 className={
                   activeTab === "login"
@@ -125,6 +127,7 @@ const HomeNav = ({
                 onClick={() => {
                   scrollToTabs();
                   setActiveTab("signup");
+                  navigate("/");
                 }}
                 className={
                   activeTab === "signup"

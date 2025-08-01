@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from "react";
-import top6 from "../../assets/images/top6.png";
-import top7 from "../../assets/images/top7.png";
-import top8 from "../../assets/images/top8.png";
-import top9 from "../../assets/images/top9.png";
-import top10 from "../../assets/images/top10.png";
 import plus from "../../assets/svgs/plus.svg";
 import { useDispatch } from "react-redux";
 import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
-import { useSong } from "../Context/SongContext";
 import { getallAlbum } from "../Redux/Action/action";
 import { useNavigate } from "react-router-dom";
 import { useAlbum } from "../Context/AlbumContext";
 
 const AlbumsTop = () => {
-  const { setSelectedAlbum, selectedAlbumId } = useAlbum();
+  const { setSelectedAlbum } = useAlbum();
 
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
@@ -42,7 +36,7 @@ const AlbumsTop = () => {
   useEffect(() => {
     localStorage.setItem(
       "accessToken",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1MzkzMzg3OSwiZXhwIjoxNzU0MDIwMjc5fQ.ZNGbKs9VpnYXHok4y7Sfa8Xr5jwgwOsxeJ5amyF7wyI"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1NDAyMDczMywiZXhwIjoxNzU0MTA3MTMzfQ.p9ci-JSZgmKB_tRVzhjtgKb9cwDFZFb5VJfW0VQKwI0"
     );
   }, []);
 

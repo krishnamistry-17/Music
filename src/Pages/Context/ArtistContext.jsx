@@ -1,4 +1,11 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useParams } from "react-router-dom";
 import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
@@ -7,7 +14,6 @@ import { useLocation } from "react-router-dom";
 const ArtistContext = createContext();
 
 export const ArtistProvider = ({ children }) => {
-  // Inside ArtistProvider:
   const location = useLocation();
   const id = location.pathname.split("/artist/")[1]; // works for /artist/:id or undefined
 
@@ -16,14 +22,22 @@ export const ArtistProvider = ({ children }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
   const [currentAlbum, setCurrentAlbum] = useState(null);
-
   const [isRepeat, setIsRepeat] = useState(false);
   const audioRef = useRef(null);
   const [album, setAlbum] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [allArtist, setAllArtist] = useState([]);
+  const [currentArtistId, setCurrentArtistId] = useState(0);
 
-  const currentSong = selectedArtist?.[selectedArtistId] || null;
+  const currentSong =
+    Array.isArray(selectedArtist) && selectedArtist.length > 0
+      ? selectedArtist[selectedArtistId]
+      : null;
+
+  const currentArtist = useMemo(() => {
+    return selectedArtist?.[selectedArtistId] ?? null;
+  }, [selectedArtist, selectedArtistId]);
 
   useEffect(() => {
     async function fetchData() {
@@ -38,18 +52,9 @@ export const ArtistProvider = ({ children }) => {
         const response = await apiInstance.get(apiRoutes.GET_ALL_ARTIST);
         const albums = response.data.data;
         setAlbum(albums);
-
-        let matchedAlbum;
-
-        if (id) {
-          matchedAlbum = albums.find((a) => a.artistId._id === id);
-        } else {
-          matchedAlbum = albums[0]; // default album
-        }
-
-        console.log("songs>>>default :", matchedAlbum?.songs);
-        setSelectedArtist(matchedAlbum?.songs || []);
+        setSelectedArtist(album.length > 0 ? albums[0].songs : []);
         setSelectedArtistId(0);
+        setAllArtist(albums);
       } catch (error) {
         setError(error.message || "Failed to fetch albums");
       } finally {
@@ -106,14 +111,19 @@ export const ArtistProvider = ({ children }) => {
         setSelectedArtistId,
         currentSong,
         currentAlbum,
+        currentArtist,
         setCurrentAlbum,
         playNext,
         playPrevious,
         playSongAt,
+        currentArtistId,
+        setCurrentArtistId,
         isPlaying,
         setIsPlaying,
         isRepeat,
         setIsRepeat,
+        allArtist,
+        setAllArtist,
         isShuffle,
         setIsShuffle,
         audioRef,

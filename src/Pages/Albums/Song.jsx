@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import playmusic from "../../assets/svgs/playmusic.svg";
 import pfav from "../../assets/svgs/pfav.svg";
 import pfull from "../../assets/svgs/pffav.svg";
 import option from "../../assets/svgs/option.svg";
@@ -25,23 +24,17 @@ import {
 import { useAuth } from "../Context/AuthContext";
 import { useFav } from "../Context/FavContext";
 import { toast } from "react-toastify";
-import { useSong } from "../Context/SongContext";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAlbum } from "../Context/AlbumContext";
 import albumSingle from "../albumSingle";
-import useFetchData from "../../Hooks/useFetchData";
 
 const Song = () => {
   const {
-    selectedAlbum,
     setSelectedAlbum,
-    playSongAt,
     isPlaying,
     setIsPlaying,
     setSelectedAlbumId,
-    audioRef,
     selectedAlbumId,
-    setAllAlbums,
   } = useAlbum();
 
   const { id } = useParams(); // URL param
@@ -146,7 +139,7 @@ const Song = () => {
   useEffect(() => {
     localStorage.setItem(
       "accessToken",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1MzkzMzg3OSwiZXhwIjoxNzU0MDIwMjc5fQ.ZNGbKs9VpnYXHok4y7Sfa8Xr5jwgwOsxeJ5amyF7wyI"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1NDA1MjMwNywiZXhwIjoxNzU0MTM4NzA3fQ.5jEeWa51qYK4n-LNK-yMs0errkZBFyA7wm89AAjxQ8s"
     );
   }, []);
 

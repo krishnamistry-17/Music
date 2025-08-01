@@ -100,7 +100,8 @@ export const AlbumProvider = ({ children }) => {
         audioRef,
         album,
         setAlbum,
-        loading,error
+        loading,
+        error,
       }}
     >
       {children}

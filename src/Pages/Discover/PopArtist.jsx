@@ -20,6 +20,7 @@ const PopArtist = ({ searchQuery }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
   const { setSource } = usePlayerSource();
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

@@ -48,10 +48,14 @@ import { useArtist } from "../Context/ArtistContext";
 import SmallFooter from "../Footer/SmallFooter";
 import PlayArtist from "./PlayArtist";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
+import play from "../../assets/svgs/play.svg";
+import pdot from "../../assets/svgs/pdot.svg";
 
 const Artist = () => {
   const { id } = useParams();
   const { album: allAlbums, currentAlbum, setCurrentAlbum } = useArtist();
+  console.log("currentAlbum :", currentAlbum);
+  console.log("allAlbums :", allAlbums);
   const { source, setSource } = usePlayerSource();
   const [activeIndex, setActiveIndex] = useState(2);
   const { isLoggedIn, isGoogleLogin, logout } = useAuth();
@@ -188,7 +192,6 @@ const Artist = () => {
       setSource("popular");
     }
   }, [id]);
-  console.log('id :', id);
 
   useEffect(() => {
     if (Array.isArray(allAlbums)) {
@@ -201,6 +204,15 @@ const Artist = () => {
     }
   }, [id, allAlbums]);
 
+  const defaultArtistId = "6864dad3bd26de96324855c8";
+
+  const defaultAlbum = allAlbums.find(
+    (albumid) => albumid?._id === defaultArtistId
+  );
+
+  const image = defaultAlbum?.artistImage || [];
+  const defaultImage = image;
+
   return (
     <div>
       <div className="lg:flex hidden ">
@@ -208,92 +220,114 @@ const Artist = () => {
         <SideBar />
 
         {/* Main content area (grid content, header, songs, footer) */}
-        <div className=" pl-[32px] ">
-          <div>
-            <div className=" relative top-[43px]  z-10">
-              <div className="flex justify-between items-center px-5">
-                <div>
-                  <img
-                    src={back}
-                    alt="back"
-                    onClick={handleClick}
-                    className="w-[50px] h-[50px]"
-                  />
+        <div className="pl-[32px] px-3">
+          <div className=" w-full  bg-gradient-to-r from-blackbg to-black mt-[25px] rounded-tr-[7px] rounded-tl-[7px]">
+            <div className="flex justify-between items-center py-[30px] pr-[31px] pl-[10px]">
+              <div>
+                <img
+                  src={back}
+                  alt="back"
+                  onClick={handleClick}
+                  className="w-[50px] h-[50px]"
+                />
+              </div>
+              <div className="flex gap-15">
+                <div className="flex gap-5">
+                  <p className="text-white text-[24px] font-Vazirmatn-600">
+                    Share
+                  </p>
+                  <p className="text-white text-[24px] font-Vazirmatn-600">
+                    About
+                  </p>
+                  <p className="text-white text-[24px] font-Vazirmatn-600">
+                    Premuim
+                  </p>
                 </div>
-                <div className="flex gap-15">
-                  <div className="flex gap-5">
-                    <p className="text-white text-[24px] font-Vazirmatn-600">
-                      Share
-                    </p>
-                    <p className="text-white text-[24px] font-Vazirmatn-600">
-                      About
-                    </p>
-                    <p className="text-white text-[24px] font-Vazirmatn-600">
-                      Premuim
-                    </p>
-                  </div>
-                  <div className="mr-5">
-                    {(isLoggedIn || isGoogleLogin) && (
-                      <div>
-                        <button
-                          onClick={() => setDisplayDetail(!isdisplayDetail)}
-                        >
-                          <img
-                            // src={userProfile?.image || profile}
-                            src={profile}
-                            alt="Profile"
-                            className="w-[40px] h-[40px] rounded-full object-cover"
-                          />
-                          <h2 className="text-white">{"User"}</h2>
+                <div>
+                  {(isLoggedIn || isGoogleLogin) && (
+                    <div>
+                      <button
+                        onClick={() => setDisplayDetail(!isdisplayDetail)}
+                      >
+                        <img
+                          // src={userProfile?.image || profile}
+                          src={profile}
+                          alt="Profile"
+                          className="w-[40px] h-[40px] rounded-full object-cover"
+                        />
+                        <h2 className="text-white">{"User"}</h2>
 
-                          {isdisplayDetail && (
-                            <div className="absolute  right-5 bg-black border border-gray-700 rounded-md shadow-md w-[140px] z-50">
-                              <div className="p-3 text-white text-[14px] font-Vazirmatn-400">
-                                <div className="flex items-center gap-2 mb-2">
-                                  <img
-                                    src={profile}
-                                    alt="pf"
-                                    className="w-[20px] h-[20px]"
-                                  />
-                                  <p className="text-white pt-1.5 ">
-                                    User Detail
-                                  </p>
-                                </div>
-                                <button
-                                  onClick={logout}
-                                  className="flex items-center gap-2 text-white hover:text-darkpink pt-1"
-                                >
-                                  <img
-                                    src={logoutbtn}
-                                    alt="logout"
-                                    className="w-[16px] h-[16px]"
-                                  />
-                                  Logout
-                                </button>
+                        {isdisplayDetail && (
+                          <div className="absolute  right-5 bg-black border border-gray-700 rounded-md shadow-md w-[140px] z-50">
+                            <div className="p-3 text-white text-[14px] font-Vazirmatn-400">
+                              <div className="flex items-center gap-2 mb-2">
+                                <img
+                                  src={profile}
+                                  alt="pf"
+                                  className="w-[20px] h-[20px]"
+                                />
+                                <p className="text-white pt-1.5 ">
+                                  User Detail
+                                </p>
                               </div>
+                              <button
+                                onClick={logout}
+                                className="flex items-center gap-2 text-white hover:text-darkpink pt-1"
+                              >
+                                <img
+                                  src={logoutbtn}
+                                  alt="logout"
+                                  className="w-[16px] h-[16px]"
+                                />
+                                Logout
+                              </button>
                             </div>
-                          )}
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                  {/* <img src={profile} alt="pf" className="md:pl-[37px] pr-8" /> */}
+                          </div>
+                        )}
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-            <img
-              src={currentAlbum?.artistImage?.[0] || artist0}
-              alt="art"
-              className="md:h-[422px] md:w-full -mt-11  rounded-[10px] relative z-0 shadow-l
-"
-            />
-            <div className=" relative z-20  bottom-32 pl-5">
-              <h2 className="text-white text-[96px] font-Vazirmatn-900">
-                {currentAlbum?.name || "Eminem"}
-              </h2>
+            <div className="lg:flex justify-between items-center">
+              <div className="lg:flex pl-[43px] gap-14 md:w-[712px]">
+                <div>
+                  <img
+                    src={currentAlbum?.artistImage?.[0] || defaultImage}
+                    alt="artistimage"
+                    className="w-[300px] h-[239px]"
+                  />
+                </div>
+                <div>
+                  <h2 className="text-white text-[66px] font-Vazirmatn-900">
+                    {currentAlbum?.name || "Eminem"}
+                  </h2>
+                  <p className=" text-white text-[20px] font-Vazirmatn-600 py-[44px] ">
+                    {currentAlbum?.artistId?.bio ||
+                      "tate mcree, nightmares, the neighberhood, doja cat and ..."}
+                  </p>
+                  <div className="flex justify-between items-center w-[204px] pb-10">
+                    <p className="text-white font-Vazirmatn-600 text-[20px]">
+                      {currentAlbum?.songs?.length || 2} songs
+                    </p>
+                    <img src={pdot} alt="pd" />
+                    <p className="text-white font-Vazirmatn-600 text-[20px]">
+                      1h 36m
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className=" lg:pt-[220px] flex gap-4 md:pl-0 pl-10 pt-4 pr-8 pb-10">
+                <p className="text-[24px] text-darkpink font-Vazirmatn-600 pt-4">
+                  Play All
+                </p>
+                <img src={play} alt="play" />
+              </div>
             </div>
           </div>
-          <div className=" col-span-2 row-span-2 lg:block hidden md:mt-[-45px]">
+
+          <div className=" col-span-2 row-span-2 lg:block hidden mt-15">
             <Popular />
           </div>
           <div className="pt-[64px] ">
@@ -337,9 +371,9 @@ const Artist = () => {
         >
           <div>
             <img
-              src={currentAlbum?.artistImage?.[0] || artist0}
+              src={currentAlbum?.artistImage?.[0] || defaultImage}
               alt="art"
-              className=" rounded-[10px] pt-8 drop-shadow-lg px-2 relative z-0 shadow-l"
+              className=" rounded-[10px] pt-8  px-2 relative z-0 "
             />
             <div className=" flex gap-4 justify-end items-center px-4 relative z-10 bottom-13">
               <h2 className="text-white sm:text-[32px] text-[25px] font-Vazirmatn-800">

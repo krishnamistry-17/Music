@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import playmusic from "../../assets/svgs/playmusic.svg";
 import dotp from "../../assets/svgs/dotp.svg";
 import pfav from "../../assets/svgs/pfav.svg";
 import pfull from "../../assets/svgs/pffav.svg";
@@ -8,15 +7,8 @@ import artist from "../../assets/svgs/artist.svg";
 import { CiSaveUp1 } from "react-icons/ci";
 import { BiSolidRightArrow } from "react-icons/bi";
 import { IoMdShare } from "react-icons/io";
-import music1 from "../../assets/images/music1.jpg";
-import music2 from "../../assets/images/music2.jpg";
-import music3 from "../../assets/images/music3.png";
-import music4 from "../../assets/images/music4.png";
-import music5 from "../../assets/images/music5.png";
-import music6 from "../../assets/images/music6.jpg";
 import { FaPlay } from "react-icons/fa";
 import { FaPause } from "react-icons/fa6";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addFavorites, removeFromFavourites } from "../Redux/Action/action";
 import { useAuth } from "../Context/AuthContext";
@@ -55,7 +47,7 @@ const Popular = () => {
   const data1 = [
     {
       id: 0,
-      image: music1,
+
       head: "Sorfcore",
       para: " Eminem",
       rdate: "Nov 4, 2023",
@@ -67,7 +59,7 @@ const Popular = () => {
     },
     {
       id: 1,
-      image: music2,
+
       head: "Skyfall Beats",
       para: " Eminem",
       rdate: "Oct 26, 2023",
@@ -79,7 +71,7 @@ const Popular = () => {
     },
     {
       id: 2,
-      image: music3,
+
       head: "Greedy",
       para: " Eminem",
       rdate: "Nov 30, 2023",
@@ -91,7 +83,7 @@ const Popular = () => {
     },
     {
       id: 3,
-      image: music4,
+
       head: "Lovin On me",
       para: " Eminem",
       rdate: "Dec 15, 2023",
@@ -103,7 +95,7 @@ const Popular = () => {
     },
     {
       id: 4,
-      image: music5,
+
       head: "pain the town red",
       para: " Eminem",
       rdate: "Dec 29, 2023",
@@ -115,7 +107,7 @@ const Popular = () => {
     },
     {
       id: 5,
-      image: music6,
+
       head: "Dancin On Night",
       para: "Eminem",
       rdate: "may 27, 2023",
@@ -127,7 +119,7 @@ const Popular = () => {
     },
     {
       id: 6,
-      image: music6,
+
       head: "Dancin On Night",
       para: "Eminem",
       rdate: "may 27, 2023",
@@ -139,28 +131,31 @@ const Popular = () => {
     },
   ];
 
-  useEffect(() => {
-    localStorage.setItem(
-      "accessToken",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1MzkzMzg3OSwiZXhwIjoxNzU0MDIwMjc5fQ.ZNGbKs9VpnYXHok4y7Sfa8Xr5jwgwOsxeJ5amyF7wyI"
-    );
-  }, []);
+    useEffect(() => {
+      localStorage.setItem(
+        "accessToken",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1NDA1MjMwNywiZXhwIjoxNzU0MTM4NzA3fQ.5jEeWa51qYK4n-LNK-yMs0errkZBFyA7wm89AAjxQ8s"
+      );
+    }, []);
 
   useEffect(() => {
     if (!id) {
       setSource("popular");
     }
   }, [id]);
-  console.log("id :", id);
 
   useEffect(() => {
     if (id && Array.isArray(album)) {
       const foundAlbum = album.find((item) => item._id === id);
-      if (foundAlbum) {
-        setSelectedArtist(foundAlbum?.songs || []);
+
+      if (foundAlbum && foundAlbum?.songs?.length > 0) {
+        setSelectedArtist(foundAlbum.songs);
+
         setSelectedArtistId(0);
+        setCurrentAlbum(foundAlbum);
         setSource("popular");
-        setIsPlaying(true);
+
+        setTimeout(() => setIsPlaying(false), 200);
       }
     }
   }, [id, album]);
@@ -173,19 +168,28 @@ const Popular = () => {
   //fetch song from list
   const songsList = matchId?.songs || null;
 
+  const defaultArtistId = "6864dad3bd26de96324855c8";
+  const defaultAlbum = album.find(
+    (album) => album.artistId._id === defaultArtistId
+  );
+  const songs = defaultAlbum?.songs || [];
+  const defaultSong = songs;
+
+  const songToDisplay = songsList || defaultSong;
+
   const handleSelect = (index) => {
     if (!isLoggedIn && !isGoogleLogin) {
       toast.warn("Please Log In To Play Music.");
       return;
     }
 
-    const song = songsList?.[index];
+    const song = songToDisplay?.[index];
     if (!song?.cloudinaryUrl) {
       toast.warn("This song has no playable audio.");
       return;
     }
 
-    setSelectedArtist(songsList || []);
+    setSelectedArtist(songToDisplay || []);
     setSelectedArtistId(index);
     setIsPlaying(true);
   };
@@ -207,17 +211,10 @@ const Popular = () => {
   };
 
   useEffect(() => {
-    const defaultArtistId = "6864dad3bd26de96324855c8";
-    const defaultAlbum = album.find(
-      (album) => album.artistId._id === defaultArtistId
-    );
-    const songs = defaultAlbum?.songs || [];
-    console.log("songs>>>default :", songs);
-
-    const defaultSong = songs[0];
-
     if (!id && album.length > 0) {
-      const defaultAlbum = album.find((a) => a._id === "0");
+      const defaultAlbum = album.find(
+        (a) => a._id === "6864dad3bd26de96324855c8"
+      );
       if (defaultAlbum) {
         setSelectedArtist(defaultAlbum.songs || []);
         setSelectedArtistId(0);
@@ -236,44 +233,7 @@ const Popular = () => {
     }
   }, [id, album]);
 
-  // useEffect(() => {
-  //   if (!id) {
-  //     const defaultArtist = album.find(
-  //       (album) => album.artistId?._id === "6864dad3bd26de96324855c8"
-  //     );
-
-  //     if (defaultArtist) {
-  //       navigate(`/artist/${defaultArtist._id}`);
-  //     } else if (album.length > 0) {
-  //       navigate(`/artist/${album[0]._id}`);
-  //     }
-  //     return;
-  //   }
-
-  //   // If `id` exists, find and set current album
-  //   const foundAlbum = album.find((album) => album._id === id);
-  //   if (foundAlbum) {
-  //     setCurrentAlbum(foundAlbum);
-  //     setSelectedArtistId(0);
-  //     setSelectedArtist(0);
-  //     setSource("popular");
-  //   }
-  // }, [id, album]);
-
-  // useEffect(() => {
-  //   if (id && album.length > 0) {
-  //     const selectedAlbum = album.find((item) => item._id === id);
-  //     if (selectedAlbum && selectedAlbum.songs?.length > 0) {
-  //       setSelectedArtist(selectedAlbum.songs);
-  //       setSelectedArtist(0);
-  //       setSelectedArtistId(0); // optionally auto-play first song
-  //       // Uncomment below if you want auto-play on page load:
-  //       setIsPlaying(true);
-  //     }
-  //   }
-  // }, [id, album]);
-
-  const togglePlay = setIsPlaying((p) => !p);
+  const togglePlay = () => setIsPlaying((p) => !p);
 
   return (
     <div>
@@ -317,7 +277,7 @@ const Popular = () => {
 
         <div className="flex pt-[15px] mt-[-17px] px-3">
           <div className="flex flex-col items-center md:mr-4 mr-3">
-            {songsList?.map((_, index) => (
+            {songToDisplay?.map((_, index) => (
               <p className="lg:text-[24px] text-[16px] font-Vazirmatn-600 text-white lg:py-[21px] py-[29px]">
                 <div key={index} className="flex items-center gap-3 py-2">
                   {(isLoggedIn || isGoogleLogin) && (
@@ -346,7 +306,7 @@ const Popular = () => {
           </div>
 
           <div className="pb-[15px] pt-[15px] grid grid-cols-1 w-full">
-            {songsList?.map((item, index) => {
+            {songToDisplay?.map((item, index) => {
               const extra = data1[index];
               return (
                 <div key={item._id || index}>
@@ -368,7 +328,7 @@ const Popular = () => {
                             {item?.title}
                           </p>
                           <p className="text-white text-[12px] font-Vazirmatn-300 ">
-                            {currentAlbum?.name}
+                            {currentAlbum?.name || extra.para}
                           </p>
                         </div>
                       </div>
@@ -376,14 +336,15 @@ const Popular = () => {
                       {/**Release date */}
                       <div>
                         <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] lg:block hidden">
-                          {currentAlbum?.createdAt?.split("T")[0]}
+                          {currentAlbum?.createdAt?.split("T")[0] ||
+                            extra.rdate}
                         </p>
                       </div>
 
                       {/**album title */}
                       <div>
                         <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] truncate lg:block hidden">
-                          {currentAlbum?.bio}
+                          {currentAlbum?.bio || extra.album}
                         </p>
                       </div>
 
