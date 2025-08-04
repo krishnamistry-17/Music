@@ -4,19 +4,17 @@ import song2 from "../../assets/images/song2.png";
 import song3 from "../../assets/images/song3.png";
 import song4 from "../../assets/images/song4.png";
 import song5 from "../../assets/images/song5.png";
-import plus from "../../assets/svgs/plus.svg";
 import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
 import { useDispatch } from "react-redux";
 import { getAllPlaylist } from "../Redux/Action/action";
 import { useMood } from "../Context/MoodContext";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
 import { useAuth } from "../Context/AuthContext";
 import { toast } from "react-toastify";
-import { useView } from "../Context/ViewContext";
 
-const MoodPlay = () => {
+const AllPlaylist = () => {
   const { setSelectedAlbumMood, setSelectedAlbumMoodId, setIsPlaying } =
     useMood();
   const { id } = useParams();
@@ -27,13 +25,12 @@ const MoodPlay = () => {
   const { isGoogleLogin, isLoggedIn } = useAuth();
 
   const [data, setData] = useState([]);
-  const { setOpenSource } = useView();
+
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const data3 = [
     { image: song1, para: "Sad Playlist" },
@@ -129,10 +126,7 @@ const MoodPlay = () => {
     setCurrentSongIndex(0);
   };
 
-  const handleClick = () => {
-    navigate("/viewsong");
-    setOpenSource("moodplaysong");
-  };
+  const combinedPlayList = [...data, ...data3];
 
   return (
     <div>
@@ -151,69 +145,33 @@ const MoodPlay = () => {
           className=" hidden md:grid lg:grid-cols-6 md:grid-cols-4 gap-[24px] overflow-x-auto "
           style={{ scrollbarWidth: "none" }}
         >
-          {Array.isArray(data) &&
-            (isOpen ? data : data.slice(0, visibleCount)).map((item, index) => {
-              const extra = data3[index];
-              return (
-                <div
-                  key={item._id || index}
-                  onClick={() => handleSelect(index)}
-                >
-                  <div className="bg-[#1F1F1F] w-[174.67px] h-[195px]  rounded-[8px] ">
-                    <div>
-                      <img
-                        src={item?.playlistImage}
-                        alt="a1"
-                        className="w-[174.67px] h-[150px]"
-                      />
-                      <p className="text-white text-[16px] font-Vazirmatn-500 pt-[12px] pl-[4px]">
-                        {item?.title}
-                      </p>
-                    </div>
+          {combinedPlayList.map((item, index) => {
+            const fallback = data3[index] || {};
+
+            const image = item?.playlistImage || item.image || fallback.image;
+            const title = item.title || item.para || fallback.para;
+
+            return (
+              <div key={item._id || index} onClick={() => handleSelect(index)}>
+                <div className="bg-[#1F1F1F] w-[174.67px] h-[195px]  rounded-[8px] ">
+                  <div>
+                    <img
+                      src={image}
+                      alt="a1"
+                      className="w-[174.67px] h-[150px]"
+                    />
+                    <p className="text-white text-[16px] font-Vazirmatn-500 pt-[12px] pl-[4px]">
+                      {title}
+                    </p>
                   </div>
                 </div>
-              );
-            })}
-
-          <div
-            className="pl-[24px] py-[64px] cursor-pointer "
-            onClick={() => handleClick()}
-          >
-            <div className="h-[62px] w-[62px] rounded-[31px] bg-[#1E1E1E] flex items-center justify-center">
-              <img src={plus} alt="pls" className="p-[19px]" />
-            </div>
-            <p className="text-white text-[16px] font-Vazirmatn-500 font-medium pt-1">
-              {isOpen ? "View Less" : "View All"}
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="md:hidden">
-        <div
-          className=" flex gap-3 overflow-x-auto pt-5"
-          style={{ scrollbarWidth: "none" }}
-        >
-          {data.map((item, index) => (
-            <div key={item._id || index} onClick={() => handleSelect(index)}>
-              <div className="bg-[#1F1F1F] w-[150.67px] h-[165px] p-2 rounded-[8px] ">
-                <div className="p-2">
-                  <img
-                    src={item?.playlistImage}
-                    alt="a1"
-                    className="w-[124.67px] h-[110px]"
-                  />
-                  <p className="text-white text-[14px] font-Vazirmatn-500 pt-[14px] pl-[8px]">
-                    {item?.title}
-                  </p>
-                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
   );
 };
 
-export default MoodPlay;
+export default AllPlaylist;

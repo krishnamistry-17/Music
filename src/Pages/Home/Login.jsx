@@ -9,13 +9,12 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 import { useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
 import { loginWithEmail, loginWithGoogle } from "../../service/authService";
 
-const Login = ({ onSuccess, onForgotPassword }) => {
+const Login = ({ onForgotPassword }) => {
   const [isClicked, setIsClicked] = useState(false);
   const { login } = useAuth();
-
+  const { userData, setUserData } = useAuth();
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -40,7 +39,7 @@ const Login = ({ onSuccess, onForgotPassword }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!email || !password) {
+    if (!email || !email.includes("@") || !password) {
       toast.warn("Please fill all the fields");
       return;
     }
@@ -50,7 +49,9 @@ const Login = ({ onSuccess, onForgotPassword }) => {
 
     try {
       const data = await loginWithEmail(email, password);
-      login(data.token);
+      login(data.token, { name: data.name, email: data.email }, false, data);
+    
+      setUserData(data);
       toast.success("Login Sucessfull");
       navigate("/", { state: { tokenReady: true } });
     } catch (error) {
@@ -67,8 +68,9 @@ const Login = ({ onSuccess, onForgotPassword }) => {
       try {
         const data = await loginWithGoogle(tokenResponse.access_token);
         const { name, email, picture, token } = data;
-
-        login(token, { name, email, image: picture }, true);
+        login(token, { name, email, image: picture }, true, data);
+        console.log(' data :',  data);
+        setUserData(data);
         toast.success("Google Login Success");
         navigate("/", { state: { tokenReady: true } });
       } catch (error) {

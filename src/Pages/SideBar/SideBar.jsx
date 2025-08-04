@@ -15,12 +15,15 @@ import setting from "../../assets/svgs/setting.svg";
 import logoutbtn from "../../assets/svgs/logout.svg";
 import { useAuth } from "../Context/AuthContext";
 
-const SideBar = () => {
+const SideBar = ({ hasBottomPlayer }) => {
   const [activeIndex, setActiveIndex] = useState(2);
   const navigate = useNavigate();
   const location = useLocation();
 
   const { logout } = useAuth();
+  const { isLoggedIn, isGoogleLogin } = useAuth();
+
+  const sidebarHeight = hasBottomPlayer ? "calc(100vh - 80px)" : "100vh";
 
   const menuData = [
     {
@@ -54,7 +57,7 @@ const SideBar = () => {
     {
       title: "General",
       items: [
-        { img: setting, name: "Setting" },
+        { img: setting, name: "Setting", path: "/setting" },
         {
           img: logoutbtn,
           nlimg: wlog,
@@ -67,10 +70,10 @@ const SideBar = () => {
   return (
     <div className="">
       <div
-        className="fixed top-0 left-0 lg:block hidden bg-black z-40 overflow-y-auto border-r-2 border-darkpink"
+        className="fixed top-0 left-0 lg:block hidden bg-black z-40 border-r-2 border-darkpink"
         style={{
-          // height: "calc(100vh - 80px)",
-          bottom: 0,
+          height: sidebarHeight,
+          overflowY: "auto",
           scrollbarWidth: "none",
         }}
       >

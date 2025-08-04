@@ -18,7 +18,7 @@ export const AlbumProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   const currentSong = selectedAlbum[selectedAlbumId];
-
+  
   useEffect(() => {
     async function fetchData() {
       const token = localStorage.getItem("accessToken");

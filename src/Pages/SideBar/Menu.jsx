@@ -77,6 +77,7 @@ const Menu = () => {
                   Premium
                 </Link>
                 <Link
+                  to={"/setting"}
                   className="text-white font-Vazirmatn-600 text-[20px] 
                    border-white/20 border-b-2  p-4 flex gap-4"
                 >

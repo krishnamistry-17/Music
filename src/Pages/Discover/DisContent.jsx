@@ -7,6 +7,7 @@ import MusicVideo from "./MusicVideo";
 import NewRelease from "./NewRelease";
 import TopAlbums from "./TopAlbums";
 import HomeNav from "../Home/HomeNav";
+import AlbumsTop from "../Home/AlbumsTop";
 
 const DisContent = () => {
   const [inputvalue, setInputValue] = useState("");
@@ -29,7 +30,7 @@ const DisContent = () => {
         <NewRelease searchQuery={inputvalue} />
       </div>
       <div className="pt-[17px] pl-[34px] pr-[64px]">
-        <TopAlbums searchQuery={inputvalue} />
+        <AlbumsTop searchQuery={inputvalue} />
       </div>
     </div>
   );

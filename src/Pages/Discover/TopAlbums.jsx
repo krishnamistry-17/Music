@@ -21,6 +21,7 @@ const TopAlbums = () => {
     { image: top2, para: "Saviors", head: "Green Day" },
     { image: top1, para: "I Got Heaven", head: "Mannequin" },
   ];
+  
   const data3 = [
     { image: top1, para: "I Got Heaven", head: "Mannequin" },
     { image: top2, para: "Saviors", head: "Green Day" },

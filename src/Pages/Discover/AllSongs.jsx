@@ -4,19 +4,17 @@ import new2 from "../../assets/images/new2.png";
 import new3 from "../../assets/images/new3.png";
 import new4 from "../../assets/images/new4.png";
 import new5 from "../../assets/images/new5.png";
-import plus from "../../assets/svgs/plus.svg";
-import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
 import { getAllSong } from "../Redux/Action/action";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useAuth } from "../Context/AuthContext";
 import { useSong } from "../Context/SongContext";
+import { useAuth } from "../Context/AuthContext";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
-import { useView } from "../Context/ViewContext";
 
-const NewRelease = () => {
+const AllSongs = () => {
   const {
     setSongs,
     playSongAt,
@@ -25,21 +23,16 @@ const NewRelease = () => {
     setCurrentIndex,
   } = useSong();
   const { setSource } = usePlayerSource();
-  const { id } = useParams();
+  const dispatch = useDispatch();
   const { isLoggedIn, isGoogleLogin } = useAuth();
-  const [isOpen, setIsOpen] = useState(false);
-  const [visibleCount, setVisibleCount] = useState(2);
-  const { setOpenSource } = useView();
   const [data, setData] = useState([]);
-
+  const { id } = useParams();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [visibleCount, setVisibleCount] = useState(2);
 
   const data3 = [
-    { image: new1, para: "Time", head: "Luciano" },
+    { image: new1, para: "Time", head: "Luciano", audioUrl: "" },
     { image: new2, para: "112", head: "jazzek" },
     { image: new3, para: "We Don”t Care", head: "Kyanu & Dj Gullum" },
     { image: new4, para: "Who I Am", head: "Alan Walker &  Elias" },
@@ -84,11 +77,10 @@ const NewRelease = () => {
         const albums = response.data.data;
         setData(albums);
         dispatch(getAllSong());
-
         if (!id && albums.length > 0) {
         }
       } catch (error) {
-        setError(error.message);
+        console.log(error.message);
       } finally {
         setLoading(false);
       }
@@ -121,11 +113,6 @@ const NewRelease = () => {
     }
   };
 
-  const handleClick = () => {
-    navigate("/viewsong");
-    setOpenSource("allsong");
-  };
-
   const combinedSong = [...data, ...data3];
 
   return (
@@ -142,77 +129,38 @@ const NewRelease = () => {
       </div>
       <div>
         <div
-          className=" hidden md:grid lg:grid-cols-6 md:grid-cols-4 gap-[24px] overflow-x-auto "
+          className="hidden md:grid lg:grid-cols-6 md:grid-cols-4 gap-[24px] overflow-x-auto"
           style={{ scrollbarWidth: "none" }}
         >
-          {Array.isArray(combinedSong) &&
-            (isOpen ? combinedSong : combinedSong.slice(0, visibleCount)).map(
-              (item, index) => {
-                const extra = data3[index];
-                return (
-                  <div key={item._id || index}>
-                    <div
-                      className="bg-[#1F1F1F] w-[174.4px] h-[214px] py-[4px] px-[15px]  rounded-[10px] "
-                      onClick={() => handleSelect(index, item._id)}
-                    >
-                      <img
-                        src={item.songImage?.[0] || extra?.image}
-                        alt="a1"
-                        className=" rounded-[10px]"
-                      />
-                      <p className="text-white text-[16px] font-Vazirmatn-500 pt-[8px] ">
-                        {item.title || extra?.para}
-                      </p>
-                      <p className="text-white text-[12px] font-Vazirmatn-300 pt-[4px] opacity-80 ">
-                        {item?.artistId?.name || extra?.head}
-                      </p>
-                    </div>
-                  </div>
-                );
-              }
-            )}
+          {combinedSong.map((item, index) => {
+            const fallback = data3[index] || {};
 
-          <div
-            className="pl-[22px] py-[64px] cursor-pointer "
-            onClick={() => handleClick()}
-          >
-            <div className="h-[62px] w-[62px] rounded-[31px] bg-[#1E1E1E] flex items-center justify-center">
-              <img src={plus} alt="pls" className="p-[19px]" />
-            </div>
-            <p className="text-white text-[16px] font-Vazirmatn-500 font-medium pt-1">
-              {isOpen ? "View Less" : "View All"}
-            </p>
-          </div>
-        </div>
-      </div>
+            const image = item.songImage?.[0] || item.image || fallback.image;
+            const title = item.title || item.para || fallback.para;
+            const artist = item?.artistId?.name || item.head || fallback.head;
+            const audio = item.audioUrl || fallback.audioUrl;
 
-      <div className="md:hidden">
-        <div
-          className=" flex gap-2 overflow-x-auto pt-5"
-          style={{ scrollbarWidth: "none" }}
-        >
-          {data.map((item, index) => (
-            <div key={item._id || index}>
-              <div
-                className="bg-[#1F1F1F] w-[130px] h-[185px]  rounded-[10px] py-[4px] px-[8px]"
-                onClick={() => handleSelect(index, item._id)}
-              >
-                <img src={item.songImage?.[0]} alt="a1" className="]" />
-                <div>
-                  <p className="text-white text-[14px] font-Vazirmatn-500 pt-[8px]">
-                    {item?.title}
+            return (
+              <div key={item._id || index}>
+                <div
+                  className="bg-[#1F1F1F] w-[174.4px] h-[214px] py-[4px] px-[15px] rounded-[10px]"
+                  onClick={() => handleSelect(index, item._id)}
+                >
+                  <img src={image} alt="song" className="rounded-[10px]" />
+                  <p className="text-white text-[16px] font-Vazirmatn-500 pt-[8px]">
+                    {title}
                   </p>
-                  <p className="text-white text-[12px] font-Vazirmatn-300 pt-[8px] opacity-80">
-                    {item?.artistId?.name}
+                  <p className="text-white text-[12px] font-Vazirmatn-300 pt-[4px] opacity-80">
+                    {artist}
                   </p>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
   );
 };
 
-export default NewRelease;
+export default AllSongs;

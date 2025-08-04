@@ -12,6 +12,7 @@ const saveToken = (token) => {
 export const loginWithEmail = async (email, password) => {
   const loginData = { email, password };
   const response = await apiInstance.post(apiRoutes.GET_LOGIN, loginData);
+  console.log("loginData :", loginData);
   const { token } = response.data;
 
   saveToken(token);

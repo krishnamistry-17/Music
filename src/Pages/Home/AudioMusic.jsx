@@ -101,7 +101,7 @@ const AudioMusic = () => {
               <div onClick={() => handleClick(currentSong)}>
                 <img
                   src={
-                    favourites.some((fav) => fav._id === currentSong._id)
+                    favourites.some((fav) => fav?._id === currentSong?._id)
                       ? pfull
                       : pfav
                   }

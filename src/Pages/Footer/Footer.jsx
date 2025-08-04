@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <div>
       <div className="ml-[300px] mb-15">
-        <div className="lg:grid hidden grid-cols-3  pt-20 gap-5 ">
+        <div className="lg:grid hidden xl:grid-cols-3 grid-cols-1  pt-20 gap-5 ">
           <div>
             <h2 className="text-[26px] text-white font-Vazirmatn-900">About</h2>
             <p className="text-[16px] font-Vazirmatn-400 text-justify text-white w-[350px]">
@@ -60,15 +60,16 @@ const Footer = () => {
               </div>
             </div>
           </div>
+
           <div className="lg:pl-[53px] pt-8">
             <div>
               <p className="text-[40px] font-Vazirmatn-800 bg-gradient-to-r from-[#EE10B0] to-[#0E9EEFEB] text-transparent bg-clip-text">
                 Melodies
               </p>
             </div>
-            <div className="flex gap-2.5 pt-8">
-              <div>
-                <img src={fb} alt="fb" className="mt-1.5 mr-1" />
+            <div className="flex items-center gap-3.5 pt-8">
+              <div className="bg-[#292929] rounded-full p-4">
+                <img src={fb} alt="fb" />
               </div>
               <div>
                 <img src={insta} alt="insta" />

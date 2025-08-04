@@ -57,10 +57,9 @@ const Artist = () => {
   console.log("currentAlbum :", currentAlbum);
   console.log("allAlbums :", allAlbums);
   const { source, setSource } = usePlayerSource();
-  const [activeIndex, setActiveIndex] = useState(2);
   const { isLoggedIn, isGoogleLogin, logout } = useAuth();
   const [isdisplayDetail, setDisplayDetail] = useState();
-
+  const { isPlaying } = useArtist();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -199,7 +198,6 @@ const Artist = () => {
 
       if (foundAlbum) {
         setCurrentAlbum(foundAlbum);
-        setSource("popular");
       }
     }
   }, [id, allAlbums]);
@@ -217,8 +215,9 @@ const Artist = () => {
     <div>
       <div className="lg:flex hidden ">
         {/* Sidebar */}
-        <SideBar />
-
+        <div>
+          <SideBar />
+        </div>
         {/* Main content area (grid content, header, songs, footer) */}
         <div className="pl-[32px] px-3">
           <div className=" w-full  bg-gradient-to-r from-blackbg to-black mt-[25px] rounded-tr-[7px] rounded-tl-[7px]">

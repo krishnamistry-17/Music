@@ -3,7 +3,8 @@ import React, { createContext, useContext, useState } from "react";
 const PlayerSourceContext = createContext();
 
 export const PlayerSourceProvider = ({ children }) => {
-  const [source, setSource] = useState("moodplay");
+  const [source, setSource] = useState(null);
+
 
   return (
     <PlayerSourceContext.Provider value={{ source, setSource }}>
@@ -15,6 +16,8 @@ export const PlayerSourceProvider = ({ children }) => {
 export const usePlayerSource = () => useContext(PlayerSourceContext);
 
 //if from diffrent route shows diff file then this
+
+
 // import { useLocation } from "react-router-dom";
 // import { createContext, useContext, useEffect, useState } from "react";
 

@@ -1,15 +1,16 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  console.log("isLoggedIn :", isLoggedIn);
-  const [userProfile, setUserProfile] = useState(null);
   const [isGoogleLogin, setIsGoogleLogin] = useState(false);
-  console.log("isGoogleLogin :", isGoogleLogin);
+  const [userProfile, setUserProfile] = useState(null);
+  console.log("userProfile :", userProfile);
+  const [userData, setUserData] = useState(null);
   const [forgotEmail, setForgotEmail] = useState(null);
+  // const { userData, userProfile, isLoggedIn } = useAuth();
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -27,14 +28,19 @@ export const AuthProvider = ({ children }) => {
           console.error("Failed to parse userProfile:", err);
         }
       }
-    } else {
-      setIsLoggedIn(false);
-      setUserProfile(null);
-      setIsGoogleLogin(false);
+
+      const rawUserData = localStorage.getItem("userData");
+      if (rawUserData) {
+        try {
+          setUserData(JSON.parse(rawUserData));
+        } catch (err) {
+          console.error("Failed to parse userData:", err);
+        }
+      }
     }
   }, []);
 
-  const login = (token, profile = null, google = false) => {
+  const login = (token, profile = null, google = false, fullData = null) => {
     localStorage.setItem("accessToken", token);
     localStorage.setItem("loginMethod", google ? "google" : "email");
 
@@ -43,19 +49,26 @@ export const AuthProvider = ({ children }) => {
       setUserProfile(profile);
     }
 
+    if (fullData) {
+      localStorage.setItem("userData", JSON.stringify(fullData));
+      setUserData(fullData);
+    }
+
     setIsLoggedIn(true);
     setIsGoogleLogin(google);
   };
 
   const logout = () => {
-    console.log("Clearing localStorage on logout...");
     localStorage.removeItem("accessToken");
-    localStorage.removeItem("userProfile");
     localStorage.removeItem("loginMethod");
+    localStorage.removeItem("userProfile");
+    localStorage.removeItem("userData");
 
     setIsLoggedIn(false);
-    setUserProfile(null);
     setIsGoogleLogin(false);
+    setUserProfile(null);
+    setUserData(null);
+    setForgotEmail(null);
     toast.success("Logout successful");
   };
 
@@ -64,11 +77,13 @@ export const AuthProvider = ({ children }) => {
       value={{
         isLoggedIn,
         isGoogleLogin,
-        forgotEmail,
-        setForgotEmail,
         userProfile,
+        userData,
+        setUserData,
         login,
         logout,
+        forgotEmail,
+        setForgotEmail,
       }}
     >
       {children}

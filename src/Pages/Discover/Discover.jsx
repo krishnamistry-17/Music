@@ -18,9 +18,13 @@ import AudioMusic from "../Home/AudioMusic";
 
 const Discover = () => {
   const { isLoggedIn, isGoogleLogin } = useAuth();
-  const { source } = usePlayerSource();
+  const { source, setSource } = usePlayerSource();
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
+    setSource("moodplay");
   }, []);
 
   return (

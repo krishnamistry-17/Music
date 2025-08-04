@@ -59,7 +59,7 @@ const TrendingSong = () => {
   useEffect(() => {
     localStorage.setItem(
       "accessToken",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1MzkzMzg3OSwiZXhwIjoxNzU0MDIwMjc5fQ.ZNGbKs9VpnYXHok4y7Sfa8Xr5jwgwOsxeJ5amyF7wyI"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1NDI3OTUzNywiZXhwIjoxNzU0MzY1OTM3fQ.gGdv0E8uJBZUGQY2CFNSYP_Yd_iLkwhScKjSPH8h0E8"
     );
   }, []);
 

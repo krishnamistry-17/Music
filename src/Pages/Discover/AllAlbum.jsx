@@ -13,7 +13,7 @@ import top4 from "../../assets/images/top4.png";
 import top5 from "../../assets/images/top5.png";
 import { useView } from "../Context/ViewContext";
 
-const AlbumsTop = () => {
+const AllAlbum = () => {
   const { setSelectedAlbum } = useAlbum();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -85,11 +85,6 @@ const AlbumsTop = () => {
     navigate(`/album/${albumId}`);
   };
 
-  const handleClick = () => {
-    navigate("/viewsong");
-    setOpenSource("allalbums");
-  };
-
   const combinedAlbum = [...data, ...data3];
 
   return (
@@ -109,72 +104,33 @@ const AlbumsTop = () => {
           className=" hidden md:grid lg:grid-cols-6 md:grid-cols-4 gap-[24px] overflow-x-auto "
           style={{ scrollbarWidth: "none" }}
         >
-          {Array.isArray(combinedAlbum) &&
-            (isOpen ? combinedAlbum : combinedAlbum.slice(0, visibleCount)).map(
-              (item, index) => {
-                return (
-                  <div key={item._id || index}>
-                    <div
-                      className="bg-[#1F1F1F] w-[174.4px] h-[222px] p-[8px]  rounded-[8px] "
-                      onClick={() => handleAlbum(item._id)}
-                    >
-                      <img src={item.albumImages?.[0]} alt="a1" className="" />
-                      <p className="text-white text-[16px] font-Vazirmatn-500 pt-[8px] ">
-                        {item?.title}
-                      </p>
-                      <p className="text-white text-[12px] font-Vazirmatn-300 pt-[4px] opacity-80 ">
-                        {item?.artistId?.name}
-                      </p>
-                    </div>
-                  </div>
-                );
-              }
-            )}
+          {combinedAlbum.map((item, index) => {
+            const fallback = data3[index] || {};
 
-          <div
-            className="pl-[22px] py-[64px] cursor-pointer "
-            onClick={() => handleClick()}
-          >
-            <div className="h-[62px] w-[62px] rounded-[31px] bg-[#1E1E1E] flex items-center justify-center">
-              <img src={plus} alt="pls" className="p-[19px]" />
-            </div>
-            <p className="text-white text-[16px] font-Vazirmatn-500 font-medium pt-1">
-              {isOpen ? "View Less" : "View All"}
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="md:hidden">
-        <div
-          className=" flex gap-3 overflow-x-auto pt-5"
-          style={{ scrollbarWidth: "none" }}
-        >
-          {Array.isArray(data) &&
-            data.map((item, index) => {
-              return (
-                <div key={item._id || index}>
-                  <div
-                    className="bg-[#1F1F1F] w-[140px] h-[185px]  rounded-[10px] py-[4px] px-[8px]"
-                    onClick={() => handleAlbum(item._id)}
-                  >
-                    <img src={item.albumImages?.[0]} alt="a1" className="]" />
-                    <div>
-                      <p className="text-white text-[14px] font-Vazirmatn-500 pt-[8px]">
-                        {item?.title}
-                      </p>
-                      <p className="text-white text-[12px] font-Vazirmatn-300 pt-[8px] opacity-80">
-                        {item?.artistId?.name}
-                      </p>
-                    </div>
-                  </div>
+            const image = item.albumImages?.[0] || item.image || fallback.image;
+            const title = item.title || item.para || fallback.para;
+            const artist = item?.artistId?.name || item.head || fallback.head;
+            return (
+              <div key={item._id || index}>
+                <div
+                  className="bg-[#1F1F1F] w-[174.4px] h-[222px] p-[8px]  rounded-[8px] "
+                  onClick={() => handleAlbum(item._id)}
+                >
+                  <img src={image} alt="a1" className="" />
+                  <p className="text-white text-[16px] font-Vazirmatn-500 pt-[8px] ">
+                    {title}
+                  </p>
+                  <p className="text-white text-[12px] font-Vazirmatn-300 pt-[4px] opacity-80 ">
+                    {artist}
+                  </p>
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
   );
 };
 
-export default AlbumsTop;
+export default AllAlbum;

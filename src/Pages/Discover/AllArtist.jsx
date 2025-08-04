@@ -5,7 +5,6 @@ import artist33 from "../../assets/images/artist33.png";
 import artist44 from "../../assets/images/artist44.png";
 import artist55 from "../../assets/images/artist55.png";
 import artist66 from "../../assets/images/artist66.png";
-import plus from "../../assets/svgs/plus.svg";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
 import { useDispatch } from "react-redux";
 import { getAllArtitst } from "../Redux/Action/action";
@@ -15,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
 import { useView } from "../Context/ViewContext";
 
-const PopArtist = ({ searchQuery }) => {
+const AllArtist = () => {
   const { selectedArtist, setSelectedArtist } = useArtist();
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
@@ -26,15 +25,11 @@ const PopArtist = ({ searchQuery }) => {
   const [error, setError] = useState(null);
 
   const data3 = [
-    { image: artist11, para: "Eminiem" },
+    { image: artist33, para: "Adele" },
+    { image: artist55, para: "Harry Styles" },
+    { image: artist44, para: "Lana Del Ray" },
     { image: artist22, para: "The Weekend" },
     { image: artist66, para: "Billie Eilish" },
-    { image: artist33, para: "Adele" },
-    { image: artist44, para: "Lana Del Ray" },
-    { image: artist55, para: "Harry Styles" },
-    { image: artist33, para: "Adele" },
-    { image: artist22, para: "The Weekend" },
-    { image: artist11, para: "Eminiem" },
   ];
 
   const navigate = useNavigate();
@@ -90,11 +85,6 @@ const PopArtist = ({ searchQuery }) => {
     setSource("popular");
   };
 
-  const handleClick = () => {
-    navigate("/viewsong");
-    setOpenSource("allartist");
-  };
-
   const combinedArtist = [...data, ...data3];
 
   return (
@@ -115,59 +105,27 @@ const PopArtist = ({ searchQuery }) => {
           className=" hidden md:grid lg:grid-cols-6 md:grid-cols-4 gap-[24px] overflow-x-auto"
           style={{ scrollbarWidth: "none" }}
         >
-          {Array.isArray(combinedArtist) &&
-            (isOpen
-              ? combinedArtist
-              : combinedArtist.slice(0, visibleCount)
-            ).map((item, index) => (
+          {combinedArtist.map((item, index) => {
+            const fallback = data3[index] || {};
+
+            const image = item.artistImage?.[0] || item.image || fallback.image;
+            const title = item?.name || item.para || fallback.para;
+
+            return (
               <div key={item._id || index}>
                 <div onClick={() => handleArtist(item._id)}>
-                  <img src={item.artistImage?.[0]} alt="a1" className="pl-4" />
+                  <img src={image} alt="a1" className="pl-4" />
                   <p className="text-white text-[16px] font-Vazirmatn-500 pt-[23px] text-center">
-                    {item?.name}
+                    {title}
                   </p>
                 </div>
               </div>
-            ))}
-
-          <div
-            className="pl-[24px] py-[64px] cursor-pointer "
-            onClick={() => handleClick()}
-          >
-            <div className="h-[62px] w-[62px] rounded-[31px] bg-[#1E1E1E] flex items-center justify-center">
-              <img src={plus} alt="pls" className="p-[19px]" />
-            </div>
-            <p className="text-white text-[16px] font-Vazirmatn-500 font-medium pt-1">
-              {isOpen ? "View Less" : "View All"}
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="md:hidden">
-        <div
-          className=" flex gap-3 overflow-x-auto pt-5"
-          style={{ scrollbarWidth: "none" }}
-        >
-          {data.map((item, index) => (
-            <div key={item._id || index}>
-              <div onClick={() => handleArtist(item._id)}>
-                <div className="p-2">
-                  <img
-                    src={item.artistImage?.[0]}
-                    alt="a1"
-                    className="  max-w-[175px] max-h-[100px]"
-                  />
-                  <p className="text-white text-[12px] font-Vazirmatn-300 pt-[23px]  text-center">
-                    {item.name}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
   );
 };
 
-export default PopArtist;
+export default AllArtist;

@@ -8,18 +8,17 @@ import { FaEye } from "react-icons/fa";
 import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
 import { useDispatch } from "react-redux";
-import { getLogin, getSignUp } from "../Redux/Action/action";
+import { getSignUp } from "../Redux/Action/action";
 import { toast } from "react-toastify";
 import { useGoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
 import axios from "axios";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 
 const SignUp = ({ onSuccess }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [data, setData] = useState("");
-
+  const { userData, setUserData } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [name, setName] = useState("");
@@ -40,37 +39,30 @@ const SignUp = ({ onSuccess }) => {
 
   const dispatch = useDispatch();
 
-  const notify = () =>
-    toast.success("SignUp successful!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!name || !email || !password) {
+    if (!name || !email || !email.includes("@") || !password) {
       toast.warn("Please fill all fields");
       return;
     }
-
     setLoading(false);
     setError(null);
 
     try {
-      const signupData = {
-        name: name,
-        email: email,
-        password: password,
+      const response = await apiInstance.post(apiRoutes.GET_SIGNUP, {
+        name,
+        email,
+        password,
         role: "user",
-      };
-      console.log("signupData  :", signupData);
-      const response = await apiInstance.post(apiRoutes.GET_SIGNUP, signupData);
-      setData(response.data);
+      });
+      setUserData(response.data);
+      login(
+        response.data.token,
+        { name: response.data.name, email: response.data.email },
+        false,
+        response.data
+      );
+      onSuccess();
       dispatch(getSignUp(response.data));
       onSuccess();
       toast.success("Signup suceess");
