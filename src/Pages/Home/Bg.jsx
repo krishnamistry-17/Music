@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 import homebg from "../../assets/images/homebg.png";
 import HomeNav from "./HomeNav";
 
-const Bg = ({ tabsectionRef, activeTab, setActiveTab, scrollToTabs }) => {
+const Bg = ({
+  tabsectionRef,
+  activeTab,
+  setActiveTab,
+  scrollToTabs,
+  playRef,
+  scrollToBottom,
+}) => {
+  
   const handleClick = () => {
     window.scrollTo(0, 1255);
   };
@@ -45,8 +53,11 @@ const Bg = ({ tabsectionRef, activeTab, setActiveTab, scrollToTabs }) => {
                   Discover Now
                 </button>
               </div>
-              <div>
-                <button className="text-bluearrow text-[16px] font-Vazirmatn-500 text-center py-[8px] px-[24px] rounded-[4px] border-[1px] border-bluearrow">
+              <div ref={playRef}>
+                <button
+                  onClick={() => scrollToBottom()}
+                  className="text-bluearrow text-[16px] font-Vazirmatn-500 text-center py-[8px] px-[24px] rounded-[4px] border-[1px] border-bluearrow"
+                >
                   Create Playlist
                 </button>
               </div>

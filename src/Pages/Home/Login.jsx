@@ -47,6 +47,7 @@ const Login = ({ onForgotPassword }) => {
     setLoading(true);
     setError(null);
 
+    //email login
     try {
       const data = await loginWithEmail(email, password);
       login(data.token, { name: data.name, email: data.email }, false, data);
@@ -63,6 +64,7 @@ const Login = ({ onForgotPassword }) => {
     }
   };
 
+  //google login
   const loginGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {

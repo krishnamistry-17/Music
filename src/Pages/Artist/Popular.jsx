@@ -18,7 +18,6 @@ import { useArtist } from "../Context/ArtistContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAlbum } from "../Context/AlbumContext";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
-
 const Popular = () => {
   const {
     setSelectedArtist,
@@ -29,6 +28,7 @@ const Popular = () => {
     currentAlbum,
     setCurrentAlbum,
   } = useArtist();
+
   const { album } = useAlbum();
 
   const { id } = useParams();
@@ -131,34 +131,18 @@ const Popular = () => {
     },
   ];
 
-  useEffect(() => {
-    localStorage.setItem(
-      "accessToken",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1NDI3OTUzNywiZXhwIjoxNzU0MzY1OTM3fQ.gGdv0E8uJBZUGQY2CFNSYP_Yd_iLkwhScKjSPH8h0E8"
-    );
-  }, []);
+  // useEffect(() => {
+  //   localStorage.setItem(
+  //     "accessToken",
+  //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1NDM2NjAwNiwiZXhwIjoxNzU0NDUyNDA2fQ.-coS-qAt_aCb0nUCulLxiMAvJ1E0c5rjwOsVH9yrIDc"
+  //   );
+  // }, []);
 
   useEffect(() => {
     if (!id) {
       setSource("popular");
     }
   }, [id]);
-
-  useEffect(() => {
-    if (id && Array.isArray(album)) {
-      const foundAlbum = album.find((item) => item._id === id);
-
-      if (foundAlbum && foundAlbum?.songs?.length > 0) {
-        setSelectedArtist(foundAlbum.songs);
-
-        setSelectedArtistId(0);
-        setCurrentAlbum(foundAlbum);
-        setSource("popular");
-
-        setTimeout(() => setIsPlaying(false), 200);
-      }
-    }
-  }, [id, album]);
 
   //matched id of url and artist id from album api
   const matchId = Array.isArray(album)
@@ -177,6 +161,21 @@ const Popular = () => {
 
   const songToDisplay = songsList || defaultSong;
 
+  // useEffect(() => {
+  //   if (id && Array.isArray(album)) {
+  //     const foundAlbum = album.find((item) => item._id === id);
+  //     console.log("foundAlbum >>>??? ???????:", foundAlbum);
+
+  //     if (foundAlbum && foundAlbum?.songs?.length > 0) {
+  //       setSelectedArtist(foundAlbum.songs);
+  //       setSelectedArtistId(0);
+  //       setCurrentAlbum(foundAlbum);
+  //       setSource("popular");
+  //       setIsPlaying(true);
+  //     }
+  //   }
+  // }, [id, album]);
+
   const handleSelect = (index) => {
     if (!isLoggedIn && !isGoogleLogin) {
       toast.warn("Please Log In To Play Music.");
@@ -190,7 +189,8 @@ const Popular = () => {
     }
 
     setSelectedArtist(songToDisplay || []);
-    setSelectedArtistId(index);
+    setSelectedArtistId(0);
+    setCurrentAlbum(songsList);
     setIsPlaying(true);
   };
 
@@ -213,22 +213,25 @@ const Popular = () => {
   useEffect(() => {
     if (!id && album.length > 0) {
       const defaultAlbum = album.find(
-        (a) => a._id === "6864dad3bd26de96324855c8"
+        (a) => a.artistId._id === "6864dad3bd26de96324855c8"
       );
       if (defaultAlbum) {
         setSelectedArtist(defaultAlbum.songs || []);
         setSelectedArtistId(0);
+        setCurrentAlbum(defaultAlbum);
+        setIsPlaying(true);
+        setSource("popular");
       }
     }
 
     if (id && Array.isArray(album)) {
       const found = album.find((album) => album._id === id);
-      if (found) {
+      if (found && found?.songs?.[0]?.cloudinaryUrl) {
         setCurrentAlbum(found);
-        setSelectedArtist(found?.songs || []);
+        setSelectedArtist(found.songs);
         setSelectedArtistId(0);
-        setIsPlaying(true);
         setSource("popular");
+        setIsPlaying(true);
       }
     }
   }, [id, album]);
@@ -463,7 +466,7 @@ const Popular = () => {
 
                             {/* Dropdown menu */}
                             {selectedIndex === item._id && (
-                              <div className="bg-[#282828] absolute z-auto top-[40px] right-0 max-w-[300px] w-[250px] p-4 shadow-lg">
+                              <div className="bg-[#282828] absolute z-50 top-[40px] right-0 max-w-[300px] w-[250px] p-4 shadow-lg">
                                 <div className="flex gap-2 items-center">
                                   <img src={plus} alt="ps" />
                                   <p className="text-white text-[15px] font-Vazirmatn-400">

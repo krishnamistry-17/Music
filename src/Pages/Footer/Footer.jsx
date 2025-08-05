@@ -71,13 +71,13 @@ const Footer = () => {
               <div className="bg-[#292929] rounded-full p-4">
                 <img src={fb} alt="fb" />
               </div>
-              <div>
+              <div className="bg-[#292929] rounded-full py-2">
                 <img src={insta} alt="insta" />
               </div>
-              <div>
+              <div className="bg-[#292929] rounded-full py-2">
                 <img src={twit} alt="twit" />
               </div>
-              <div>
+              <div className="bg-[#292929] rounded-full py-2">
                 <img src={call} alt="call" />
               </div>
             </div>

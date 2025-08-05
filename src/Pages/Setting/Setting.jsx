@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import back from "../../assets/svgs/back.svg";
 import { IoIosLogIn } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
 const Setting = () => {
+  const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
@@ -12,7 +14,12 @@ const Setting = () => {
       <div className="p-5">
         <div className="flex items-center gap-2">
           <div>
-            <img src={back} alt="back" className="lg:hidden" />
+            <img
+              onClick={() => navigate("/")}
+              src={back}
+              alt="back"
+              className="lg:hidden"
+            />
           </div>
           <div>
             <h2 className="text-white text-[34px] font-Vazirmatn-400">
@@ -34,7 +41,10 @@ const Setting = () => {
                 </p>
               </div>
               <div>
-                <button className="flex justify-end gap-2 py-1.5 text-white border-white border rounded-2xl px-2.5 items-center">
+                <button
+                  onClick={() => navigate("/userdetail")}
+                  className="flex justify-end gap-2 py-1.5 text-white border-white border rounded-2xl px-2.5 items-center"
+                >
                   <IoIosLogIn />
                   View
                 </button>

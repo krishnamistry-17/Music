@@ -12,7 +12,7 @@ import { useAuth } from "../Context/AuthContext";
 
 const Content = () => {
   const tabsectionRef = useRef(null);
-
+  const playRef = useRef(null);
   const { setIsLoggedIn } = useAuth();
 
   const [activeTab, setActiveTab] = useState("signup");
@@ -28,6 +28,13 @@ const Content = () => {
     });
   };
 
+  const scrollToBottom = () => {
+    playRef.current?.scrollIntoView({
+      behaviour: "smooth",
+      block: "end",
+    });
+  };
+
   return (
     <div>
       <div>
@@ -36,6 +43,8 @@ const Content = () => {
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           scrollToTabs={scrollToTabs}
+          scrollToBottom={scrollToBottom}
+          playRef={playRef}
         />
       </div>
       <div className="pt-[64px] pl-[44px] pr-[64px]">
@@ -57,7 +66,7 @@ const Content = () => {
         <AlbumsTop />
       </div>
       <div className="pt-[64px] pl-[44px] pr-[64px]">
-        <MoodPlay />
+        <MoodPlay scrollToBottom={scrollToBottom} playRef={playRef} />
       </div>
       <div className="pt-[64px] pl-[37px] pr-[65px]">
         <Platform

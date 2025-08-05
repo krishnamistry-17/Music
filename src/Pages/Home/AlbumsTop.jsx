@@ -54,7 +54,7 @@ const AlbumsTop = () => {
   useEffect(() => {
     localStorage.setItem(
       "accessToken",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1NDI3OTUzNywiZXhwIjoxNzU0MzY1OTM3fQ.gGdv0E8uJBZUGQY2CFNSYP_Yd_iLkwhScKjSPH8h0E8"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1NDM2NjAwNiwiZXhwIjoxNzU0NDUyNDA2fQ.-coS-qAt_aCb0nUCulLxiMAvJ1E0c5rjwOsVH9yrIDc"
     );
   }, []);
 

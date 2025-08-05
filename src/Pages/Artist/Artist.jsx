@@ -1,22 +1,6 @@
 import React, { useEffect, useState } from "react";
-import home from "../../assets/svgs/home.svg";
-import album from "../../assets/svgs/album.svg";
-import artist from "../../assets/svgs/artist.svg";
-import recent from "../../assets/svgs/recent.svg";
-import most from "../../assets/svgs/most.svg";
-import fav from "../../assets/svgs/fav.svg";
-import yourplay from "../../assets/svgs/yourplay.svg";
-import addplay from "../../assets/svgs/addplay.svg";
-import wplay from "../../assets/svgs/wplay.svg";
-import setting from "../../assets/svgs/setting.svg";
-import logoutbtn from "../../assets/svgs/logout.svg";
-import wlog from "../../assets/svgs/wlog.svg";
-import wdis from "../../assets/svgs/wdis.svg";
-import back from "../../assets/svgs/back.svg";
 import bback from "../../assets/svgs/blueback.svg";
 import right from "../../assets/svgs/right.svg";
-import profile from "../../assets/svgs/profile.svg";
-import artist0 from "../../assets/images/artist.png";
 import art1 from "../../assets/images/art1.jpg";
 import art2 from "../../assets/images/art2.jpg";
 import art3 from "../../assets/images/art3.jpg";
@@ -24,16 +8,6 @@ import art4 from "../../assets/images/art4.jpg";
 import art5 from "../../assets/images/art5.jpg";
 import pfav from "../../assets/svgs/pfav.svg";
 import option from "../../assets/svgs/option.svg";
-import bhome from "../../assets/svgs/bhome.svg";
-import bartist from "../../assets/svgs/bartist.svg";
-import phome from "../../assets/svgs/phome.svg";
-import pdisc from "../../assets/svgs/pdisc.svg";
-import palbum from "../../assets/svgs/palbum.svg";
-import plib from "../../assets/svgs/plib.svg";
-import part from "../../assets/svgs/part.svg";
-import bdisc from "../../assets/svgs/bdisc.svg";
-import albumb from "../../assets/svgs/albumb.svg";
-import discb from "../../assets/svgs/discb.svg";
 import { data, Link, useNavigate, useParams } from "react-router-dom";
 import Popular from "./Popular";
 import ArtAlbum from "./ArtAlbum";
@@ -41,7 +15,6 @@ import SingleSong from "./SingleSong";
 import ArtistPlay from "./ArtistPlay";
 import Fans from "./Fans";
 import { useLocation } from "react-router-dom";
-import SideBar from "../SideBar/SideBar";
 import { useAuth } from "../Context/AuthContext";
 import Menu from "../SideBar/Menu";
 import { useArtist } from "../Context/ArtistContext";
@@ -50,12 +23,11 @@ import PlayArtist from "./PlayArtist";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
 import play from "../../assets/svgs/play.svg";
 import pdot from "../../assets/svgs/pdot.svg";
+import HomeNav from "../Home/HomeNav";
 
 const Artist = () => {
   const { id } = useParams();
   const { album: allAlbums, currentAlbum, setCurrentAlbum } = useArtist();
-  console.log("currentAlbum :", currentAlbum);
-  console.log("allAlbums :", allAlbums);
   const { source, setSource } = usePlayerSource();
   const { isLoggedIn, isGoogleLogin, logout } = useAuth();
   const [isdisplayDetail, setDisplayDetail] = useState();
@@ -215,79 +187,12 @@ const Artist = () => {
     <div>
       <div className="lg:flex hidden ">
         {/* Sidebar */}
-        <div>
-          <SideBar />
-        </div>
+
         {/* Main content area (grid content, header, songs, footer) */}
         <div className="pl-[32px] px-3">
           <div className=" w-full  bg-gradient-to-r from-blackbg to-black mt-[25px] rounded-tr-[7px] rounded-tl-[7px]">
-            <div className="flex justify-between items-center py-[30px] pr-[31px] pl-[10px]">
-              <div>
-                <img
-                  src={back}
-                  alt="back"
-                  onClick={handleClick}
-                  className="w-[50px] h-[50px]"
-                />
-              </div>
-              <div className="flex gap-15">
-                <div className="flex gap-5">
-                  <p className="text-white text-[24px] font-Vazirmatn-600">
-                    Share
-                  </p>
-                  <p className="text-white text-[24px] font-Vazirmatn-600">
-                    About
-                  </p>
-                  <p className="text-white text-[24px] font-Vazirmatn-600">
-                    Premuim
-                  </p>
-                </div>
-                <div>
-                  {(isLoggedIn || isGoogleLogin) && (
-                    <div>
-                      <button
-                        onClick={() => setDisplayDetail(!isdisplayDetail)}
-                      >
-                        <img
-                          // src={userProfile?.image || profile}
-                          src={profile}
-                          alt="Profile"
-                          className="w-[40px] h-[40px] rounded-full object-cover"
-                        />
-                        <h2 className="text-white">{"User"}</h2>
-
-                        {isdisplayDetail && (
-                          <div className="absolute  right-5 bg-black border border-gray-700 rounded-md shadow-md w-[140px] z-50">
-                            <div className="p-3 text-white text-[14px] font-Vazirmatn-400">
-                              <div className="flex items-center gap-2 mb-2">
-                                <img
-                                  src={profile}
-                                  alt="pf"
-                                  className="w-[20px] h-[20px]"
-                                />
-                                <p className="text-white pt-1.5 ">
-                                  User Detail
-                                </p>
-                              </div>
-                              <button
-                                onClick={logout}
-                                className="flex items-center gap-2 text-white hover:text-darkpink pt-1"
-                              >
-                                <img
-                                  src={logoutbtn}
-                                  alt="logout"
-                                  className="w-[16px] h-[16px]"
-                                />
-                                Logout
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
+            <div className="py-[30px]">
+              <HomeNav />
             </div>
             <div className="lg:flex justify-between items-center">
               <div className="lg:flex pl-[43px] gap-14 md:w-[712px]">

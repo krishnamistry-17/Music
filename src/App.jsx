@@ -34,6 +34,7 @@ import PlayArtist from "./Pages/Artist/PlayArtist";
 import { ViewProvider } from "./Pages/Context/ViewContext";
 import ViewSongs from "./Pages/Discover/ViewSongs";
 import Setting from "./Pages/Setting/Setting";
+import UserDetail from "./Pages/Home/UserDetail";
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
@@ -56,7 +57,6 @@ function LayoutWrapper({ children }) {
 
   const showDisplay =
     (isGoogleLogin || isLoggedIn) && location.pathname === "/discover";
-
 
   const hasBottomPlayer =
     showAudio || showDisplay || showOtherMusic || showOtherMusic1;
@@ -164,6 +164,10 @@ function App() {
                                   element={<ViewSongs />}
                                 />
                                 <Route path="/setting" element={<Setting />} />
+                                <Route
+                                  path="/userdetail"
+                                  element={<UserDetail />}
+                                />
                               </Routes>
                             </LayoutWrapper>
                           ) : (
@@ -186,6 +190,10 @@ function App() {
                               />
                               <Route path="/viewsong" element={<ViewSongs />} />
                               <Route path="/setting" element={<Setting />} />
+                              <Route
+                                path="/userdetail"
+                                element={<UserDetail />}
+                              />
                             </Routes>
                           )}
                           <ToastContainer />
