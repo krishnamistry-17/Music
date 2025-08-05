@@ -81,3 +81,17 @@ export const getAllGenere = (genere) => {
     payload: genere,
   };
 };
+
+export const getAllFaq = (faq) => {
+  return {
+    type: "GET_ALLFAQ",
+    payload: faq,
+  };
+};
+
+export const createFaq = (question) => {
+  return {
+    type: "CREATE_FAQ",
+    payload: question,
+  };
+};

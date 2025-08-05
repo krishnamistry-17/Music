@@ -18,6 +18,8 @@ const initialState = {
   list: [],
   email: [],
   password: [],
+  faq: [],
+  question: [],
 };
 
 const MusicReducer = (state = initialState, action) => {
@@ -67,6 +69,12 @@ const MusicReducer = (state = initialState, action) => {
 
     case "GET_ALL_PLAYLIST":
       return { ...state, list: [...state.list, action.payload] };
+
+    case "GET_ALLFAQ":
+      return { ...state, faq: [...state.faq, action.payload] };
+
+    case "CREATE_FAQ":
+      return { ...state, question: [...state.question, action.payload] };
 
     default:
       return state;

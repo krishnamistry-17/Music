@@ -82,6 +82,22 @@ const Setting = () => {
               change your last password
             </p>
           </div>
+
+          <div className="py-2 flex items-center justify-between">
+            <div>
+              <p className="text-white text-[16px] font-Vazirmatn-400">FAQ's</p>
+              <p className="text-[#b3b3b3] text-[13px]">Get your answers</p>
+            </div>
+            <div>
+              <button
+                onClick={() => navigate("/faq")}
+                className="flex justify-end gap-2 py-1.5 text-white border-white border rounded-2xl px-2.5 items-center"
+              >
+                <IoIosLogIn />
+                View
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

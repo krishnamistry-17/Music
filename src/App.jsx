@@ -35,6 +35,8 @@ import { ViewProvider } from "./Pages/Context/ViewContext";
 import ViewSongs from "./Pages/Discover/ViewSongs";
 import Setting from "./Pages/Setting/Setting";
 import UserDetail from "./Pages/Home/UserDetail";
+import Faq from "./Pages/FAQ/Faq";
+import { FaqProvider } from "./Pages/Context/FaqContext";
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
@@ -120,31 +122,80 @@ function App() {
                     <FavProvider>
                       <PlayerSourceProvider>
                         <ViewProvider>
-                          {isLarge ? (
-                            <LayoutWrapper>
+                          <FaqProvider>
+                            {isLarge ? (
+                              <LayoutWrapper>
+                                <Routes>
+                                  <Route path="/" element={<Home />} />
+                                  <Route
+                                    path="/discover"
+                                    element={<Discover />}
+                                  />
+                                  <Route
+                                    path="/album"
+                                    element={<Albums album={Song} />}
+                                  />
+                                  <Route
+                                    path="/album/:id"
+                                    element={<Albums />}
+                                  />
+                                  <Route path="/artist" element={<Artist />} />
+                                  <Route
+                                    path="/artist/:id"
+                                    element={<Artist />}
+                                  />
+                                  {/* <Route
+                              path="/reset-password"
+                              element={<ResetPassword />}
+                            /> */}
+                                  <Route
+                                    path="/reset-password"
+                                    element={<ResetPassword />}
+                                  />
+                                  <Route
+                                    path="/login"
+                                    element={<LoginSmall />}
+                                  />
+                                  <Route
+                                    path="/signup"
+                                    element={<SignUpSmall />}
+                                  />
+                                  <Route
+                                    path="/forgotpassword"
+                                    element={<ForgetPassword />}
+                                  />
+                                  <Route
+                                    path="/favorites"
+                                    element={<Favorites />}
+                                  />
+                                  <Route
+                                    path="/viewsong"
+                                    element={<ViewSongs />}
+                                  />
+                                  <Route
+                                    path="/setting"
+                                    element={<Setting />}
+                                  />
+                                  <Route
+                                    path="/userdetail"
+                                    element={<UserDetail />}
+                                  />
+                                  <Route path="/faq" element={<Faq />} />
+                                </Routes>
+                              </LayoutWrapper>
+                            ) : (
                               <Routes>
                                 <Route path="/" element={<Home />} />
                                 <Route
                                   path="/discover"
                                   element={<Discover />}
                                 />
-                                <Route
-                                  path="/album"
-                                  element={<Albums album={Song} />}
-                                />
-                                <Route path="/album/:id" element={<Albums />} />
+                                <Route path="/album" element={<Albums />} />{" "}
+                                <Route path="/album/:id" element={<Albums />} />{" "}
                                 <Route path="/artist" element={<Artist />} />
                                 <Route
                                   path="/artist/:id"
                                   element={<Artist />}
-                                />
-                                {/* <Route
-                              path="/reset-password"
-                              element={<ResetPassword />}
-                            /> */}
-                                <Route
-                                  path="/reset-password"
-                                  element={<ResetPassword />}
                                 />
                                 <Route path="/login" element={<LoginSmall />} />
                                 <Route
@@ -168,36 +219,12 @@ function App() {
                                   path="/userdetail"
                                   element={<UserDetail />}
                                 />
+                                <Route path="/faq" element={<Faq />} />
                               </Routes>
-                            </LayoutWrapper>
-                          ) : (
-                            <Routes>
-                              <Route path="/" element={<Home />} />
-                              <Route path="/discover" element={<Discover />} />
-                              <Route path="/album" element={<Albums />} />{" "}
-                              <Route path="/album/:id" element={<Albums />} />{" "}
-                              <Route path="/artist" element={<Artist />} />
-                              <Route path="/artist/:id" element={<Artist />} />
-                              <Route path="/login" element={<LoginSmall />} />
-                              <Route path="/signup" element={<SignUpSmall />} />
-                              <Route
-                                path="/forgotpassword"
-                                element={<ForgetPassword />}
-                              />
-                              <Route
-                                path="/favorites"
-                                element={<Favorites />}
-                              />
-                              <Route path="/viewsong" element={<ViewSongs />} />
-                              <Route path="/setting" element={<Setting />} />
-                              <Route
-                                path="/userdetail"
-                                element={<UserDetail />}
-                              />
-                            </Routes>
-                          )}
-                          <ToastContainer />
-                          {isLarge && <Footer />}
+                            )}
+                            <ToastContainer />
+                            {isLarge && <Footer />}
+                          </FaqProvider>
                         </ViewProvider>
                       </PlayerSourceProvider>
                     </FavProvider>

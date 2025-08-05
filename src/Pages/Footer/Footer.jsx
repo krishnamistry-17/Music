@@ -63,7 +63,7 @@ const Footer = () => {
 
           <div className="lg:pl-[53px] pt-8">
             <div>
-              <p className="text-[40px] font-Vazirmatn-800 bg-gradient-to-r from-[#EE10B0] to-[#0E9EEFEB] text-transparent bg-clip-text">
+              <p className="text-[40px] font-Vazirmatn-800 bg-gradient-to-t from-darkpink to-darkblue text-transparent bg-clip-text">
                 Melodies
               </p>
             </div>
