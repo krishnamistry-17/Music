@@ -71,10 +71,21 @@ const MusicReducer = (state = initialState, action) => {
       return { ...state, list: [...state.list, action.payload] };
 
     case "GET_ALLFAQ":
-      return { ...state, faq: [...state.faq, action.payload] };
+      return { ...state, id: [...state.id, action.payload] };
 
     case "CREATE_FAQ":
-      return { ...state, question: [...state.question, action.payload] };
+      const alreadyExistsFaq = state.faq.some(
+        (faqs) => faqs._id === action.payload._id
+      );
+      return alreadyExistsFaq
+        ? state
+        : { ...state, faq: [...state.faq, action.payload] };
+
+    case "REMOVE_FAQ":
+      return {
+        ...state,
+        faq: state.faq.filter((faqs) => faqs._id !== action.payload._id),
+      };
 
     default:
       return state;

@@ -56,12 +56,12 @@ const TrendingSong = () => {
     { id: 7, fimg: pfav, fullimg: pfull, ptime: "3:26" },
   ];
 
-  useEffect(() => {
-    localStorage.setItem(
-      "accessToken",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1NDI3OTUzNywiZXhwIjoxNzU0MzY1OTM3fQ.gGdv0E8uJBZUGQY2CFNSYP_Yd_iLkwhScKjSPH8h0E8"
-    );
-  }, []);
+  // useEffect(() => {
+  //   localStorage.setItem(
+  //     "accessToken",
+  //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjM2ZTY1ZjRjYTNkYjIxNzcwMjg5YSIsImlhdCI6MTc1NDQ1MjQ5MiwiZXhwIjoxNzU0NTM4ODkyfQ.a-883BDizrLRnYzuKMEWWK4jwqj9oDKdC_zyMks-6To"
+  //   );
+  // }, []);
 
   useEffect(() => {
     async function fetchData() {

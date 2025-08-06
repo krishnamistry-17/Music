@@ -37,6 +37,7 @@ import Setting from "./Pages/Setting/Setting";
 import UserDetail from "./Pages/Home/UserDetail";
 import Faq from "./Pages/FAQ/Faq";
 import { FaqProvider } from "./Pages/Context/FaqContext";
+import ChangePassword from "./Pages/Home/ChangePassword";
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
@@ -144,10 +145,6 @@ function App() {
                                     path="/artist/:id"
                                     element={<Artist />}
                                   />
-                                  {/* <Route
-                              path="/reset-password"
-                              element={<ResetPassword />}
-                            /> */}
                                   <Route
                                     path="/reset-password"
                                     element={<ResetPassword />}
@@ -181,6 +178,10 @@ function App() {
                                     element={<UserDetail />}
                                   />
                                   <Route path="/faq" element={<Faq />} />
+                                  <Route
+                                    path="/changepassword"
+                                    element={<ChangePassword />}
+                                  />
                                 </Routes>
                               </LayoutWrapper>
                             ) : (
@@ -220,6 +221,10 @@ function App() {
                                   element={<UserDetail />}
                                 />
                                 <Route path="/faq" element={<Faq />} />
+                                <Route
+                                  path="/changepassword"
+                                  element={<ChangePassword />}
+                                />
                               </Routes>
                             )}
                             <ToastContainer />

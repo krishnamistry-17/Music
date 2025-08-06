@@ -82,10 +82,10 @@ export const getAllGenere = (genere) => {
   };
 };
 
-export const getAllFaq = (faq) => {
+export const getAllFaq = (id) => {
   return {
     type: "GET_ALLFAQ",
-    payload: faq,
+    payload: id,
   };
 };
 
@@ -93,5 +93,12 @@ export const createFaq = (question) => {
   return {
     type: "CREATE_FAQ",
     payload: question,
+  };
+};
+
+export const removeFromFaq = (faq) => {
+  return {
+    type: "REMOVE_FAQ",
+    payload: faq,
   };
 };

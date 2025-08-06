@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useFaq } from "../Context/FaqContext";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
-import { createFaq, getAllFaq } from "../Redux/Action/action";
+import { createFaq, getAllFaq, removeFromFaq } from "../Redux/Action/action";
 import search from "../../assets/svgs/search.svg";
 import { IoMdClose } from "react-icons/io";
 import plus from "../../assets/svgs/plus.svg";
 import mail from "../../assets/svgs/mail.svg";
 import contact from "../../assets/svgs/contact.svg";
+import { MdOutlineDeleteOutline } from "react-icons/md";
+import { toast } from "react-toastify";
 
 const AllFaq = () => {
   const { allFaq, setAllFaq } = useFaq();
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  console.log("filteredData :", filteredData);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -22,6 +25,8 @@ const AllFaq = () => {
   const [question, setQuestion] = useState("");
 
   const dispatch = useDispatch();
+  const faq = useSelector((state) => state.faq);
+  const removefaq = useSelector((state) => state.removefaq);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -79,9 +84,16 @@ const AllFaq = () => {
       setFilteredData(updatedData);
       setAllFaq(updatedData);
       setQuestion("");
+      toast.success("Added to faqs..");
     } catch (error) {
       console.log("FAQ creation error:", error.message);
     }
+  };
+
+  const handleDelete = (faq) => {
+    dispatch(removeFromFaq(faq));
+    setAllFaq(faq._id);
+    toast.success("Delete from faq..");
   };
 
   if (error) return <p className="text-white">Error: {error}</p>;
@@ -89,7 +101,10 @@ const AllFaq = () => {
 
   return (
     <div>
-      <p className="bg-gradient-to-t from-darkblue to-darkpink text-transparent bg-clip-text sm:text-[45px] text-[32px] py-12 text-center font-Vazirmatn-500">
+      <p
+        className="bg-gradient-to-t from-darkblue to-darkpink text-transparent bg-clip-text
+       sm:text-[45px] text-[32px] py-12 text-center font-Vazirmatn-500"
+      >
         Frequently Asked Questions
       </p>
 
@@ -134,9 +149,22 @@ const AllFaq = () => {
                   )}
                 </div>
                 {activeIndex === index && (
-                  <p className="text-white text-[14px] font-Vazirmatn-400 pt-2">
-                    {item.answer || "Answer is not available."}
-                  </p>
+                  <div className="flex justify-between items-center">
+                    <p className="text-white text-[14px] font-Vazirmatn-400 pt-2">
+                      {item.answer || "Answer is not available."}
+                    </p>
+
+                    <div>
+                      {removefaq && (
+                        <div>
+                          <MdOutlineDeleteOutline
+                            className="text-white"
+                            onClick={() => handleDelete(faq)}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 )}
               </div>
             ))}
@@ -144,7 +172,7 @@ const AllFaq = () => {
         </div>
       </div>
 
-      <div className="flex items-center justify-center py-10">
+      <div className="flex items-center justify-center sm:py-10">
         <div className="p-5 w-full max-w-2xl">
           <div className="md:flex items-center gap-5">
             <div className="border border-gray-800 p-5 w-full max-w-sm text-center">
@@ -170,10 +198,10 @@ const AllFaq = () => {
         </div>
       </div>
 
-      <div className="md:flex justify-center items-center">
+      <div className="flex justify-center items-center">
         <div className=" text-white py-6 sm:px-0 px-2">
           <p>Ask a question:</p>
-          <div className="md:flex items-center gap-4">
+          <div className="flex items-center gap-4">
             <input
               type="text"
               value={question}
@@ -182,12 +210,16 @@ const AllFaq = () => {
               focus:ring-0 focus:outline-none focus:shadow-none "
               placeholder="Enter your question"
             />
-            <button
-              onClick={handleSubmit}
-              className=" text-white py-2 px-4 rounded-md bg-[#292929]"
-            >
-              Submit
-            </button>
+            {faq && (
+              <div>
+                <button
+                  onClick={handleSubmit}
+                  className=" text-white py-2 px-4 rounded-md bg-[#292929]"
+                >
+                  Submit
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -9,6 +9,8 @@ export const AuthProvider = ({ children }) => {
   const [userProfile, setUserProfile] = useState(null);
   const [userData, setUserData] = useState(null);
   const [forgotEmail, setForgotEmail] = useState(null);
+  const [currentPassword, setCurrentPassword] = useState(null);
+  const [newPassword, setNewPassword] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -82,6 +84,10 @@ export const AuthProvider = ({ children }) => {
         logout,
         forgotEmail,
         setForgotEmail,
+        currentPassword,
+        setCurrentPassword,
+        newPassword,
+        setNewPassword,
       }}
     >
       {children}

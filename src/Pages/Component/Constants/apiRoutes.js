@@ -7,6 +7,8 @@ export const apiRoutes = {
   GET_GLOGIN: "/users/google",
   FORGOT_PASSWORD: "/admins/forgot-password",
   RESET_PASSWORD: "/admins/reset-password",
+  // CHANGE_PASSWORD: "/users/update-user",
+  CHANGE_PASSWORD: (userId) => `/users/update-user/${userId}`,
   ADD_FAVOURITES: "/favourite/add-to-favourite",
   GET_ALLFAVORITES: "/favourite/get-all-favourite-current-user",
   GET_SPECIFICFAV: "/favourite/get-favourite-specific-song",
@@ -15,4 +17,5 @@ export const apiRoutes = {
   GET_ALLPLAYLIST: "/playlist/get-all-playlist",
   GET_ALL_FAQ: "/faq/get-all-faq",
   CREATE_FAQ: "faq/create-faq",
+  REMOVE_FAQ: "/faq/delete-faq",
 };

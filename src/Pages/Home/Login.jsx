@@ -11,10 +11,15 @@ import { useAuth } from "../Context/AuthContext";
 import { useGoogleLogin } from "@react-oauth/google";
 import { loginWithEmail, loginWithGoogle } from "../../service/authService";
 
+const ENCRYPTION_KEY =
+  "48e619d8ddf89658793d2cc81882c7017eefd12181aa4456ad91c3347421ab87";
+
 const Login = ({ onForgotPassword }) => {
   const [isClicked, setIsClicked] = useState(false);
   const { login } = useAuth();
-  const { userData, setUserData } = useAuth();
+  const { userData, setUserData, currentPassword, setCurrentPassword } =
+    useAuth();
+  console.log("currentPassword>>>>>> :", currentPassword);
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -51,8 +56,23 @@ const Login = ({ onForgotPassword }) => {
     try {
       const data = await loginWithEmail(email, password);
       login(data.token, { name: data.name, email: data.email }, false, data);
-    
+      console.log("data>>>login email :", data);
       setUserData(data);
+      setCurrentPassword(password);
+
+      // DECRYPT DATA
+      const decryptData = (encryptedData, ivHex) => {
+        const decipher = crypto.createDecipheriv(
+          "aes-256-cbc",
+          ENCRYPTION_KEY,
+          Buffer.from(ivHex, "hex")
+        );
+        let decrypted = decipher.update(encryptedData, "hex", "utf8");
+        decrypted += decipher.final("utf8");
+
+        return JSON.parse(decrypted);
+      };
+      localStorage.setItem("user", JSON.parse(decryptData));
       toast.success("Login Sucessfull");
       navigate("/", { state: { tokenReady: true } });
     } catch (error) {
@@ -71,7 +91,7 @@ const Login = ({ onForgotPassword }) => {
         const data = await loginWithGoogle(tokenResponse.access_token);
         const { name, email, picture, token } = data;
         login(token, { name, email, image: picture }, true, data);
-        console.log(' data :',  data);
+        console.log(" data>>>>google :", data);
         setUserData(data);
         toast.success("Google Login Success");
         navigate("/", { state: { tokenReady: true } });

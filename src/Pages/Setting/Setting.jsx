@@ -74,7 +74,7 @@ const Setting = () => {
             </div>
           </div>
 
-          <div>
+          <div onClick={() => navigate("/changepassword")}>
             <p className="text-white text-[16px] font-Vazirmatn-400">
               Change Password
             </p>
