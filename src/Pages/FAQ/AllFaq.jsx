@@ -16,7 +16,6 @@ const AllFaq = () => {
   const { allFaq, setAllFaq } = useFaq();
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  console.log("filteredData :", filteredData);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 

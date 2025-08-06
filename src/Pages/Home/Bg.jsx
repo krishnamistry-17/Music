@@ -10,7 +10,6 @@ const Bg = ({
   playRef,
   scrollToBottom,
 }) => {
-  
   const handleClick = () => {
     window.scrollTo(0, 1255);
   };
@@ -21,8 +20,8 @@ const Bg = ({
 
   return (
     <div>
-      <div className=" relative rounded-[25px] pr-[64px] pl-[25px]">
-        <img src={homebg} alt="bg" className=" max-w-full w-full h-[595px]" />
+      <div className=" relative rounded-[25px] xl:pr-[64px] xl:pl-[25px] px-[25px]">
+        <img src={homebg} alt="bg" className=" w-full h-[595px]" />
         <div className=" absolute top-[24px] px-[25px] pb-[113px]">
           <div>
             <HomeNav

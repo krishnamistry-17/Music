@@ -49,7 +49,7 @@ const ChangePassword = () => {
       const response = await apiInstance.put(
         apiRoutes.CHANGE_PASSWORD(userData.data._id),
         {
-          oldPassword: currentPassword,
+          oldPassword,
           newPassword: newPassword,
           confirmPassword: confirmPassword,
         },
@@ -79,8 +79,11 @@ const ChangePassword = () => {
       <div className="flex justify-center items-center">
         <form
           onSubmit={handleSubmit}
-          className="w-full max-w-lg bg-[#292929] p-5"
+          className="w-full max-w-lg bg-[#292929] p-5 my-5 sm:mx-0 mx-3"
         >
+          <p className="text-white sm:text-[32px] text-[22px] font-Vazirmatn-500 py-2 pl-2">
+            Change Password
+          </p>
           <div className="grid grid-cols-1 gap-4">
             <div className="border border-gray-700 p-4 rounded bg-[#1E1E1E]">
               <p>Old Password</p>
@@ -184,11 +187,6 @@ const ChangePassword = () => {
                 {loading ? "Changing..." : "Submit"}
               </button>
             </div>
-
-            {error && <p className="text-red-400 text-center">{error}</p>}
-            {successMessage && (
-              <p className="text-green-400 text-center">{successMessage}</p>
-            )}
           </div>
         </form>
       </div>

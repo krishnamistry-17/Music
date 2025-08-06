@@ -41,7 +41,6 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (token, profile = null, google = false, fullData = null) => {
-    localStorage.setItem("accessToken", token);
     localStorage.setItem("loginMethod", google ? "google" : "email");
 
     if (profile) {
