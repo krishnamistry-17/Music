@@ -18,7 +18,8 @@ const initialState = {
   list: [],
   email: [],
   password: [],
-  faq: [],
+  faq: true,
+  removefaq: true,
   question: [],
 };
 
@@ -81,11 +82,14 @@ const MusicReducer = (state = initialState, action) => {
         ? state
         : { ...state, faq: [...state.faq, action.payload] };
 
+    // case "REMOVE_FAQ":
+    //   return {
+    //     ...state,
+    //     faq: state.faq.filter((faqs) => faqs._id !== action.payload._id),
+    //   };
+
     case "REMOVE_FAQ":
-      return {
-        ...state,
-        faq: state.faq.filter((faqs) => faqs._id !== action.payload._id),
-      };
+      return { ...state, removefaq: action.payload };
 
     default:
       return state;

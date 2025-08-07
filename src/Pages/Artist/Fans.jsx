@@ -8,8 +8,8 @@ import more from "../../assets/svgs/more.svg";
 
 const Fans = () => {
   const [isOpen, setIsOpen] = useState(false);
- 
-  const [visibleCount, setVisibleCount] = useState(2); 
+
+  const [visibleCount, setVisibleCount] = useState(2);
 
   const data = [
     { image: fan1, heading: "50 Cent" },
@@ -30,9 +30,10 @@ const Fans = () => {
   useEffect(() => {
     const updateCount = () => {
       const width = window.innerWidth;
-      if (width >= 1024) setVisibleCount(5); 
-      else if (width >= 768) setVisibleCount(3); 
-      else setVisibleCount(2); 
+      if (width >= 1200) setVisibleCount(5);
+      else if (width >= 1024) setVisibleCount(2);
+      else if (width >= 768) setVisibleCount(3);
+      else setVisibleCount(2);
     };
 
     updateCount();
@@ -47,7 +48,7 @@ const Fans = () => {
           Eminem Fans <span className="text-darkpink">Also Listen To</span>
         </h2>
         <div
-          className=" grid lg:grid-cols-6 md:grid-cols-4 pt-5 gap-[43px] overflow-x-auto pl-4"
+          className=" grid xl:grid-cols-6 lg:grid-cols-3 md:grid-cols-4 pt-5 gap-[43px] overflow-x-auto pl-4"
           style={{ scrollbarWidth: "none" }}
         >
           {(isOpen ? data : data.slice(0, visibleCount)).map((item, index) => (
@@ -78,8 +79,6 @@ const Fans = () => {
         </div>
       </div>
 
-     
-
       <div className="md:hidden">
         <div className="flex justify-between pt-8">
           <div>
@@ -87,7 +86,6 @@ const Fans = () => {
               Eminem Fans <span className="text-darkpink">Also Listen To</span>
             </h2>
           </div>
-          
         </div>
         <div
           className="flex gap-3 overflow-x-auto  "

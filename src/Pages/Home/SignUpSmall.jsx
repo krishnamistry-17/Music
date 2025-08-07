@@ -13,11 +13,12 @@ import { getSignUp } from "../Redux/Action/action";
 import { toast } from "react-toastify";
 import LsSidebar from "../SideBar/LsSideBar";
 import { useGoogleLogin } from "@react-oauth/google";
+import { useAuth } from "../Context/AuthContext";
 
 const SignUpSmall = ({ onSuccess }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [data, setData] = useState("");
-
+  const { setUserData } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [name, setName] = useState("");
@@ -35,22 +36,6 @@ const SignUpSmall = ({ onSuccess }) => {
   };
 
   const dispatch = useDispatch();
-
-  const notify = () =>
-    toast.success("SignUp successful!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-
-  localStorage.setItem(
-    "accessToken",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NmRmYTI3NmU5OTIzZjQxYmE3OGFhZiIsImlhdCI6MTc1MjQ4NzM3MiwiZXhwIjoxNzUyNTczNzcyfQ.7FvhITSk-4kN12x0sIXx3Fjl-IPJZhp1EQ1vCBe_qfk"
-  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,56 +59,27 @@ const SignUpSmall = ({ onSuccess }) => {
       setData(response.data);
       console.log("response.data :", response.data);
       dispatch(getSignUp(response.data));
-
-      if (response.status === 200) {
-        notify();
-      }
       onSuccess();
+      toast.success("Signup successfull");
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed");
     }
   };
+
   const signup = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
+      console.log("tokenResponse :", tokenResponse);
+
       try {
-        // Fetch user info from Google API using the access token
-        const userInfo = await fetch(
-          "https://www.googleapis.com/oauth2/v3/userinfo",
-          {
-            headers: {
-              Authorization: `Bearer ${tokenResponse.access_token}`,
-            },
-          }
-        );
-
-        const userData = await userInfo.json();
-        console.log("Google user data>>>>>>:", userData);
-
-        const signupData = {
-          name: userData.name,
-          email: userData.email,
-          password: "K@12345",
-          role: "user",
-        };
-
-        const response = await apiInstance.post(
-          apiRoutes.GET_SIGNUP,
-          signupData
-        );
-        setData(response.data);
-        dispatch(getSignUp(response.data));
-
-        if (response.status === 200) {
-          toast.success("Signed up with Google successfully!");
-          onSuccess();
-        }
-      } catch (err) {
-        console.error("Google signup error:", err);
-        toast.error(err.response?.data?.message || "Google signup failed");
+        const res = await apiInstance.post(apiRoutes.GET_VERIFYTOKEN, {
+          access_token: tokenResponse?.access_token,
+        });
+        localStorage.setItem("accessToken", res?.data?.accessToken);
+        console.log("res>>Signup:", res);
+        toast.success("Google Signup Success..");
+      } catch (error) {
+        console.log(error.message);
       }
-    },
-    onError: () => {
-      toast.error("Google login failed");
     },
   });
   return (
@@ -264,7 +220,7 @@ const SignUpSmall = ({ onSuccess }) => {
                   </div>
                   <div>
                     <a
-                      href="/smalllogin"
+                      href="/login"
                       className="text-[16px] font-Vazirmatn-500 text-white underline hover:text-bluearrow pl-2"
                     >
                       Login

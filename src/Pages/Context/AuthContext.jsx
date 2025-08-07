@@ -41,6 +41,8 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (token, profile = null, google = false, fullData = null) => {
+    console.log("token :", token);
+
     localStorage.setItem("loginMethod", google ? "google" : "email");
 
     if (profile) {
@@ -58,6 +60,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    console.log("context");
     localStorage.removeItem("accessToken");
     localStorage.removeItem("loginMethod");
     localStorage.removeItem("userProfile");

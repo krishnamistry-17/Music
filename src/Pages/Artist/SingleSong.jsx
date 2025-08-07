@@ -21,7 +21,7 @@ const SingleSong = () => {
     { image: s3, heading: "From The D 2 Th...", para: "2023" },
     { image: s1, heading: "Lace It", para: "2023" },
   ];
- 
+
   const data3 = [
     { image: s1, heading: "Lace It", para: "2023" },
     { image: s4, heading: "911", para: "2022" },
@@ -32,9 +32,10 @@ const SingleSong = () => {
   useEffect(() => {
     const updateCount = () => {
       const width = window.innerWidth;
-      if (width >= 1024) setVisibleCount(5); 
+      if (width >= 1200) setVisibleCount(5);
+      else if (width >= 1024) setVisibleCount(2);
       else if (width >= 768) setVisibleCount(3);
-      else setVisibleCount(2); 
+      else setVisibleCount(2);
     };
 
     updateCount();
@@ -44,14 +45,12 @@ const SingleSong = () => {
 
   return (
     <>
-      
-
       <div className=" md:block hidden">
         <h2 className="text-[32px] text-white font-Vazirmatn-700 pl-4 pt-5">
           Single <span className="text-darkpink">Songs</span>
         </h2>
         <div
-          className="grid lg:grid-cols-6 md:grid-cols-4 pt-5 gap-6  overflow-x-auto pl-4"
+          className="grid xl:grid-cols-6 lg:grid-cols-3 md:grid-cols-4 pt-5 gap-6  overflow-x-auto pl-4"
           style={{ scrollbarWidth: "none" }}
         >
           {(isOpen ? data : data.slice(0, visibleCount)).map((item, index) => (
@@ -60,7 +59,9 @@ const SingleSong = () => {
                 <div className="p-2">
                   <img src={item.image} alt="a1" />
                   <div className="pt-[8px]">
-                    <h2 className="text-white text-[16px] font-Vazirmatn-500">{item.heading}</h2>
+                    <h2 className="text-white text-[16px] font-Vazirmatn-500">
+                      {item.heading}
+                    </h2>
                     <p className="text-white text-[16px] pt-[4px] font-Vazirmatn-300">
                       {item.para}
                     </p>
@@ -90,7 +91,6 @@ const SingleSong = () => {
               Single <span className="text-darkpink">Songs</span>
             </h2>
           </div>
-        
         </div>
         <div
           className="flex gap-3 overflow-x-auto pt-5"

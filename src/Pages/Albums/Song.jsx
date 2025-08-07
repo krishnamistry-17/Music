@@ -139,7 +139,7 @@ const Song = () => {
   useEffect(() => {
     async function fetchData() {
       const token = localStorage.getItem("accessToken");
-      console.log("token >>>>song:", token);
+
       if (!token) {
         console.warn("No token found, skipping API call");
         setError("Unauthorized: Please login first");
@@ -262,7 +262,7 @@ const Song = () => {
             </p>
           </div>
           <div>
-            <p className="text-[20px] font-Vazirmatn-400 text-white lg:block hidden">
+            <p className="text-[20px] font-Vazirmatn-400 text-white xl:block hidden">
               Album
             </p>
           </div>
@@ -357,7 +357,7 @@ const Song = () => {
 
                         {/* Album Title */}
                         <div>
-                          <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] w-[345px] lg:block hidden">
+                          <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] w-[345px] xl:block hidden">
                             {extra?.album}
                           </p>
                         </div>

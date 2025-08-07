@@ -19,8 +19,9 @@ const apiInstance = axios.create({
 apiInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("accessToken");
+    console.log("token>>>>get :", token);
     if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
+      config.headers["Authorization"] = `Bearer ${token}`; //token
     }
     return config;
   },
@@ -32,8 +33,9 @@ apiInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.clear();
-      sessionStorage.clear();
+      // console.log("Axios");
+      // localStorage.clear();
+      // sessionStorage.clear();
       window.dispatchEvent(new Event("unauthorized"));
     }
     return Promise.reject(error);

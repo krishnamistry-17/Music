@@ -10,8 +10,7 @@ import more from "../../assets/svgs/more.svg";
 const ArtistPlay = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const [visibleCount, setVisibleCount] = useState(2); 
-
+  const [visibleCount, setVisibleCount] = useState(2);
 
   const data = [
     { image: artist1, heading: "Full Collection" },
@@ -35,9 +34,10 @@ const ArtistPlay = () => {
   useEffect(() => {
     const updateCount = () => {
       const width = window.innerWidth;
-      if (width >= 1024) setVisibleCount(5); 
-      else if (width >= 768) setVisibleCount(3); 
-      else setVisibleCount(2); 
+      if (width >= 1200) setVisibleCount(5);
+      else if (width >= 1024) setVisibleCount(2);
+      else if (width >= 768) setVisibleCount(3);
+      else setVisibleCount(2);
     };
 
     updateCount();
@@ -52,7 +52,7 @@ const ArtistPlay = () => {
           Artist’s <span className="text-darkpink">Playlist</span>
         </h2>
         <div
-          className="grid lg:grid-cols-6 md:grid-cols-4 pt-5 gap-6 overflow-x-auto pl-4"
+          className="grid xl:grid-cols-6 lg:grid-cols-3 md:grid-cols-4 pt-5 gap-6 overflow-x-auto pl-4"
           style={{ scrollbarWidth: "none" }}
         >
           {(isOpen ? data : data.slice(0, visibleCount)).map((item, index) => (
@@ -82,8 +82,6 @@ const ArtistPlay = () => {
           </div>
         </div>
       </div>
-
-    
 
       <div className="md:hidden">
         <div className="flex justify-between pt-5">

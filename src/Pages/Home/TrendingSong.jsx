@@ -56,7 +56,6 @@ const TrendingSong = () => {
     { id: 7, fimg: pfav, fullimg: pfull, ptime: "3:26" },
   ];
 
-
   useEffect(() => {
     async function fetchData() {
       const token = localStorage.getItem("accessToken");
@@ -140,7 +139,7 @@ const TrendingSong = () => {
               </p>
             </div>
             <div>
-              <p className="text-[20px] font-Vazirmatn-400 text-white lg:block hidden">
+              <p className="text-[20px] font-Vazirmatn-400 text-white xl:block hidden">
                 Album
               </p>
             </div>
@@ -204,7 +203,7 @@ const TrendingSong = () => {
                       key={item._id || index}
                       className="pt-[15px] cursor-pointer"
                     >
-                      <div className="grid grid-cols-4 gap-6 bg-[#1E1E1E] relative">
+                      <div className="grid xl:grid-cols-4 grid-cols-3 gap-6 bg-[#1E1E1E] relative">
                         <div
                           className="flex"
                           onClick={() => handleSelect(index, item._id)}
@@ -228,7 +227,7 @@ const TrendingSong = () => {
                           {item?.artistId?.createdAt?.split("T")[0]}
                         </p>
 
-                        <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] w-[345px] lg:block hidden truncate">
+                        <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] w-[345px] xl:block hidden truncate">
                           {item?.artistId?.bio}
                         </p>
 

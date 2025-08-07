@@ -135,7 +135,7 @@ const AllPlaylist = () => {
       </div>
       <div>
         <div
-          className=" hidden md:grid lg:grid-cols-6 md:grid-cols-4 gap-[24px] overflow-x-auto "
+          className=" hidden md:grid xl:grid-cols-6 md:grid-cols-4 gap-[24px] overflow-x-auto "
           style={{ scrollbarWidth: "none" }}
         >
           {combinedPlayList.map((item, index) => {

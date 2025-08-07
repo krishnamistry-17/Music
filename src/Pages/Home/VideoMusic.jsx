@@ -11,7 +11,6 @@ const VideoMusic = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
 
-
   const data = [
     {
       image: newmusic1,
@@ -108,7 +107,8 @@ const VideoMusic = () => {
   useEffect(() => {
     const updateCount = () => {
       const width = window.innerWidth;
-      if (width >= 1024) setVisibleCount(3);
+      if (width >= 1200) setVisibleCount(3);
+      else if (width >= 1024) setVisibleCount(2);
       else if (width >= 768) setVisibleCount(3);
       else setVisibleCount(2);
     };
@@ -132,7 +132,7 @@ const VideoMusic = () => {
       </div>
 
       <div
-        className=" hidden md:grid lg:grid-cols-4 grid-cols-2 lg:gap-[130px] gap-[24px] overflow-x-auto "
+        className=" hidden md:grid xl:grid-cols-4  grid-cols-2 lg:gap-[130px] gap-[24px] overflow-x-auto "
         style={{ scrollbarWidth: "none" }}
       >
         {(isOpen ? data : data.slice(0, visibleCount)).map((item, index) => (

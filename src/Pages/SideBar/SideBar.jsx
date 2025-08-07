@@ -106,6 +106,8 @@ const SideBar = ({ hasBottomPlayer }) => {
                         setActiveIndex(`${sectionIndex}-${index}`);
 
                         if (item.name === "Logout") {
+                          console.log("item.name :", item.name);
+
                           localStorage.removeItem("accessToken");
                           logout();
                           // setIsLoggedIn(false);

@@ -34,7 +34,8 @@ const WeeklyTop = () => {
   useEffect(() => {
     const updateCount = () => {
       const width = window.innerWidth;
-      if (width >= 1024) setVisibleCount(5);
+      if (width >= 1200) setVisibleCount(5);
+      else if (width >= 1024) setVisibleCount(2);
       else if (width >= 768) setVisibleCount(3);
       else setVisibleCount(2);
     };
@@ -58,7 +59,7 @@ const WeeklyTop = () => {
       </div>
       <div>
         <div
-          className=" hidden md:grid lg:grid-cols-6 md:grid-cols-4 gap-[24px] overflow-x-auto "
+          className=" hidden md:grid xl:grid-cols-6 lg:grid-cols-3 md:grid-cols-4 gap-[24px] overflow-x-auto "
           style={{ scrollbarWidth: "none" }}
         >
           {(isOpen ? data : data.slice(0, visibleCount)).map((item, index) => (

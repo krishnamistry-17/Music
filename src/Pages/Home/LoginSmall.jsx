@@ -15,11 +15,12 @@ import { useAuth } from "../Context/AuthContext";
 import LsSidebar from "../SideBar/LsSideBar";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { loginWithEmail, loginWithGoogle } from "../../service/authService";
+import { loginWithEmail } from "../../service/authService";
 
 const LoginSmall = ({ onSuccess, onForgotPassword }) => {
   const [isClicked, setIsClicked] = useState(false);
-  const { setIsLoggedIn, setIsGoogleLogin, setUserProfile } = useAuth();
+  const { setIsLoggedIn, setIsGoogleLogin, setUserProfile, setUserData } =
+    useAuth();
   const { login } = useAuth();
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
@@ -40,23 +41,12 @@ const LoginSmall = ({ onSuccess, onForgotPassword }) => {
 
   const dispatch = useDispatch();
 
-  const notify = () =>
-    toast.success("Login successful!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!email || !password) {
+    if (!email || !email.includes("@") || !password) {
       toast.warn("Please fill all the fields");
       return;
     }
@@ -64,15 +54,31 @@ const LoginSmall = ({ onSuccess, onForgotPassword }) => {
     setLoading(true);
     setError(null);
 
+    //email login
     try {
       const data = await loginWithEmail(email, password);
-      login(data.token);
-      // setData(data);
-      // dispatch(getLogin(data));
-      // notify();
-      // onSuccess();
+      login(data.token, { name: data.name, email: data.email }, false, data);
+      console.log("data :", data);
+      setUserData(data);
+      setCurrentPassword(password);
       toast.success("Login Sucessfull");
       navigate("/", { state: { tokenReady: true } });
+
+      // // DECRYPT DATA
+      const decryptData = (encryptedData, ivHex) => {
+        const decipher = crypto.createDecipheriv(
+          "aes-256-cbc",
+          ENCRYPTION_KEY,
+          Buffer.from(ivHex, "hex")
+        );
+        let decrypted = decipher.update(encryptedData, "hex", "utf8");
+        decrypted += decipher.final("utf8");
+        console.log("decipher :", decipher);
+
+        return JSON.parse(decrypted);
+      };
+      localStorage.setItem("user", JSON.parse(decryptData));
+      console.log("decryptData :", decryptData);
     } catch (error) {
       setError(error.response?.data?.message || "Login Failed");
     } finally {
@@ -85,19 +91,30 @@ const LoginSmall = ({ onSuccess, onForgotPassword }) => {
   const loginGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        const data = await loginWithGoogle(tokenResponse.access_token);
-        const { name, email, picture, token } = data;
+        const token = tokenResponse.access_token;
+        console.log("tokenResponse :", tokenResponse);
 
-        login(token, { name, email, image: picture }, true);
+        const response = await apiInstance.post(apiRoutes.GET_VERIFYTOKEN, {
+          access_token: token,
+        });
+
+        const parsedData = JSON.parse(response?.config?.data);
+        const accessToken = parsedData.access_token;
+        localStorage.setItem("accessToken", response.data.accessToken);
+
+        const user = response.data.user;
+        if (!user) throw new Error("User data not found");
+
+        const { name, email, picture } = user;
+        login(token, { name, email, image: picture }, true, user);
+        setUserData(user);
+
         toast.success("Google Login Success");
         navigate("/", { state: { tokenReady: true } });
       } catch (error) {
-        console.error(error.message);
+        console.error("Google login error:", error.message || error);
         toast.error("Google login failed");
       }
-    },
-    onError: () => {
-      toast.error("Google login failed");
     },
   });
 
@@ -216,7 +233,7 @@ const LoginSmall = ({ onSuccess, onForgotPassword }) => {
             </div>
             <div>
               <a
-                href="/smallsignup"
+                href="/signup"
                 className="text-[16px] font-Vazirmatn-500 text-white underline hover:text-bluearrow pl-2"
               >
                 Signup

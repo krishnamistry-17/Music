@@ -53,6 +53,7 @@ const Content = () => {
       <div className="pt-[64px] pl-[44px] pr-[64px]">
         <NewRelease />
       </div>
+      
       <div className="pt-[64px] pl-[44px] pr-[64px]">
         <TrendingSong />
       </div>

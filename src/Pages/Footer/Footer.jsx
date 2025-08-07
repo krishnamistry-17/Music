@@ -54,7 +54,9 @@ const Footer = () => {
               </h2>
               <div className="flex flex-col  items-center font-Vazirmatn-400">
                 <a className="text-[16px] text-white p-4">About</a>
-                <a className="text-[16px] text-white p-4">Policy</a>
+                <a href="/policy" className="text-[16px] text-white p-4">
+                  Policy
+                </a>
                 <a className="text-[16px] text-white p-4">Social Media</a>
                 <a className="text-[16px] text-white p-4">Sopport</a>
               </div>

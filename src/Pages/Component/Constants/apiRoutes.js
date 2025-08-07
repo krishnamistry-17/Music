@@ -4,7 +4,7 @@ export const apiRoutes = {
   GET_ALL_SONG: "/song/new-released-song",
   GET_SIGNUP: "/users/signup",
   GET_LOGIN: "/users/login",
-  GET_GLOGIN: "/users/google",
+  GET_VERIFYTOKEN: "/verify-token",
   FORGOT_PASSWORD: "/admins/forgot-password",
   RESET_PASSWORD: "/admins/reset-password",
   // CHANGE_PASSWORD: "/users/update-user",
@@ -18,4 +18,5 @@ export const apiRoutes = {
   GET_ALL_FAQ: "/faq/get-all-faq",
   CREATE_FAQ: "faq/create-faq",
   REMOVE_FAQ: "/faq/delete-faq",
+  GET_PRIVACY: "/editor/get-all-content",
 };

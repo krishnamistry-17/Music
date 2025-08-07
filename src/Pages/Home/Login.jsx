@@ -9,24 +9,27 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 import { useGoogleLogin } from "@react-oauth/google";
-import { loginWithEmail, loginWithGoogle } from "../../service/authService";
+import { loginWithEmail } from "../../service/authService";
+import axios from "axios";
+import apiInstance from "../../../utils/axios";
+import { apiRoutes } from "../Component/Constants/apiRoutes";
+import CryptoJS from "crypto-js";
 
-// const ENCRYPTION_KEY =
-//   "48e619d8ddf89658793d2cc81882c7017eefd12181aa4456ad91c3347421ab87";
+const ENCRYPTION_KEY =
+  "613a29e024d89cdc3787a1b87b87bffed76a93cfbe50c7dddfc5e99cf4a88cd8";
 
 const Login = ({ onForgotPassword }) => {
   const [isClicked, setIsClicked] = useState(false);
   const { login } = useAuth();
-  const { userData, setUserData, currentPassword, setCurrentPassword } =
-    useAuth();
-  console.log("currentPassword>>>>>> :", currentPassword);
-  const [data, setData] = useState("");
+  const { setUserData, setCurrentPassword } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [decryptedData, setDecryptedData] = useState("");
+  console.log("decryptedData :", decryptedData);
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -56,7 +59,7 @@ const Login = ({ onForgotPassword }) => {
     try {
       const data = await loginWithEmail(email, password);
       login(data.token, { name: data.name, email: data.email }, false, data);
-      console.log('data :', data);
+      console.log("data :", data);
       setUserData(data);
       setCurrentPassword(password);
       toast.success("Login Sucessfull");
@@ -71,10 +74,12 @@ const Login = ({ onForgotPassword }) => {
       //   );
       //   let decrypted = decipher.update(encryptedData, "hex", "utf8");
       //   decrypted += decipher.final("utf8");
+      //   console.log("decipher :", decipher);
 
       //   return JSON.parse(decrypted);
       // };
       // localStorage.setItem("user", JSON.parse(decryptData));
+      // console.log("decryptData :", decryptData);
     } catch (error) {
       setError(error.response?.data?.message || "Login Failed");
     } finally {
@@ -84,26 +89,121 @@ const Login = ({ onForgotPassword }) => {
     }
   };
 
-  //google login
   const loginGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        const data = await loginWithGoogle(tokenResponse.access_token);
-        const { name, email, picture, token } = data;
-        login(token, { name, email, image: picture }, true, data);
-        console.log(" data>>>>google :", data);
-        setUserData(data);
+        const token = tokenResponse.access_token;
+        console.log("tokenResponse :", tokenResponse);
+
+        const response = await apiInstance.post(apiRoutes.GET_VERIFYTOKEN, {
+          access_token: token,
+        });
+
+        const parsedData = JSON.parse(response?.config?.data);
+        const accessToken = parsedData.access_token;
+        localStorage.setItem("accessToken", response.data.accessToken);
+
+        const user = response.data.user;
+        if (!user) throw new Error("User data not found");
+
+        const { name, email, picture } = user;
+        login(token, { name, email, image: picture }, true, user);
+        setUserData(user);
+
         toast.success("Google Login Success");
         navigate("/", { state: { tokenReady: true } });
       } catch (error) {
-        console.error(error.message);
+        console.error("Google login error:", error.message || error);
         toast.error("Google login failed");
       }
     },
-    onError: () => {
-      toast.error("Google login failed");
-    },
   });
+
+  // const decryptUserData = (cipherText, keyHex, ivHex) => {
+  //   try {
+  //     const key = CryptoJS.enc.Hex.parse(keyHex);
+  //     const iv = CryptoJS.enc.Hex.parse(ivHex);
+
+  //     const decrypted = CryptoJS.AES.decrypt(cipherText, key, {
+  //       iv: iv,
+  //       mode: CryptoJS.mode.CBC,
+  //       padding: CryptoJS.pad.Pkcs7,
+  //     });
+
+  //     const plainText = decrypted.toString(CryptoJS.enc.Utf8);
+  //     return JSON.parse(plainText);
+  //   } catch (error) {
+  //     console.error("Decryption failed:", error);
+  //     return null;
+  //   }
+  // };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!email || !email.includes("@") || !password) {
+  //     toast.warn("Please fill all the fields");
+  //     return;
+  //   }
+
+  //   setLoading(true);
+  //   setError(null);
+
+  //   try {
+  //     const response = await loginWithEmail(email, password);
+  //     const { encryptedUserData, iv, key, accessToken, refreshToken } = response.data.data;
+
+  //     // Decrypt the encrypted user data
+  //     const decryptedUser = decryptUserData(encryptedUserData, key, iv);
+
+  //     if (!decryptedUser) throw new Error("Decryption failed");
+
+  //     // Auth & Context updates
+  //     login(accessToken, { name: decryptedUser.name, email: decryptedUser.email }, false, decryptedUser);
+  //     setUserData(decryptedUser);
+  //     setCurrentPassword(password);
+
+  //     // Save to localStorage
+  //     localStorage.setItem("user", JSON.stringify(decryptedUser));
+  //     localStorage.setItem("accessToken", accessToken);
+  //     localStorage.setItem("refreshToken", refreshToken);
+
+  //     toast.success("Login Successful");
+  //     navigate("/", { state: { tokenReady: true } });
+  //   } catch (error) {
+  //     setError(error.response?.data?.message || "Login Failed");
+  //     toast.error(error.message || "Login failed");
+  //   } finally {
+  //     setLoading(false);
+  //     setEmail("");
+  //     setPassword("");
+  //   }
+  // };
+
+  // const loginGoogle = useGoogleLogin({
+  //   onSuccess: async (tokenResponse) => {
+  //     try {
+  //       const token = tokenResponse.access_token;
+  //       const response = await apiInstance.post(apiRoutes.GET_VERIFYTOKEN, {
+  //         access_token: token,
+  //       });
+
+  //       const user = response.data.user;
+  //       const { name, email, picture } = user;
+
+  //       login(token, { name, email, image: picture }, true, user);
+  //       setUserData(user);
+
+  //       localStorage.setItem("accessToken", response.data.accessToken);
+
+  //       toast.success("Google Login Success");
+  //       navigate("/", { state: { tokenReady: true } });
+  //     } catch (error) {
+  //       console.error("Google login error:", error.message || error);
+  //       toast.error("Google login failed");
+  //     }
+  //   },
+  // });
 
   return (
     <div>

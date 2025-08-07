@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+  import React, { useEffect, useState } from "react";
 import bback from "../../assets/svgs/blueback.svg";
 import right from "../../assets/svgs/right.svg";
 import art1 from "../../assets/images/art1.jpg";
@@ -189,7 +189,7 @@ const Artist = () => {
         {/* Sidebar */}
 
         {/* Main content area (grid content, header, songs, footer) */}
-        <div className="pl-[32px] px-3">
+        <div className="xl:pl-[32px] px-3">
           <div className=" w-full  bg-gradient-to-r from-blackbg to-black mt-[25px] rounded-tr-[7px] rounded-tl-[7px]">
             <div className="py-[30px]">
               <HomeNav />

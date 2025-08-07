@@ -55,7 +55,6 @@ const AllSongs = () => {
     return () => window.removeEventListener("resize", updateCount);
   }, []);
 
-
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
@@ -123,7 +122,7 @@ const AllSongs = () => {
       </div>
       <div>
         <div
-          className="hidden md:grid lg:grid-cols-6 md:grid-cols-4 gap-[24px] overflow-x-auto"
+          className="hidden md:grid xl:grid-cols-6 md:grid-cols-4 gap-[24px] overflow-x-auto"
           style={{ scrollbarWidth: "none" }}
         >
           {combinedSong.map((item, index) => {
@@ -140,7 +139,11 @@ const AllSongs = () => {
                   className="bg-[#1F1F1F] w-[174.4px] h-[214px] py-[4px] px-[15px] rounded-[10px]"
                   onClick={() => handleSelect(index, item._id)}
                 >
-                  <img src={image} alt="song" className="rounded-[10px]" />
+                  <img
+                    src={image}
+                    alt="song"
+                    className="rounded-[10px]  w-[144.39px] h-[144.39px]"
+                  />
                   <p className="text-white text-[16px] font-Vazirmatn-500 pt-[8px]">
                     {title}
                   </p>

@@ -89,10 +89,28 @@ const AllFaq = () => {
     }
   };
 
-  const handleDelete = (faq) => {
-    dispatch(removeFromFaq(faq));
-    setAllFaq(faq._id);
-    toast.success("Delete from faq..");
+  const handleDelete = async (faq) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        toast.error("Unauthorized: Please login first");
+        return;
+      }
+
+      // Make the DELETE API call
+      await apiInstance.delete(`${apiRoutes.REMOVE_FAQ}/${faq._id}`);
+
+      // Update the local state
+      const updatedData = data.filter((item) => item._id !== faq._id);
+      setData(updatedData);
+      setFilteredData(updatedData);
+      setAllFaq(updatedData);
+
+      toast.success("Deleted from FAQs.");
+    } catch (error) {
+      toast.error("Failed to delete FAQ");
+      console.error("FAQ delete error:", error.message);
+    }
   };
 
   if (error) return <p className="text-white">Error: {error}</p>;
@@ -157,8 +175,8 @@ const AllFaq = () => {
                       {removefaq && (
                         <div>
                           <MdOutlineDeleteOutline
-                            className="text-white"
-                            onClick={() => handleDelete(faq)}
+                            className="text-white cursor-pointer"
+                            onClick={() => handleDelete(item)} // not faq
                           />
                         </div>
                       )}

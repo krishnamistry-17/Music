@@ -9,7 +9,7 @@ const Platform = ({ tabsectionRef, onLoginSuccess, scrollToTabs }) => {
 
   return (
     <div ref={tabsectionRef}>
-      <div className="flex">
+      <div className="xl:flex">
         <div className="py-[93px] pr-[115px]">
           <p className="text-white text-[40px] font-Vazirmatn-900">
             Join Our Platform

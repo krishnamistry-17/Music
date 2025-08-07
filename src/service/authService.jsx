@@ -6,31 +6,30 @@ import { apiRoutes } from "../Pages/Component/Constants/apiRoutes";
 export const loginWithEmail = async (email, password) => {
   const loginData = { email, password };
   const response = await apiInstance.post(apiRoutes.GET_LOGIN, loginData);
+  console.log("response----------------- :", response);
   localStorage.setItem("accessToken", response.data.data.accessToken);
-
+  console.log(
+    "response.data.data.accessToke>?>>>>lgoin :",
+    response.data.data.accessToken
+  );
   return response.data;
 };
 
 //Google login
-export const loginWithGoogle = async (googleAccessToken) => {
-  const response = await axios.post(
-    "http://192.168.29.45:5000/api/auth/verify-token",
-    {
-      access_token: googleAccessToken,
-    }
-  );
-  // localStorage.setItem("accessToken", response.config.data);
+// export const loginWithGoogle = async (googleAccessToken) => {
+//   const response = await axios.post(
+//     "http://192.168.29.45:5000/api/auth/verify-token",
+//     {
+//       access_token: googleAccessToken,
+//     }
+//   );
+//   console.log("response>>>>google :", response);
 
-  console.log("response :", response);
-  console.log("response>>>google :", response);
-  const user = response.data.user;
-  localStorage.setItem("user", JSON.stringify(user));
-
-  return response.data;
-};
+//   return response.data;
+// };
 
 // Logout
 export const logout = () => {
+  console.log("setvier");
   localStorage.removeItem("accessToken");
-  sessionStorage.clear();
 };

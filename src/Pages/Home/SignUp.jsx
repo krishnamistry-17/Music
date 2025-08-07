@@ -18,7 +18,7 @@ import { useAuth } from "../Context/AuthContext";
 const SignUp = ({ onSuccess }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [data, setData] = useState("");
-  const { userData, setUserData } = useAuth();
+  const { setUserData } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [name, setName] = useState("");
@@ -64,7 +64,6 @@ const SignUp = ({ onSuccess }) => {
       );
       onSuccess();
       dispatch(getSignUp(response.data));
-      onSuccess();
       toast.success("Signup suceess");
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed");
@@ -77,12 +76,10 @@ const SignUp = ({ onSuccess }) => {
       console.log("tokenResponse :", tokenResponse);
 
       try {
-        const res = await axios.post(
-          "http://192.168.29.45:5000/api/auth/verify-token",
-          {
-            access_token: tokenResponse?.access_token,
-          }
-        );
+        const res = await apiInstance.post(apiRoutes.GET_VERIFYTOKEN, {
+          access_token: tokenResponse?.access_token,
+        });
+        localStorage.setItem("accessToken", res?.data?.accessToken);
         console.log("res>>Signup:", res);
         toast.success("Google Signup Success..");
       } catch (error) {

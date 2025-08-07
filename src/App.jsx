@@ -38,6 +38,7 @@ import UserDetail from "./Pages/Home/UserDetail";
 import Faq from "./Pages/FAQ/Faq";
 import { FaqProvider } from "./Pages/Context/FaqContext";
 import ChangePassword from "./Pages/Home/ChangePassword";
+import Policy from "./Pages/PrivacyPolicy/Policy";
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
@@ -182,6 +183,7 @@ function App() {
                                     path="/changepassword"
                                     element={<ChangePassword />}
                                   />
+                                  <Route path="/policy" element={<Policy />} />
                                 </Routes>
                               </LayoutWrapper>
                             ) : (
@@ -225,6 +227,7 @@ function App() {
                                   path="/changepassword"
                                   element={<ChangePassword />}
                                 />
+                                <Route path="/policy" element={<Policy />} />
                               </Routes>
                             )}
                             <ToastContainer />
