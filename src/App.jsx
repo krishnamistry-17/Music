@@ -39,6 +39,7 @@ import Faq from "./Pages/FAQ/Faq";
 import { FaqProvider } from "./Pages/Context/FaqContext";
 import ChangePassword from "./Pages/Home/ChangePassword";
 import Policy from "./Pages/PrivacyPolicy/Policy";
+import { useState } from "react";
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
@@ -68,16 +69,14 @@ function LayoutWrapper({ children }) {
   return (
     <>
       <div className="lg:flex hidden min-h-screen">
-        {/* Sidebar (scrollable with padding at bottom) */}
         <SideBar hasBottomPlayer={hasBottomPlayer} />
 
-        {/* Right side: content + HomeNav + Footer */}
         <div className="flex-1 flex flex-col relative ml-[300px] pt-[64px]">
           <div>
             {showHomeNav && <HomeNav />}
             {children}
           </div>
-          {/* Fixed audio players (only on desktop) */}
+
           {showAudio && (
             <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#181818] border-t border-gray-700">
               <AudioMusic />
@@ -111,6 +110,7 @@ function LayoutWrapper({ children }) {
 
 function App() {
   const isLarge = useIsLargeScreen();
+  const [inputvalue, setInputValue] = useState("");
 
   return (
     <div className="min-h-screen flex flex-col">

@@ -9,9 +9,13 @@ const Bg = ({
   scrollToTabs,
   playRef,
   scrollToBottom,
+  signupRef,
+  loginRef,
+  songRef,
+  scrollToSongs,
 }) => {
   const handleClick = () => {
-    window.scrollTo(0, 1255);
+    scrollToSongs();
   };
 
   useEffect(() => {
@@ -26,6 +30,8 @@ const Bg = ({
           <div>
             <HomeNav
               tabsectionRef={tabsectionRef}
+              loginRef={loginRef}
+              signupRef={signupRef}
               activeTab={activeTab}
               setActiveTab={setActiveTab}
               scrollToTabs={scrollToTabs}
@@ -44,7 +50,7 @@ const Bg = ({
               it all for you!
             </p>
             <div className="pt-[16px] flex gap-[24px] px-[14.5px]">
-              <div>
+              <div ref={songRef}>
                 <button
                   className="text-white text-[16px] font-Vazirmatn-500 text-center py-[8px] px-[24px] bg-darkpink rounded-[4px]"
                   onClick={handleClick}

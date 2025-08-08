@@ -149,25 +149,11 @@ const Popular = () => {
   const defaultAlbum = album.find(
     (album) => album.artistId._id === defaultArtistId
   );
+
   const songs = defaultAlbum?.songs || [];
   const defaultSong = songs;
 
   const songToDisplay = songsList || defaultSong;
-
-  // useEffect(() => {
-  //   if (id && Array.isArray(album)) {
-  //     const foundAlbum = album.find((item) => item._id === id);
-  //     console.log("foundAlbum >>>??? ???????:", foundAlbum);
-
-  //     if (foundAlbum && foundAlbum?.songs?.length > 0) {
-  //       setSelectedArtist(foundAlbum.songs);
-  //       setSelectedArtistId(0);
-  //       setCurrentAlbum(foundAlbum);
-  //       setSource("popular");
-  //       setIsPlaying(true);
-  //     }
-  //   }
-  // }, [id, album]);
 
   const handleSelect = (index) => {
     if (!isLoggedIn && !isGoogleLogin) {
@@ -182,8 +168,6 @@ const Popular = () => {
     }
 
     setSelectedArtist(songToDisplay || []);
-    setSelectedArtistId(0);
-    setCurrentAlbum(songsList);
     setIsPlaying(true);
   };
 
@@ -245,12 +229,12 @@ const Popular = () => {
             <p></p>
           </div>
           <div>
-            <p className="text-[20px] font-Vazirmatn-400 text-white lg:block hidden">
+            <p className="text-[20px] font-Vazirmatn-400 text-white xl:block hidden">
               Relase Date
             </p>
           </div>
           <div>
-            <p className="text-[20px] text-white font-Vazirmatn-400 lg:block hidden">
+            <p className="text-[20px] text-white font-Vazirmatn-400 xl:block hidden">
               Played
             </p>
           </div>
@@ -331,7 +315,7 @@ const Popular = () => {
 
                       {/**Release date */}
                       <div>
-                        <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] lg:block hidden">
+                        <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] xl:block hidden">
                           {currentAlbum?.createdAt?.split("T")[0] ||
                             extra.rdate}
                         </p>
@@ -339,7 +323,7 @@ const Popular = () => {
 
                       {/**album title */}
                       <div>
-                        <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] truncate lg:block hidden">
+                        <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] truncate xl:block hidden">
                           {currentAlbum?.bio || extra.album}
                         </p>
                       </div>

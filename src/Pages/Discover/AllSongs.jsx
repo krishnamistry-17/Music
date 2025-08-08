@@ -18,7 +18,6 @@ const AllSongs = () => {
   const {
     setSongs,
     playSongAt,
-
     setIsPlaying,
     setCurrentIndex,
   } = useSong();

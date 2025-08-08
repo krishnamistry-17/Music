@@ -13,6 +13,7 @@ import { useAuth } from "../Context/AuthContext";
 const Content = () => {
   const tabsectionRef = useRef(null);
   const playRef = useRef(null);
+  const songRef = useRef(null);
   const { setIsLoggedIn } = useAuth();
 
   const [activeTab, setActiveTab] = useState("signup");
@@ -23,14 +24,21 @@ const Content = () => {
 
   const scrollToTabs = () => {
     tabsectionRef.current?.scrollIntoView({
-      behaviour: "smooth",
+      behavior: "smooth",
       block: "end",
     });
   };
 
   const scrollToBottom = () => {
     playRef.current?.scrollIntoView({
-      behaviour: "smooth",
+      behavior: "smooth",
+      block: "end",
+    });
+  };
+
+  const scrollToSongs = () => {
+    songRef?.current?.scrollIntoView({
+      behavior: "smooth",
       block: "end",
     });
   };
@@ -44,7 +52,9 @@ const Content = () => {
           setActiveTab={setActiveTab}
           scrollToTabs={scrollToTabs}
           scrollToBottom={scrollToBottom}
+          scrollToSongs={scrollToSongs}
           playRef={playRef}
+          songRef={songRef}
         />
       </div>
       <div className="pt-[64px] pl-[44px] pr-[64px]">
@@ -53,9 +63,9 @@ const Content = () => {
       <div className="pt-[64px] pl-[44px] pr-[64px]">
         <NewRelease />
       </div>
-      
+
       <div className="pt-[64px] pl-[44px] pr-[64px]">
-        <TrendingSong />
+        <TrendingSong songRef={songRef} />
       </div>
       <div className="pt-[64px] pl-[44px] pr-[64px]">
         <PopArtist />
@@ -67,13 +77,15 @@ const Content = () => {
         <AlbumsTop />
       </div>
       <div className="pt-[64px] pl-[44px] pr-[64px]">
-        <MoodPlay scrollToBottom={scrollToBottom} playRef={playRef} />
+        <MoodPlay playRef={playRef} />
       </div>
       <div className="pt-[64px] pl-[37px] pr-[65px]">
         <Platform
           scrollToTabs={scrollToTabs}
           tabsectionRef={tabsectionRef}
           onLoginSuccess={handleSucess}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
         />
       </div>
     </div>

@@ -15,16 +15,13 @@ import { toast } from "react-toastify";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
 import { useView } from "../Context/ViewContext";
 
-const MusicGeners = () => {
+const AllGenere = () => {
   const { setSelectedAlbumGenere, setSelectedAlbumGenId, setIsPlaying } =
     useGenere();
 
   const { id } = useParams();
-  const { setOpenSource } = useView();
   const { setSource } = usePlayerSource();
   const { isGoogleLogin, isLoggedIn } = useAuth();
-
-  const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
   const [album, setAlbum] = useState(null);
   const [data, setData] = useState([]);
@@ -33,7 +30,6 @@ const MusicGeners = () => {
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const data3 = [
     { image: gen1, para: "Rap Songs" },
@@ -104,7 +100,7 @@ const MusicGeners = () => {
       return;
     }
 
-    const selectedGenre = data[index];
+    const selectedGenre = data[index] || data3[index];
 
     if (!selectedGenre) {
       toast.warn("Selected genre is invalid.");
@@ -125,10 +121,7 @@ const MusicGeners = () => {
     setCurrentSongIndex(0);
   };
 
-  const handleClick = () => {
-    navigate("/viewsong");
-    setOpenSource("allgenere");
-  };
+  const combinedSong = [...data, ...data3];
 
   return (
     <div>
@@ -139,62 +132,24 @@ const MusicGeners = () => {
         text-[20px] font-Vazirmatn-600 py-[10px]
         "
         >
-          Music <span className="text-darkpink">Genres</span>
+          All Music <span className="text-darkpink">Genres</span>
         </h2>
       </div>
       <div
-        className=" hidden md:grid xl:grid-cols-5 lg:grid-cols-3 md:grid-cols-4 gap-[24px] overflow-x-auto "
+        className=" hidden md:grid xl:grid-cols-5 lg:grid-cols-3 
+        md:grid-cols-4 gap-[24px] overflow-x-auto "
         style={{ scrollbarWidth: "none" }}
       >
-        {Array.isArray(data) &&
-          (isOpen ? data : data.slice(0, visibleCount)).map((item, index) => (
-            <div
-              key={item._id || index}
-              className=""
-              onClick={() => handleSelect(index)}
-            >
-              <img src={item.genreImage?.[0]} alt="img1" />
-            </div>
-          ))}
-
-        <div
-          className="pl-[69px] py-[31px] cursor-pointer "
-          onClick={() => handleClick()}
-        >
-          <div className="h-[62px] w-[62px] rounded-[31px] bg-[#1E1E1E] flex items-center justify-center">
-            <img src={plus} alt="pls" className="p-[19px]" />
-          </div>
-          <p className="text-white text-[16px] font-Vazirmatn-500 font-medium pt-1">
-            {isOpen ? "View Less" : "View All"}
-          </p>
-        </div>
-      </div>
-
-      {/* <div className="grid grid-cols-1 gap-4">
-        {selectedAlbumGenere.map((item, index) => {
+        {combinedSong.map((item, index) => {
+          const fallback = data3[index] || {};
+          const image = item.genreImage?.[0] || item.image || fallback.image;
           return (
-            <div
-              key={item._id || index}
-              className=" border border-gray-700 p-4 rounded bg-[#1E1E1E] flex justify-between"
-            >
-              <div className="flex items-center gap-4">
-                <div>
-                  <img
-                    src={item?.songImage}
-                    alt="image"
-                    className="w-[60px] h-[60px] rounded object-cover border"
-                  />
-                </div>
-                <div>
-                  <p className="text-white">{item.title} </p>
-                  <p className="text-white">{item.duration}</p>
-                </div>
-              </div>
-              <div></div>
+            <div key={item._id || index} onClick={() => handleSelect(index)}>
+              <img src={image} alt="img1" />
             </div>
           );
         })}
-      </div> */}
+      </div>
 
       <div className="md:hidden">
         <div
@@ -230,4 +185,4 @@ const MusicGeners = () => {
   );
 };
 
-export default MusicGeners;
+export default AllGenere;

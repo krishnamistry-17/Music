@@ -4,9 +4,12 @@ import SignUp from "./SignUp";
 import Login from "./Login";
 import ForgetPassword from "./ForgetPassword";
 
-const Platform = ({ tabsectionRef, onLoginSuccess, scrollToTabs }) => {
-  const [activeTab, setActiveTab] = useState("signup");
-
+const Platform = ({
+  tabsectionRef,
+  onLoginSuccess,
+  activeTab,
+  setActiveTab,
+}) => {
   return (
     <div ref={tabsectionRef}>
       <div className="xl:flex">

@@ -6,12 +6,9 @@ import { apiRoutes } from "../Pages/Component/Constants/apiRoutes";
 export const loginWithEmail = async (email, password) => {
   const loginData = { email, password };
   const response = await apiInstance.post(apiRoutes.GET_LOGIN, loginData);
-  console.log("response----------------- :", response);
+
   localStorage.setItem("accessToken", response.data.data.accessToken);
-  console.log(
-    "response.data.data.accessToke>?>>>>lgoin :",
-    response.data.data.accessToken
-  );
+
   return response.data;
 };
 

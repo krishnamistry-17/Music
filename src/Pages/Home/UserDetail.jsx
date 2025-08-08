@@ -4,7 +4,7 @@ import plus from "../../assets/svgs/plus.svg";
 
 const UserDetail = () => {
   const { userData } = useAuth();
-  console.log("userData >>>>>>:", userData);
+
   return (
     <div>
       <div className="sm:flex items-center gap-3 px-4 py-4">

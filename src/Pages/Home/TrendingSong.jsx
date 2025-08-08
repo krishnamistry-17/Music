@@ -19,7 +19,7 @@ import { useFav } from "../Context/FavContext";
 import { useParams } from "react-router-dom";
 // import useFetchData from "../Hooks/useFetchData";
 
-const TrendingSong = () => {
+const TrendingSong = ({ songRef }) => {
   const {
     songs,
     setSongs,
@@ -39,9 +39,10 @@ const TrendingSong = () => {
   const favorites = useSelector((state) => state.favorites);
 
   const [data, setData] = useState([]);
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const [isSmall, setIsSmall] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -55,6 +56,17 @@ const TrendingSong = () => {
     { id: 6, fimg: pfav, fullimg: pfull, ptime: "3:26" },
     { id: 7, fimg: pfav, fullimg: pfull, ptime: "3:26" },
   ];
+
+  const handleResize = () => {
+    const width = window.innerWidth;
+    if (width >= 1200) {
+      setIsSmall(false);
+    } else if (width <= 1024) {
+      setIsSmall(true);
+    } else {
+      setIsSmall(true);
+    }
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -79,6 +91,10 @@ const TrendingSong = () => {
       }
     }
     fetchData();
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [setSongs]);
 
   if (error) {
@@ -123,32 +139,58 @@ const TrendingSong = () => {
   const togglePlay = () => setIsPlaying((p) => !p);
 
   return (
-    <div>
+    <div ref={songRef}>
       <div>
         <p className="text-white text-[32px] font-Vazirmatn-700">
           Trending <span className="text-darkpink">Songs</span>
         </p>
         <div>
-          <div className="flex justify-between items-end md:px-5 ">
+          {isSmall ? (
             <div>
-              <p></p>
+              <div className="flex justify-between items-end md:px-5 ">
+                <div>
+                  <p></p>
+                </div>
+                <div>
+                  <p></p>
+                </div>
+                <div>
+                  <p className="text-[20px] font-Vazirmatn-400 text-white lg:block hidden">
+                    Relase Date
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[20px] text-white font-Vazirmatn-400 lg:block hidden">
+                    Time
+                  </p>
+                </div>
+              </div>
             </div>
+          ) : (
             <div>
-              <p className="text-[20px] font-Vazirmatn-400 text-white lg:block hidden">
-                Relase Date
-              </p>
+              <div className="flex justify-between items-end md:px-5 ">
+                <div>
+                  <p></p>
+                </div>
+                <div>
+                  <p className="text-[20px] font-Vazirmatn-400 text-white lg:block hidden">
+                    Relase Date
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[20px] font-Vazirmatn-400 text-white xl:block hidden">
+                    Album
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[20px] text-white font-Vazirmatn-400 lg:block hidden">
+                    Time
+                  </p>
+                </div>
+              </div>
             </div>
-            <div>
-              <p className="text-[20px] font-Vazirmatn-400 text-white xl:block hidden">
-                Album
-              </p>
-            </div>
-            <div>
-              <p className="text-[20px] text-white font-Vazirmatn-400 lg:block hidden">
-                Time
-              </p>
-            </div>
-          </div>
+          )}
+
           <div className="flex justify-end gap-5 pt-5 lg:hidden">
             <div>
               <p className="text-[16px] font-Vazirmatn-600 text-white">Time</p>
@@ -223,9 +265,21 @@ const TrendingSong = () => {
                           </div>
                         </div>
 
-                        <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] lg:block hidden">
-                          {item?.artistId?.createdAt?.split("T")[0]}
-                        </p>
+                        {isSmall ? (
+                          <div>
+                            {" "}
+                            <p className="text-white text-[16px] pl-20 font-Vazirmatn-400 py-[17.5px] lg:block hidden">
+                              {item?.artistId?.createdAt?.split("T")[0]}
+                            </p>
+                          </div>
+                        ) : (
+                          <div>
+                            {" "}
+                            <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] lg:block hidden">
+                              {item?.artistId?.createdAt?.split("T")[0]}
+                            </p>
+                          </div>
+                        )}
 
                         <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] w-[345px] xl:block hidden truncate">
                           {item?.artistId?.bio}

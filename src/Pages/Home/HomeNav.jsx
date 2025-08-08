@@ -8,19 +8,24 @@ import { IoIosLogIn } from "react-icons/io";
 import whiteback from "../../assets/svgs/whitearrow.svg";
 import { IoMenu } from "react-icons/io5";
 
-const HomeNav = ({ inputvalue, setInputValue, tabsectionRef }) => {
+const HomeNav = ({
+  inputvalue,
+  setInputValue,
+  tabsectionRef,
+  activeTab,
+  setActiveTab,
+}) => {
   const { isLoggedIn } = useAuth();
   const { isGoogleLogin, logout, userData } = useAuth();
   const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState("signup");
   const [isdisplayDetail, setDisplayDetail] = useState();
   const [isSmall, setIsSmall] = useState(false);
   const [ismenuOpen, setIsMenuOpen] = useState(false);
 
   const scrollToTabs = () => {
     tabsectionRef?.current?.scrollIntoView({
-      behaviour: "smooth",
+      behavior: "smooth",
       block: "end",
     });
   };
@@ -60,14 +65,16 @@ const HomeNav = ({ inputvalue, setInputValue, tabsectionRef }) => {
         {screen ? (
           <div className="w-[335.67px] h-[38px] rounded-[10px] bg-blackbg">
             <div className="py-[6.5px] px-[8px] w-[319px]">
-              <div className="flex gap-[3px]">
+              <div className="flex items-center gap-[3px]">
                 <img src={search} alt="search" />
                 <input
                   type="search"
                   value={inputvalue}
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder="Search For Musics, Artists,..."
-                  className="text-[12px] text-white font-Vazirmatn-300 focus:ring-0 focus:outline-none focus:shadow-none w-[155px] h-[19px] opacity-60"
+                  className="text-[12px] text-white font-Vazirmatn-300 
+                  focus:ring-0 focus:outline-none focus:shadow-none
+                  w-full "
                 />
               </div>
             </div>
@@ -80,7 +87,7 @@ const HomeNav = ({ inputvalue, setInputValue, tabsectionRef }) => {
 
         {/* Links */}
         {isSmall ? (
-          <div>
+          <div className="ml-5">
             <IoMenu
               onClick={handleToggle}
               className="text-darkpink w-[35px] h-[35px] cursor-pointer"

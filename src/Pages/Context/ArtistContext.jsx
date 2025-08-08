@@ -18,10 +18,13 @@ export const ArtistProvider = ({ children }) => {
   const id = location.pathname.split("/artist/")[1]; // works for /artist/:id or undefined
 
   const [selectedArtist, setSelectedArtist] = useState([]);
+
   const [selectedArtistId, setSelectedArtistId] = useState(0);
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
   const [currentAlbum, setCurrentAlbum] = useState(null);
+
   const [isRepeat, setIsRepeat] = useState(false);
   const audioRef = useRef(null);
   const [album, setAlbum] = useState([]);
@@ -39,6 +42,32 @@ export const ArtistProvider = ({ children }) => {
     return selectedArtist?.[selectedArtistId] ?? null;
   }, [selectedArtist, selectedArtistId]);
 
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const token = localStorage.getItem("accessToken");
+  //     if (!token) {
+  //       setError("Unauthorized: Please login first");
+  //       setLoading(false);
+  //       return;
+  //     }
+
+  //     try {
+  //       const response = await apiInstance.get(apiRoutes.GET_ALL_ARTIST);
+  //       const albums = response.data.data;
+  //       setAlbum(albums);
+  //       setAllArtist(albums);
+  //       setSelectedArtist(albums.length > 0 ? albums[0].songs : []);
+  //       setSelectedArtistId(0);
+  //     } catch (error) {
+  //       setError(error.message || "Failed to fetch albums");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+
+  //   fetchData();
+  // }, [id]);
+
   useEffect(() => {
     async function fetchData() {
       const token = localStorage.getItem("accessToken");
@@ -52,9 +81,16 @@ export const ArtistProvider = ({ children }) => {
         const response = await apiInstance.get(apiRoutes.GET_ALL_ARTIST);
         const albums = response.data.data;
         setAlbum(albums);
-        setSelectedArtist(album.length > 0 ? albums[0].songs : []);
-        setSelectedArtistId(0);
         setAllArtist(albums);
+
+        // Filter album for specific artist
+        const artistAlbum = albums.find((album) => album._id === id); // `id` from URL
+
+        if (artistAlbum?.songs?.length > 0) {
+          setSelectedArtist(artistAlbum.songs);
+          setSelectedArtistId(0); // First song
+          setIsPlaying(true); //  Autoplay if needed
+        }
       } catch (error) {
         setError(error.message || "Failed to fetch albums");
       } finally {

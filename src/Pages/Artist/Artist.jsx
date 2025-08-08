@@ -1,4 +1,4 @@
-  import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import bback from "../../assets/svgs/blueback.svg";
 import right from "../../assets/svgs/right.svg";
 import art1 from "../../assets/images/art1.jpg";
@@ -8,6 +8,7 @@ import art4 from "../../assets/images/art4.jpg";
 import art5 from "../../assets/images/art5.jpg";
 import pfav from "../../assets/svgs/pfav.svg";
 import option from "../../assets/svgs/option.svg";
+import artist from "../..//assets/images/artist.png";
 import { data, Link, useNavigate, useParams } from "react-router-dom";
 import Popular from "./Popular";
 import ArtAlbum from "./ArtAlbum";
@@ -28,6 +29,7 @@ import HomeNav from "../Home/HomeNav";
 const Artist = () => {
   const { id } = useParams();
   const { album: allAlbums, currentAlbum, setCurrentAlbum } = useArtist();
+
   const { source, setSource } = usePlayerSource();
   const { isLoggedIn, isGoogleLogin, logout } = useAuth();
   const [isdisplayDetail, setDisplayDetail] = useState();
@@ -174,15 +176,6 @@ const Artist = () => {
     }
   }, [id, allAlbums]);
 
-  const defaultArtistId = "6864dad3bd26de96324855c8";
-
-  const defaultAlbum = allAlbums.find(
-    (albumid) => albumid?._id === defaultArtistId
-  );
-
-  const image = defaultAlbum?.artistImage || [];
-  const defaultImage = image;
-
   return (
     <div>
       <div className="lg:flex hidden ">
@@ -198,7 +191,7 @@ const Artist = () => {
               <div className="lg:flex pl-[43px] gap-14 md:w-[712px]">
                 <div>
                   <img
-                    src={currentAlbum?.artistImage?.[0] || defaultImage}
+                    src={currentAlbum?.artistImage?.[0] || artist}
                     alt="artistimage"
                     className="w-[300px] h-[239px]"
                   />
@@ -275,7 +268,7 @@ const Artist = () => {
         >
           <div>
             <img
-              src={currentAlbum?.artistImage?.[0] || defaultImage}
+              src={currentAlbum?.artistImage?.[0] || artist}
               alt="art"
               className=" rounded-[10px] pt-8  px-2 relative z-0 "
             />

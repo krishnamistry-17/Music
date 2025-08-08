@@ -66,7 +66,7 @@ const Albums = () => {
     <div>
       <div className="lg:flex hidden ">
         {/* Main content area (grid content, header, songs, footer) */}
-        <div className=" mr-[20px]">
+        <div className=" xl:px-10">
           <div className="w-full bg-gradient-to-r from-blue to-lightblue mt-[25px] rounded-tr-[7px] rounded-tl-[7px]">
             <div className="py-[30px] flex justify-center items-center">
               <HomeNav />

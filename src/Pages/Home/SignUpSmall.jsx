@@ -19,6 +19,7 @@ const SignUpSmall = ({ onSuccess }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [data, setData] = useState("");
   const { setUserData } = useAuth();
+  const { login } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [name, setName] = useState("");
@@ -48,21 +49,25 @@ const SignUpSmall = ({ onSuccess }) => {
     setError(null);
 
     try {
-      const signupData = {
-        name: name,
-        email: email,
-        password: password,
+      const response = await apiInstance.post(apiRoutes.GET_SIGNUP, {
+        name,
+        email,
+        password,
         role: "user",
-      };
-      console.log("signupData  :", signupData);
-      const response = await apiInstance.post(apiRoutes.GET_SIGNUP, signupData);
-      setData(response.data);
-      console.log("response.data :", response.data);
-      dispatch(getSignUp(response.data));
+      });
+      login(
+        response.data.token,
+        { name: response.data.name, email: response.data.email },
+        false,
+        response.data
+      );
+      console.log("response.data>>>>>> :", response.data);
+      setUserData(response.data);
+      toast.success("Signup suceess");
       onSuccess();
-      toast.success("Signup successfull");
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed");
+      toast.error("Signup failed");
     }
   };
 

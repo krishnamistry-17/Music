@@ -19,6 +19,7 @@ const SignUp = ({ onSuccess }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [data, setData] = useState("");
   const { setUserData } = useAuth();
+  const { login } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [name, setName] = useState("");
@@ -37,8 +38,6 @@ const SignUp = ({ onSuccess }) => {
     setIsClicked(!isClicked);
   };
 
-  const dispatch = useDispatch();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !email || !email.includes("@") || !password) {
@@ -55,16 +54,16 @@ const SignUp = ({ onSuccess }) => {
         password,
         role: "user",
       });
-      setUserData(response.data);
       login(
         response.data.token,
         { name: response.data.name, email: response.data.email },
         false,
         response.data
       );
-      onSuccess();
-      dispatch(getSignUp(response.data));
+      console.log("response.data>>>>>> :", response.data);
+      setUserData(response.data);
       toast.success("Signup suceess");
+      onSuccess();
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed");
       toast.error("Signup failed");
@@ -80,8 +79,8 @@ const SignUp = ({ onSuccess }) => {
           access_token: tokenResponse?.access_token,
         });
         localStorage.setItem("accessToken", res?.data?.accessToken);
-        console.log("res>>Signup:", res);
         toast.success("Google Signup Success..");
+        console.log("res>>Signup:", res);
       } catch (error) {
         console.log(error.message);
       }

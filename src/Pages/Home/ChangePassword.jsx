@@ -27,6 +27,7 @@ const ChangePassword = () => {
     setError("");
     setSuccessMessage("");
 
+    
     if (!currentPassword || !newPassword || !confirmPassword) {
       setError("All fields are required.");
       return;
@@ -45,9 +46,8 @@ const ChangePassword = () => {
         setError("Unauthorized: Please login first");
         return;
       }
-
       const response = await apiInstance.put(
-        apiRoutes.CHANGE_PASSWORD(userData.data._id),
+        apiRoutes.CHANGE_PASSWORD(userData._id),
         {
           oldPassword,
           newPassword: newPassword,
@@ -59,6 +59,7 @@ const ChangePassword = () => {
           },
         }
       );
+
       console.log("response>>>change password :", response);
 
       setSuccessMessage("Password changed successfully.");
@@ -92,8 +93,6 @@ const ChangePassword = () => {
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter old password"
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
                     className="text-[14px] text-white font-Vazirmatn-400 w-full h-[21px] focus:ring-0 focus:outline-none focus:shadow-none"
                   />
                 </div>
@@ -182,9 +181,8 @@ const ChangePassword = () => {
               <button
                 className="text-white p-2 bg-[#1E1E1E] rounded px-3"
                 type="submit"
-                disabled={loading}
               >
-                {loading ? "Changing..." : "Submit"}
+                Submit
               </button>
             </div>
           </div>

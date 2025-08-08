@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    console.log("context");
+    
     localStorage.removeItem("accessToken");
     localStorage.removeItem("loginMethod");
     localStorage.removeItem("userProfile");

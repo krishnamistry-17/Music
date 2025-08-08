@@ -10,27 +10,25 @@ import HomeNav from "../Home/HomeNav";
 import AlbumsTop from "../Home/AlbumsTop";
 
 const DisContent = () => {
-  const [inputvalue, setInputValue] = useState("");
-
   return (
     <div>
       <div className="pt-[23px] pl-[12px] pr-[64px]">
-        <MusicGeners searchQuery={inputvalue} />
+        <MusicGeners />
       </div>
       <div className="pt-[17px] pl-[34px] pr-[64px]">
-        <MoodPlay searchQuery={inputvalue} />
+        <MoodPlay />
       </div>
       <div className="pt-[17px] pl-[34px] pr-[64px]">
-        <PopArtist searchQuery={inputvalue} />
+        <PopArtist />
       </div>
       <div className="pt-[17px] pl-[34px] pr-[64px]">
-        <MusicVideo searchQuery={inputvalue} />
+        <MusicVideo />
       </div>
       <div className="pt-[17px] pl-[34px] pr-[64px]">
-        <NewRelease searchQuery={inputvalue} />
+        <NewRelease />
       </div>
       <div className="pt-[17px] pl-[34px] pr-[64px]">
-        <AlbumsTop searchQuery={inputvalue} />
+        <AlbumsTop />
       </div>
     </div>
   );

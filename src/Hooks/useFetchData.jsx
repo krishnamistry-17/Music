@@ -19,7 +19,7 @@ const useFetchData = ({ endpoint, onSuccess, onError, dependencies = [] }) => {
       try {
         const response = await apiInstance.get(endpoint);
         const result = response.data.data;
-        console.log("result :", result);
+      
         setData(result);
         onSuccess && onSuccess(result);
       } catch (err) {

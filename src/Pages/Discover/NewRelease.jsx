@@ -20,7 +20,6 @@ const NewRelease = () => {
   const {
     setSongs,
     playSongAt,
-
     setIsPlaying,
     setCurrentIndex,
   } = useSong();

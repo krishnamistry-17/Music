@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
 import Playmood from "./Playmood";
 import AudioMusic from "../Home/AudioMusic";
+import AllGenere from "./AllGenere";
+import DisPlay from "./DisPlay";
 
 const ViewSongs = () => {
   const { openSource } = useView();
@@ -30,6 +32,7 @@ const ViewSongs = () => {
         />
       </div>
       <div>
+        <div>{openSource === "allgenere" && <AllGenere />}</div>
         <div>{openSource === "allsong" && <AllSongs />}</div>
         <div>{openSource === "moodplaysong" && <AllPlaylist />}</div>
         <div>{openSource === "allalbums" && <AllAlbum />}</div>
@@ -39,6 +42,7 @@ const ViewSongs = () => {
       <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#181818] border-t border-gray-700">
         <div>{source === "moodplay" && <Playmood />}</div>
         {source === "newrelease" && <AudioMusic />}
+        {source === "musicgeners" && <DisPlay />}
       </div>
     </div>
   );

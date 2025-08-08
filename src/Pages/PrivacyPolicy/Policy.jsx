@@ -4,7 +4,7 @@ import { apiRoutes } from "../Component/Constants/apiRoutes";
 
 const Policy = () => {
   const [data, setData] = useState([]);
-  console.log("data :", data);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 

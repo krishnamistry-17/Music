@@ -257,7 +257,7 @@ const Song = () => {
             <p></p>
           </div>
           <div>
-            <p className="text-[20px] font-Vazirmatn-400 text-white lg:block hidden">
+            <p className="text-[20px] font-Vazirmatn-400 text-white xl:block hidden">
               Relase Date
             </p>
           </div>
@@ -350,7 +350,7 @@ const Song = () => {
 
                         {/* Release Date */}
                         <div>
-                          <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] lg:block hidden">
+                          <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] xl:block hidden">
                             {albumItem.releaseDate?.split("T")[0]}
                           </p>
                         </div>

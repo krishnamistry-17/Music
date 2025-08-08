@@ -1,10 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import fb from "../../assets/svgs/fb.svg";
 import insta from "../../assets/svgs/insta.svg";
 import twit from "../../assets/svgs/twit.svg";
 import call from "../../assets/svgs/call.svg";
 
 const Footer = () => {
+  const [isSmall, setIsSmall] = useState(false);
+
+  const handleResize = () => {
+    const width = window.innerWidth;
+    if (width >= 1200) {
+      setIsSmall(false);
+    } else if (width <= 1024) {
+      setIsSmall(true);
+    } else {
+      setIsSmall(true);
+    }
+  };
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div>
       <div className="ml-[300px] mb-15">
@@ -63,27 +81,53 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="lg:pl-[53px] pt-8">
+          {isSmall ? (
+            <div className="flex items-center gap-4 lg:pl-[53px] ">
+              <div>
+                <p className="text-[40px] font-Vazirmatn-800 bg-gradient-to-t from-darkpink to-darkblue text-transparent bg-clip-text">
+                  Melodies
+                </p>
+              </div>
+              <div className="flex items-center gap-3.5 ">
+                <div className="bg-[#292929] rounded-full p-4">
+                  <img src={fb} alt="fb" />
+                </div>
+                <div className="bg-[#292929] rounded-full py-2">
+                  <img src={insta} alt="insta" />
+                </div>
+                <div className="bg-[#292929] rounded-full py-2">
+                  <img src={twit} alt="twit" />
+                </div>
+                <div className="bg-[#292929] rounded-full py-2">
+                  <img src={call} alt="call" />
+                </div>
+              </div>
+            </div>
+          ) : (
             <div>
-              <p className="text-[40px] font-Vazirmatn-800 bg-gradient-to-t from-darkpink to-darkblue text-transparent bg-clip-text">
-                Melodies
-              </p>
+              <div className="lg:pl-[53px] pt-8">
+                <div>
+                  <p className="text-[40px] font-Vazirmatn-800 bg-gradient-to-t from-darkpink to-darkblue text-transparent bg-clip-text">
+                    Melodies
+                  </p>
+                </div>
+                <div className="flex items-center gap-3.5 pt-8">
+                  <div className="bg-[#292929] rounded-full p-4">
+                    <img src={fb} alt="fb" />
+                  </div>
+                  <div className="bg-[#292929] rounded-full py-2">
+                    <img src={insta} alt="insta" />
+                  </div>
+                  <div className="bg-[#292929] rounded-full py-2">
+                    <img src={twit} alt="twit" />
+                  </div>
+                  <div className="bg-[#292929] rounded-full py-2">
+                    <img src={call} alt="call" />
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-3.5 pt-8">
-              <div className="bg-[#292929] rounded-full p-4">
-                <img src={fb} alt="fb" />
-              </div>
-              <div className="bg-[#292929] rounded-full py-2">
-                <img src={insta} alt="insta" />
-              </div>
-              <div className="bg-[#292929] rounded-full py-2">
-                <img src={twit} alt="twit" />
-              </div>
-              <div className="bg-[#292929] rounded-full py-2">
-                <img src={call} alt="call" />
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
