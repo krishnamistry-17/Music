@@ -23,7 +23,7 @@ const AllAudio = () => {
   const { setSource } = usePlayerSource();
 
   const [data, setData] = useState([]);
-  console.log("data>>>allaudio :", data);
+ 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 

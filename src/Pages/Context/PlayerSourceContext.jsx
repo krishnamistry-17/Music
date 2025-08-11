@@ -24,7 +24,7 @@ const PlayerSourceContext = createContext();
 
 export const PlayerSourceProvider = ({ children }) => {
   const [source, setSource] = useState("newrelease");
-  console.log('source :', source);
+
   const location = useLocation();
 
   useEffect(() => {

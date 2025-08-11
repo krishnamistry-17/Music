@@ -7,6 +7,7 @@ import logoutbtn from "../../assets/svgs/logout.svg";
 import { IoIosLogIn } from "react-icons/io";
 import whiteback from "../../assets/svgs/whitearrow.svg";
 import { IoMenu } from "react-icons/io5";
+import Search from "../Search/Search";
 
 const HomeNav = ({
   inputvalue,
@@ -63,21 +64,8 @@ const HomeNav = ({
       <div className="lg:flex hidden items-center justify-between gap-[12px] w-full">
         {/* Search box */}
         {screen ? (
-          <div className="w-[335.67px] h-[38px] rounded-[10px] bg-blackbg">
-            <div className="py-[6.5px] px-[8px] w-[319px]">
-              <div className="flex items-center gap-[3px]">
-                <img src={search} alt="search" />
-                <input
-                  type="search"
-                  value={inputvalue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="Search For Musics, Artists,..."
-                  className="text-[12px] text-white font-Vazirmatn-300 
-                  focus:ring-0 focus:outline-none focus:shadow-none
-                  w-full "
-                />
-              </div>
-            </div>
+          <div>
+            <Search />
           </div>
         ) : (
           <div className={`${artist ? "pr-62 pl-4" : "pr-62"}`}>

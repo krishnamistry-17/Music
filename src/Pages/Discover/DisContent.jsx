@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import Search from "./Search";
+import Search from "../Search/Search";
 import MusicGeners from "./MusicGeners";
 import MoodPlay from "./MoodPlay";
 import PopArtist from "./PopArtist";

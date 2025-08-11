@@ -32,7 +32,6 @@ const VideoMusic = () => {
   const [visibleCount, setVisibleCount] = useState(2);
   const { isLoggedIn, isGoogleLogin } = useAuth();
   const [data, setData] = useState([]);
-  console.log("data :", data);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { setOpenSource } = useView();

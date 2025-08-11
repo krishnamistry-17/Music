@@ -5,7 +5,7 @@ const VideoContext = createContext();
 export const VideoSongProvider = ({ children }) => {
   const [videos, setVideos] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  console.log("currentIndex :", currentIndex);
+
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRefs = useRef([]);
 

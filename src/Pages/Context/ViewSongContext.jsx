@@ -10,7 +10,7 @@ const viewSongContext = createContext();
 
 export const ViewSongProvider = ({ children }) => {
   const [viewSongs, setViewSongs] = useState([]);
-  console.log("viewSongs :", viewSongs);
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
@@ -19,7 +19,7 @@ export const ViewSongProvider = ({ children }) => {
   const audioRef = useRef(null);
 
   const currentSong = viewSongs[currentIndex] || null;
-  console.log("currentSong>>> :", currentSong);
+
 
   const playSongAt = (index) => {
     if (index >= 0 && index < viewSongs.length) {

@@ -9,6 +9,7 @@ import MoodPlay from "../Discover/MoodPlay";
 import TrendingSong from "./TrendingSong";
 import Platform from "./Platform";
 import { useAuth } from "../Context/AuthContext";
+import SearchList from "../Search/SearchList";
 
 const Content = () => {
   const tabsectionRef = useRef(null);
@@ -56,6 +57,9 @@ const Content = () => {
           playRef={playRef}
           songRef={songRef}
         />
+      </div>
+      <div>
+        <SearchList />
       </div>
       <div className="pt-[64px] pl-[44px] pr-[64px]">
         <WeeklyTop />

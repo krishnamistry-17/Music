@@ -21,4 +21,5 @@ export const apiRoutes = {
   GET_PRIVACY: "/editor/get-all-content",
   GET_AUDIO: "/song/audio-song",
   GET_VIDEO: "/song/video-song",
+  GLOBAL_SEARCH: "/auth/global-search?query=Adele&page=1&limit=5",
 };

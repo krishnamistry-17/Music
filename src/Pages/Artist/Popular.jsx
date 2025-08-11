@@ -194,7 +194,7 @@ const Popular = () => {
   const filteredAlbum = Array.isArray(album)
     ? album.filter((a) => a._id === id)
     : [];
-  console.log("filteredAlbum :", filteredAlbum);
+ 
 
   if (error) {
     return <div className="text-white">Error...</div>;
@@ -243,7 +243,7 @@ const Popular = () => {
     const defaultAlbum = album.find(
       (a) => a._id === "6864cf9a6c6f84ec2f487ebc"
     );
-    console.log("defaultAlbum :", defaultAlbum);
+  
     if (defaultAlbum) {
       navigate(`/artist/${defaultAlbum._id}`, { replace: true });
     } else if (album.length > 0) {

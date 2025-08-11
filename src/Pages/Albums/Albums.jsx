@@ -19,8 +19,6 @@ import HomeNav from "../Home/HomeNav";
 const Albums = () => {
   const { id } = useParams();
   const { album: allAlbums, setAlbum } = useAlbum();
-  console.log("allAlbums :", allAlbums);
-
   const [activeIndex, setActiveIndex] = useState(2);
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,7 +26,7 @@ const Albums = () => {
   const { isLoggedIn, isGoogleLogin } = useAuth();
 
   const [currentAlbum, setCurrentAlbum] = useState(null);
-  console.log("currentAlbum :", currentAlbum);
+
 
   // const getTextColor = (item, isActive) => {
   //   if (item.name === "Add Playlist" && isActive) return "text-blue";

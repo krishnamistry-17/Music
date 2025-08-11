@@ -44,6 +44,7 @@ import { ViewSongProvider } from "./Pages/Context/ViewSongContext";
 import WeeklySongs from "./Pages/Home/WeeklySongs";
 import Popular from "./Pages/Artist/Popular";
 import { VideoSongProvider } from "./Pages/Context/VideoContext";
+import SearchList from "./Pages/Search/SearchList";
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
@@ -116,7 +117,6 @@ function LayoutWrapper({ children }) {
 
 function App() {
   const isLarge = useIsLargeScreen();
-  const [inputvalue, setInputValue] = useState("");
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -137,6 +137,10 @@ function App() {
                                   <LayoutWrapper>
                                     <Routes>
                                       <Route path="/" element={<Home />} />
+                                      <Route
+                                        path="/searchlist"
+                                        element={<SearchList />}
+                                      />
                                       <Route
                                         path="/discover"
                                         element={<Discover />}
@@ -203,6 +207,10 @@ function App() {
                                 ) : (
                                   <Routes>
                                     <Route path="/" element={<Home />} />
+                                    <Route
+                                      path="/searchlist"
+                                      element={<SearchList />}
+                                    />
                                     <Route
                                       path="/discover"
                                       element={<Discover />}
