@@ -17,12 +17,7 @@ import { usePlayerSource } from "../Context/PlayerSourceContext";
 import { useView } from "../Context/ViewContext";
 
 const NewRelease = () => {
-  const {
-    setSongs,
-    playSongAt,
-    setIsPlaying,
-    setCurrentIndex,
-  } = useSong();
+  const { setSongs, playSongAt, setIsPlaying, setCurrentIndex } = useSong();
   const { setSource } = usePlayerSource();
   const { id } = useParams();
   const { isLoggedIn, isGoogleLogin } = useAuth();
@@ -190,7 +185,11 @@ const NewRelease = () => {
                 className="bg-[#1F1F1F] w-[130px] h-[185px]  rounded-[10px] py-[4px] px-[8px]"
                 onClick={() => handleSelect(index, item._id)}
               >
-                <img src={item.songImage?.[0]} alt="a1" className="]" />
+                <img
+                  src={item.songImage?.[0]}
+                  alt="a1"
+                  className="w-[124.39px] h-[124.39px]"
+                />
                 <div>
                   <p className="text-white text-[14px] font-Vazirmatn-500 pt-[8px]">
                     {item?.title}

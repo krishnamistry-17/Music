@@ -15,8 +15,9 @@ import { toast } from "react-toastify";
 import { useAuth } from "../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useView } from "../Context/ViewContext";
+import { usePlayerSource } from "../Context/PlayerSourceContext";
 
-const VideoMusic = () => {
+const AllVideo = () => {
   const {
     isPlaying,
     setIsPlaying,
@@ -31,8 +32,8 @@ const VideoMusic = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
   const { isLoggedIn, isGoogleLogin } = useAuth();
+  const { setSource } = usePlayerSource();
   const [data, setData] = useState([]);
-  console.log("data :", data);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { setOpenSource } = useView();
@@ -148,32 +149,8 @@ const VideoMusic = () => {
       setVideos(data);
       playVideoAt(index);
       setCurrentIndex(index);
+      setSource("allvideo");
       setIsPlaying(true);
-    }
-  };
-
-  const handleClick = () => {
-    navigate("/viewsong");
-    setOpenSource("allvideos");
-  };
-
-  const handleToggle = (index) => {
-    const video = videoRefs.current[index]?.current;
-    if (!video) return;
-
-    if (video.paused) {
-      video
-        .play()
-        .then(() => {
-          setIsPlaying(true);
-        })
-        .catch((err) => {
-          console.warn("Video play failed:", err);
-          setIsPlaying(false);
-        });
-    } else {
-      video.pause();
-      setIsPlaying(false);
     }
   };
 
@@ -191,70 +168,22 @@ const VideoMusic = () => {
       </div>
 
       <div
-        className=" hidden md:grid xl:grid-cols-4  lg:grid-cols-3  grid-cols-2
-        xl:gap-[130px] lg:gap-[200px] gap-[24px] overflow-x-auto "
+        className=" hidden md:grid   xl:grid-cols-3 grid-cols-2  gap-[24px] overflow-x-auto "
         style={{ scrollbarWidth: "none" }}
       >
-        {Array.isArray(data) &&
-          (isOpen ? data : data.slice(0, visibleCount)).map((item, index) => {
-            const extra = data3[index];
-            return (
-              <div key={item._id || index}>
-                <div
-                  className="bg-[#1F1F1F] w-[302px] h-fit  rounded-[5px] p-[8px] object-cover"
-                  onClick={() => handleSelect(index, item._id)}
-                >
-                  <div>
-                    <div>
-                      <video
-                        src={item?.cloudinaryUrl}
-                        ref={videoRefs.current[index]}
-                        controls
-                        muted
-                        playsInline
-                        preload="metadata"
-                        className="w-full h-auto"
-                      />
-                    </div>
-                    <div>
-                      <p className="text-white text-[20px] font-Vazirmatn-600 pt-[4px] ">
-                        {item?.title}
-                      </p>
-                      <div className="flex justify-between">
-                        <div className="text-white text-[12px] font-Vazirmatn-300 ">
-                          {item?.artistId?.name}
-                        </div>
-                        <div className="text-white text-[12px] font-Vazirmatn-300 ">
-                          {item.view || extra.view}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        <div
-          className="pl-[46px] py-[73.87px] cursor-pointer hidden md:block"
-          onClick={() => handleClick()}
-        >
-          <div className="h-[62px] w-[62px] rounded-[31px] bg-[#1E1E1E] flex items-center justify-center">
-            <img src={plus} alt="pls" className="p-[19px]" />
-          </div>
-          <p className="text-white text-[16px] font-Vazirmatn-500 font-medium pt-1">
-            {isOpen ? "View Less" : "View All"}
-          </p>
-        </div>
-      </div>
+        {data.map((item, index) => {
+          const fallback = data3[index] || {};
 
-      <div className="md:hidden">
-        <div
-          className=" flex gap-3 overflow-x-auto pt-5"
-          style={{ scrollbarWidth: "none" }}
-        >
-          {data.map((item, index) => (
+          const image = item.songImage?.[0] || item.image || fallback.image;
+          const title = item.title || item.para || fallback.para;
+          const artist = item?.artistId?.name || item.head || fallback.head;
+          const view = item.view || fallback.view;
+          return (
             <div key={item._id || index}>
-              <div className="bg-[#1F1F1F] w-[151px] h-fit p-[8px] rounded-[5px] ">
+              <div
+                className="bg-[#1F1F1F] w-[302px] h-fit  rounded-[5px] p-[8px] object-cover"
+                onClick={() => handleSelect(index, item._id)}
+              >
                 <div>
                   <div>
                     <video
@@ -264,25 +193,31 @@ const VideoMusic = () => {
                       muted
                       playsInline
                       preload="metadata"
-                      className=" w-[151px] h-fit"
+                      className="w-full h-auto"
                     />
                   </div>
-                </div>
-                <div>
-                  <p className="text-white text-[14px] font-Vazirmatn-500 pt-[4px] ">
-                    {item?.title}
-                  </p>
-                  <p className="text-white text-[12px] font-Vazirmatn-300 pt-[8px] ">
-                    {item?.artistId?.name}
-                  </p>
+
+                  <div>
+                    <p className="text-white text-[20px] font-Vazirmatn-600 pt-[4px] ">
+                      {title}
+                    </p>
+                    <div className="flex justify-between">
+                      <div className="text-white text-[12px] font-Vazirmatn-300 ">
+                        {artist}
+                      </div>
+                      <div className="text-white text-[12px] font-Vazirmatn-300 ">
+                        {view}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+          );
+        })}
       </div>
     </div>
   );
 };
 
-export default VideoMusic;
+export default AllVideo;

@@ -183,11 +183,11 @@ const Song = () => {
     : [];
 
   if (error) {
-    return <div>Error...</div>;
+    return <div className="text-white">Error...</div>;
   }
 
   if (loading) {
-    return <div>Loading..</div>;
+    return <div className="text-white">Loading..</div>;
   }
 
   const handleSelect = (index) => {

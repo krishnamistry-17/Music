@@ -19,4 +19,6 @@ export const apiRoutes = {
   CREATE_FAQ: "faq/create-faq",
   REMOVE_FAQ: "/faq/delete-faq",
   GET_PRIVACY: "/editor/get-all-content",
+  GET_AUDIO: "/song/audio-song",
+  GET_VIDEO: "/song/video-song",
 };

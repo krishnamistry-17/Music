@@ -15,8 +15,9 @@ import { useNavigate } from "react-router-dom";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
 import { useView } from "../Context/ViewContext";
 
-const PopArtist = ({ searchQuery }) => {
-  const { selectedArtist, setSelectedArtist } = useArtist();
+const PopArtist = () => {
+  const { setSelectedArtist } = useArtist();
+
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
   const { setSource } = usePlayerSource();

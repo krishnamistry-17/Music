@@ -15,6 +15,7 @@ import Menu from "../SideBar/Menu";
 import Playmood from "./Playmood";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
 import AudioMusic from "../Home/AudioMusic";
+import VideoMusic from "../Home/VideoMusic";
 
 const Discover = () => {
   const { isLoggedIn, isGoogleLogin } = useAuth();
@@ -71,7 +72,7 @@ const Discover = () => {
             <PopArtist />
           </div>
           <div className="pt-[28px] pl-[24px]">
-            <MusicVideo />
+            <VideoMusic />
           </div>
           <div className="pt-[28px] pl-[24px]">
             <TopAlbums />

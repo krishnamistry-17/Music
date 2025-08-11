@@ -9,10 +9,8 @@ import { toast } from "react-toastify";
 const Billie = () => {
   const {
     allArtist: artist,
-    selectedArtistId,
     setSelectedArtistId,
     selectedArtist,
-    setSelectedArtist,
     currentArtist,
   } = useArtist();
 

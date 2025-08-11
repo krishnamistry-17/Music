@@ -19,15 +19,16 @@ import HomeNav from "../Home/HomeNav";
 const Albums = () => {
   const { id } = useParams();
   const { album: allAlbums, setAlbum } = useAlbum();
+  console.log("allAlbums :", allAlbums);
 
   const [activeIndex, setActiveIndex] = useState(2);
   const navigate = useNavigate();
   const location = useLocation();
   const [visibleContent, setVisibleContent] = useState();
-  const { isLoggedIn, isGoogleLogin, logout } = useAuth();
-  const [isdisplayDetail, setDisplayDetail] = useState();
+  const { isLoggedIn, isGoogleLogin } = useAuth();
 
   const [currentAlbum, setCurrentAlbum] = useState(null);
+  console.log("currentAlbum :", currentAlbum);
 
   // const getTextColor = (item, isActive) => {
   //   if (item.name === "Add Playlist" && isActive) return "text-blue";
@@ -199,7 +200,12 @@ const Albums = () => {
           </div>
           <div
             className="bg-gradient-to-r from-darkblue to-lightestblue"
-            style={{ height: "calc(100vh - 64px)", scrollbarWidth: "none" }}
+            style={{
+              height: "calc(100vh - 64px)",
+              scrollbarWidth: "none",
+              overflowY: "auto",
+              paddingBottom: "220px",
+            }}
           >
             <Song />
           </div>

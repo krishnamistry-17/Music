@@ -14,19 +14,16 @@ import { useAuth } from "../Context/AuthContext";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
 import { useViewSong } from "../Context/ViewSongContext";
 
-const WeeklyTop = () => {
+const AllAudio = () => {
   const { setViewSongs, playSongAt, setIsPlaying, setCurrentIndex } =
     useViewSong();
-  const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
 
-  const navigate = useNavigate();
-  const { setOpenSource } = useView();
-  const { id } = useParams();
   const { isLoggedIn, isGoogleLogin } = useAuth();
   const { setSource } = usePlayerSource();
 
   const [data, setData] = useState([]);
+  console.log("data>>>allaudio :", data);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -101,11 +98,6 @@ const WeeklyTop = () => {
     }
   };
 
-  const handleClick = () => {
-    navigate("/viewsong");
-    setOpenSource("viewaudio");
-  };
-
   return (
     <div>
       <div>
@@ -120,77 +112,37 @@ const WeeklyTop = () => {
       </div>
       <div>
         <div
-          className=" hidden md:grid xl:grid-cols-6 lg:grid-cols-3 md:grid-cols-4 gap-[24px] overflow-x-auto "
+          className=" hidden md:grid xl:grid-cols-6  md:grid-cols-4 gap-[24px] overflow-x-auto "
           style={{ scrollbarWidth: "none" }}
         >
-          {Array.isArray(combinedSong) &&
-            (isOpen ? combinedSong : combinedSong.slice(0, visibleCount)).map(
-              (item, index) => {
-                const extra = data3[index];
-                return (
-                  <div key={item._id || index}>
-                    <div
-                      className="bg-[#1F1F1F] w-[174.4px] h-[214px] py-[4px] px-[15px]  rounded-[10px] "
-                      onClick={() => handleSelect(index, item._id)}
-                    >
-                      <img
-                        src={item?.songImage || extra?.image}
-                        alt="a1"
-                        className=""
-                      />
-                      <p className="text-white text-[16px] font-Vazirmatn-500 pt-[8px] ">
-                        {item?.title || extra?.para}
-                      </p>
-                      <p className="text-white text-[12px] font-Vazirmatn-300 pt-[4px] opacity-80 ">
-                        {item?.artistId?.nam || extra?.head}
-                      </p>
-                    </div>
-                  </div>
-                );
-              }
-            )}
+          {combinedSong.map((item, index) => {
+            const fallback = data3[index] || {};
 
-          <div
-            className="pl-[22px] py-[64px] cursor-pointer "
-            onClick={() => handleClick()}
-          >
-            <div className="h-[62px] w-[62px] rounded-[31px] bg-[#1E1E1E] flex items-center justify-center">
-              <img src={plus} alt="pls" className="p-[19px]" />
-            </div>
-            <p className="text-white text-[16px] font-Vazirmatn-500 font-medium pt-1">
-              {isOpen ? "View Less" : "View All"}
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="md:hidden">
-        <div
-          className=" flex gap-2 overflow-x-auto pt-5"
-          style={{ scrollbarWidth: "none" }}
-        >
-          {data.map((item, index) => (
-            <div key={item._id || index}>
-              <div
-                className="bg-[#1F1F1F] w-[130px] h-[185px]  rounded-[10px] py-[4px] px-[8px]"
-                onClick={() => handleSelect(index, item._id)}
-              >
-                <img src={item?.songImage} alt="a1" className="]" />
-                <div>
-                  <p className="text-white text-[14px] font-Vazirmatn-500 pt-[8px]">
-                    {item?.title}
+            const image = item.songImage?.[0] || item.image || fallback.image;
+            const title = item.title || item.para || fallback.para;
+            const artist = item?.artistId?.name || item.head || fallback.head;
+            const audio = item.audioUrl || fallback.audioUrl;
+            return (
+              <div key={item._id || index}>
+                <div
+                  className="bg-[#1F1F1F] w-[174.4px] h-[214px] py-[4px] px-[15px]  rounded-[10px] "
+                  onClick={() => handleSelect(index, item._id)}
+                >
+                  <img src={image} alt="a1" className="" />
+                  <p className="text-white text-[16px] font-Vazirmatn-500 pt-[8px] ">
+                    {title}
                   </p>
-                  <p className="text-white text-[12px] font-Vazirmatn-300 pt-[8px] opacity-80">
-                    {item?.artistId?.name}
+                  <p className="text-white text-[12px] font-Vazirmatn-300 pt-[4px] opacity-80 ">
+                    {artist}
                   </p>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
   );
 };
 
-export default WeeklyTop;
+export default AllAudio;

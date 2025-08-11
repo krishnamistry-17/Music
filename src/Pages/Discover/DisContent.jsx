@@ -8,6 +8,7 @@ import NewRelease from "./NewRelease";
 import TopAlbums from "./TopAlbums";
 import HomeNav from "../Home/HomeNav";
 import AlbumsTop from "../Home/AlbumsTop";
+import VideoMusic from "../Home/VideoMusic";
 
 const DisContent = () => {
   return (
@@ -22,7 +23,7 @@ const DisContent = () => {
         <PopArtist />
       </div>
       <div className="pt-[17px] pl-[34px] pr-[64px]">
-        <MusicVideo />
+        <VideoMusic />
       </div>
       <div className="pt-[17px] pl-[34px] pr-[64px]">
         <NewRelease />

@@ -28,7 +28,7 @@ import HomeNav from "../Home/HomeNav";
 
 const Artist = () => {
   const { id } = useParams();
-  const { album: allAlbums, currentAlbum, setCurrentAlbum } = useArtist();
+  const { album: allAlbums } = useArtist();
 
   const { source, setSource } = usePlayerSource();
   const { isLoggedIn, isGoogleLogin, logout } = useAuth();
@@ -36,6 +36,8 @@ const Artist = () => {
   const { isPlaying } = useArtist();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [currentAlbum, setCurrentAlbum] = useState(null);
 
   const data1 = [
     {

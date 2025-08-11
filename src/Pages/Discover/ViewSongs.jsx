@@ -11,6 +11,9 @@ import Playmood from "./Playmood";
 import AudioMusic from "../Home/AudioMusic";
 import AllGenere from "./AllGenere";
 import DisPlay from "./DisPlay";
+import AllAudio from "./AllAudio";
+import WeeklySongs from "../Home/WeeklySongs";
+import AllVideo from "./AllVideo";
 
 const ViewSongs = () => {
   const { openSource } = useView();
@@ -37,12 +40,15 @@ const ViewSongs = () => {
         <div>{openSource === "moodplaysong" && <AllPlaylist />}</div>
         <div>{openSource === "allalbums" && <AllAlbum />}</div>
         <div>{openSource === "allartist" && <AllArtist />}</div>
+        <div>{openSource === "viewaudio" && <AllAudio />}</div>
+        <div>{openSource === "allvideos" && <AllVideo />}</div>
       </div>
 
       <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#181818] border-t border-gray-700">
         <div>{source === "moodplay" && <Playmood />}</div>
         {source === "newrelease" && <AudioMusic />}
         {source === "musicgeners" && <DisPlay />}
+        {source === "allaudio" && <WeeklySongs />}
       </div>
     </div>
   );

@@ -21,7 +21,6 @@ const AlbumPlay = () => {
     setIsPlaying,
     playNext,
     playPrevious,
-    playSongAt,
     isShuffle,
     setIsShuffle,
     isRepeat,
