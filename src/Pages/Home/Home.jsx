@@ -17,10 +17,12 @@ import { usePlayerSource } from "../Context/PlayerSourceContext";
 import Playmood from "../Discover/Playmood";
 import WeeklyTop from "./WeeklyTop";
 import WeeklySongs from "./WeeklySongs";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const { isLoggedIn, isGoogleLogin } = useAuth();
   const { source } = usePlayerSource();
+  const navigate = useNavigate();
   return (
     <>
       <div>
@@ -32,6 +34,7 @@ const Home = () => {
       <div className="lg:hidden">
         <div className=" flex justify-between items-center px-4 py-2  sticky top-0 z-50 bg-blackbg">
           <img
+            onClick={() => navigate("/searchlist")}
             src={search}
             alt="back"
             className=" text-bluearrow w-[35px] h-[35px]"

@@ -114,7 +114,7 @@ const AllArtist = () => {
             return (
               <div key={item._id || index}>
                 <div onClick={() => handleArtist(item._id)}>
-                  <img src={image} alt="a1" className="pl-4" />
+                  <img src={image} alt="a1" className="pl-4 rounded-full" />
                   <p className="text-white text-[16px] font-Vazirmatn-500 pt-[23px] text-center">
                     {title}
                   </p>

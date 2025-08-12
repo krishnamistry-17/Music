@@ -9,7 +9,7 @@ import { BiSolidRightArrow } from "react-icons/bi";
 import { IoMdShare } from "react-icons/io";
 import { FaPlay } from "react-icons/fa";
 import { FaPause } from "react-icons/fa6";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"; 
 import {
   addFavorites,
   getAllArtitst,
@@ -194,7 +194,6 @@ const Popular = () => {
   const filteredAlbum = Array.isArray(album)
     ? album.filter((a) => a._id === id)
     : [];
- 
 
   if (error) {
     return <div className="text-white">Error...</div>;
@@ -243,7 +242,7 @@ const Popular = () => {
     const defaultAlbum = album.find(
       (a) => a._id === "6864cf9a6c6f84ec2f487ebc"
     );
-  
+
     if (defaultAlbum) {
       navigate(`/artist/${defaultAlbum._id}`, { replace: true });
     } else if (album.length > 0) {
