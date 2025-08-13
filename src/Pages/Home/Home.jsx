@@ -18,6 +18,7 @@ import Playmood from "../Discover/Playmood";
 import WeeklyTop from "./WeeklyTop";
 import WeeklySongs from "./WeeklySongs";
 import { useNavigate } from "react-router-dom";
+import PlaySearchSong from "../Search/PlaySearchSong";
 
 const Home = () => {
   const { isLoggedIn, isGoogleLogin } = useAuth();
@@ -82,6 +83,7 @@ const Home = () => {
             {source === "newrelease" && <AudioMusic />}
             {source === "moodplay" && <Playmood />}
             {source === "allaudio" && <WeeklySongs />}
+            {source === "searchsong" && <PlaySearchSong />}
           </div>
         )}
 

@@ -7,9 +7,7 @@ const SearchContext = createContext();
 export const SearchProvider = ({ children }) => {
   const [searchParams] = useSearchParams();
   const [selectedAlbum, setSelectedAlbum] = useState([]);
-  console.log("selectedAlbum :", selectedAlbum);
   const [selectedAlbumId, setSelectedAlbumId] = useState(0);
-  console.log("selectedAlbumId :", selectedAlbumId);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
   const audioRef = useRef(null);

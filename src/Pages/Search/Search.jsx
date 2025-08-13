@@ -25,7 +25,6 @@ const Search = () => {
         setSuggestions([]);
       }
     }, 300);
-    console.log("delayDebounce :", delayDebounce);
 
     return () => clearTimeout(delayDebounce);
   }, [searchInput]);
@@ -60,7 +59,7 @@ const Search = () => {
   return (
     <div className="relative text-white">
       <form onSubmit={handleSearch}>
-        <div className="w-[335.67px] h-[38px] rounded-[10px] bg-blackbg">
+        <div className="md:w-[335.67px] w-[275px] h-[38px] rounded-[10px] bg-blackbg">
           <div className="py-[6.5px] px-[8px] w-[319px]">
             <div className="flex gap-[3px] items-center">
               <img src={search} alt="search" />
@@ -79,7 +78,10 @@ const Search = () => {
       </form>
 
       {suggestions && Object.keys(suggestions).length > 0 && (
-        <div className="absolute bg-[#1f1f1f] text-white w-[335.67px] z-50 rounded-md mt-1 max-h-[300px] overflow-y-auto shadow-lg border border-gray-700">
+        <div
+          className="absolute bg-[#1f1f1f] text-white 
+        md:w-[335.67px] w-[275px] z-50 rounded-md mt-1 max-h-[300px] overflow-y-auto shadow-lg border border-gray-700"
+        >
           {["songs", "artists", "albums", "genres", "playlists"].map(
             (category) =>
               suggestions[category]?.length > 0 && (

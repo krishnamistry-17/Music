@@ -51,6 +51,7 @@ const SideBar = ({ hasBottomPlayer }) => {
           img: addplay,
           npimg: wplay,
           name: "Add Playlist",
+          path: "/playlist",
         },
       ],
     },
@@ -106,8 +107,6 @@ const SideBar = ({ hasBottomPlayer }) => {
                         setActiveIndex(`${sectionIndex}-${index}`);
 
                         if (item.name === "Logout") {
-                      
-
                           localStorage.removeItem("accessToken");
                           logout();
                           // setIsLoggedIn(false);

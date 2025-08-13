@@ -26,6 +26,20 @@ export const getAllPlaylist = (list) => {
   };
 };
 
+export const addPlayList = (details) => {
+  return {
+    type: "ADD_PLAYLIST",
+    payload: details,
+  };
+};
+
+export const removeFromPlayList = (details) => {
+  return {
+    type: "REMOVE_PLAYLIST",
+    payload: details,
+  };
+};
+
 export const getSignUp = (user) => {
   return {
     type: "GET_SIGNUP",

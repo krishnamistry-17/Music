@@ -15,6 +15,7 @@ export const apiRoutes = {
   REMOVE_FAV: "/favourite/remove-favourite",
   GET_GENRE: "/genre/get-all-genre",
   GET_ALLPLAYLIST: "/playlist/get-all-playlist",
+  ADD_PLAYLIST: "/playlist/create-playlist",
   GET_ALL_FAQ: "/faq/get-all-faq",
   CREATE_FAQ: "faq/create-faq",
   REMOVE_FAQ: "/faq/delete-faq",

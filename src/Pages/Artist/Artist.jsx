@@ -29,7 +29,6 @@ import HomeNav from "../Home/HomeNav";
 const Artist = () => {
   const { id } = useParams();
   const { album: allAlbums } = useArtist();
-  console.log('allAlbums :', allAlbums);
 
   const { source, setSource } = usePlayerSource();
   const { isLoggedIn, isGoogleLogin, logout } = useAuth();

@@ -49,6 +49,9 @@ import Search from "./Pages/Search/Search";
 import SearchResults from "./Pages/Search/SearchResult";
 import { SearchProvider } from "./Pages/Context/SearchContext";
 import PlaySearchSong from "./Pages/Search/PlaySearchSong";
+import AddPlayList from "./Pages/PlayList/AddPlayList/AddPlayList";
+import { ListProvider } from "./Pages/Context/AddPlayListContext";
+import PlayList from "./Pages/PlayList/PlayList";
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
@@ -72,16 +75,11 @@ function LayoutWrapper({ children }) {
   const showDisplay =
     (isGoogleLogin || isLoggedIn) && location.pathname === "/discover";
 
-  // const searchMusic =
-  //   (isGoogleLogin || isLoggedIn) && location.pathname === "/search";
-  // console.log("searchMusic :", searchMusic);
+  const searchMusic =
+    (isGoogleLogin || isLoggedIn) && location.pathname === "/search";
 
   const hasBottomPlayer =
-    showAudio ||
-    showDisplay ||
-    showOtherMusic ||
-    showOtherMusic1 
-  
+    showAudio || showDisplay || showOtherMusic || showOtherMusic1;
 
   return (
     <>
@@ -122,11 +120,11 @@ function LayoutWrapper({ children }) {
             </div>
           )}
 
-          {/* {searchMusic && (
+          {searchMusic && (
             <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#181818] border-t border-gray-700">
               {source === "searchsong" && <PlaySearchSong />}
             </div>
-          )} */}
+          )}
         </div>
       </div>
     </>
@@ -151,11 +149,93 @@ function App() {
                           <PlayerSourceProvider>
                             <ViewProvider>
                               <FaqProvider>
-                                <SearchProvider>
-                                  {isLarge ? (
-                                    <LayoutWrapper>
+                                <ListProvider>
+                                  <SearchProvider>
+                                    {isLarge ? (
+                                      <LayoutWrapper>
+                                        <Routes>
+                                          <Route path="/" element={<Home />} />
+                                          <Route
+                                            path="/search"
+                                            element={<SearchResults />}
+                                          />
+                                          <Route
+                                            path="/discover"
+                                            element={<Discover />}
+                                          />
+                                          <Route
+                                            path="/album"
+                                            element={<Albums album={Song} />}
+                                          />
+                                          <Route
+                                            path="/album/:id"
+                                            element={<Albums />}
+                                          />
+                                          <Route
+                                            path="/artist"
+                                            element={<Artist album={Popular} />}
+                                          />
+                                          <Route
+                                            path="/artist/:id"
+                                            element={<Artist />}
+                                          />
+                                          <Route
+                                            path="/reset-password"
+                                            element={<ResetPassword />}
+                                          />
+                                          <Route
+                                            path="/login"
+                                            element={<LoginSmall />}
+                                          />
+                                          <Route
+                                            path="/signup"
+                                            element={<SignUpSmall />}
+                                          />
+                                          <Route
+                                            path="/forgotpassword"
+                                            element={<ForgetPassword />}
+                                          />
+                                          <Route
+                                            path="/favorites"
+                                            element={<Favorites />}
+                                          />
+                                          <Route
+                                            path="/viewsong"
+                                            element={<ViewSongs />}
+                                          />
+                                          <Route
+                                            path="/setting"
+                                            element={<Setting />}
+                                          />
+                                          <Route
+                                            path="/userdetail"
+                                            element={<UserDetail />}
+                                          />
+                                          <Route
+                                            path="/faq"
+                                            element={<Faq />}
+                                          />
+                                          <Route
+                                            path="/changepassword"
+                                            element={<ChangePassword />}
+                                          />
+                                          <Route
+                                            path="/policy"
+                                            element={<Policy />}
+                                          />
+                                          <Route
+                                            path="/playlist"
+                                            element={<PlayList />}
+                                          />
+                                        </Routes>
+                                      </LayoutWrapper>
+                                    ) : (
                                       <Routes>
                                         <Route path="/" element={<Home />} />
+                                        <Route
+                                          path="/searchlist"
+                                          element={<SearchList />}
+                                        />
                                         <Route
                                           path="/search"
                                           element={<SearchResults />}
@@ -166,23 +246,19 @@ function App() {
                                         />
                                         <Route
                                           path="/album"
-                                          element={<Albums album={Song} />}
-                                        />
+                                          element={<Albums />}
+                                        />{" "}
                                         <Route
                                           path="/album/:id"
                                           element={<Albums />}
-                                        />
+                                        />{" "}
                                         <Route
                                           path="/artist"
-                                          element={<Artist album={Popular} />}
+                                          element={<Artist />}
                                         />
                                         <Route
                                           path="/artist/:id"
                                           element={<Artist />}
-                                        />
-                                        <Route
-                                          path="/reset-password"
-                                          element={<ResetPassword />}
                                         />
                                         <Route
                                           path="/login"
@@ -221,81 +297,16 @@ function App() {
                                           path="/policy"
                                           element={<Policy />}
                                         />
+                                        <Route
+                                          path="/playlist"
+                                          element={<PlayList />}
+                                        />
                                       </Routes>
-                                    </LayoutWrapper>
-                                  ) : (
-                                    <Routes>
-                                      <Route path="/" element={<Home />} />
-                                      <Route
-                                        path="/searchlist"
-                                        element={<SearchList />}
-                                      />
-                                      <Route
-                                        path="/search"
-                                        element={<SearchResults />}
-                                      />
-                                      <Route
-                                        path="/discover"
-                                        element={<Discover />}
-                                      />
-                                      <Route
-                                        path="/album"
-                                        element={<Albums />}
-                                      />{" "}
-                                      <Route
-                                        path="/album/:id"
-                                        element={<Albums />}
-                                      />{" "}
-                                      <Route
-                                        path="/artist"
-                                        element={<Artist />}
-                                      />
-                                      <Route
-                                        path="/artist/:id"
-                                        element={<Artist />}
-                                      />
-                                      <Route
-                                        path="/login"
-                                        element={<LoginSmall />}
-                                      />
-                                      <Route
-                                        path="/signup"
-                                        element={<SignUpSmall />}
-                                      />
-                                      <Route
-                                        path="/forgotpassword"
-                                        element={<ForgetPassword />}
-                                      />
-                                      <Route
-                                        path="/favorites"
-                                        element={<Favorites />}
-                                      />
-                                      <Route
-                                        path="/viewsong"
-                                        element={<ViewSongs />}
-                                      />
-                                      <Route
-                                        path="/setting"
-                                        element={<Setting />}
-                                      />
-                                      <Route
-                                        path="/userdetail"
-                                        element={<UserDetail />}
-                                      />
-                                      <Route path="/faq" element={<Faq />} />
-                                      <Route
-                                        path="/changepassword"
-                                        element={<ChangePassword />}
-                                      />
-                                      <Route
-                                        path="/policy"
-                                        element={<Policy />}
-                                      />
-                                    </Routes>
-                                  )}
-                                  <ToastContainer />
-                                  {isLarge && <Footer />}
-                                </SearchProvider>
+                                    )}
+                                    <ToastContainer />
+                                    {isLarge && <Footer />}
+                                  </SearchProvider>
+                                </ListProvider>
                               </FaqProvider>
                             </ViewProvider>
                           </PlayerSourceProvider>

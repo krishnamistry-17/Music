@@ -21,6 +21,10 @@ const initialState = {
   faq: true,
   removefaq: true,
   question: [],
+  details: {
+    title: "",
+    songs: "",
+  },
 };
 
 const MusicReducer = (state = initialState, action) => {
@@ -70,6 +74,22 @@ const MusicReducer = (state = initialState, action) => {
 
     case "GET_ALL_PLAYLIST":
       return { ...state, list: [...state.list, action.payload] };
+
+    case "ADD_PLAYLIST":
+      const alreadyExistsPlayList = state.details.some(
+        (tit) => tit.title === action.payload.title
+      );
+      return alreadyExistsPlayList
+        ? state
+        : { ...state, details: [...state.details, action.payload] };
+
+    case "REMOVE_PLAYLIST":
+      return {
+        ...state,
+        details: state.details.filter(
+          (song) => song._id !== action.payload._id
+        ),
+      };
 
     case "GET_ALLFAQ":
       return { ...state, id: [...state.id, action.payload] };

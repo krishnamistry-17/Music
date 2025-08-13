@@ -7,6 +7,7 @@ import { useAuth } from "../Context/AuthContext";
 import { useSearch } from "../Context/SearchContext";
 import { toast } from "react-toastify";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
+import PlaySearchSong from "./PlaySearchSong";
 
 const SearchResults = () => {
   const {
@@ -16,6 +17,7 @@ const SearchResults = () => {
     setSelectedAlbumId,
     selectedAlbumId,
   } = useSearch();
+
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query");
@@ -25,7 +27,7 @@ const SearchResults = () => {
   const { setSource } = usePlayerSource();
   console.log("results :", results);
   const [loading, setLoading] = useState(false);
-
+  const { source } = usePlayerSource();
   const { isGoogleLogin, isLoggedIn } = useAuth();
   const navigate = useNavigate();
 
@@ -79,11 +81,25 @@ const SearchResults = () => {
     setIsPlaying(true);
   };
 
+  const handlePlayList = (playlist) => {
+    if (!playlist.cloudinaryUrl) {
+      toast.warn("This song has no playback audio");
+      return;
+    }
+  };
+
+  const handleGenre = (genre) => {
+    if (!genre?.cloudinaryUrl) {
+      toast.warn("This song has no playback audio");
+      return;
+    }
+  };
+
   return (
     <div className="px-4 py-6 space-y-8">
-      {/* <div>
+      <div>
         <Search />
-      </div> */}
+      </div>
       <div className="flex items-center gap-2 md:hidden">
         <div>
           <img
@@ -202,6 +218,7 @@ const SearchResults = () => {
               <div
                 key={playlist._id}
                 className="bg-gray-800 p-2 rounded w-fit h-fit"
+                onClick={() => handlePlayList(playlist)}
               >
                 <img src={playlist?.playlistImage} alt={playlist?.title} />
 
@@ -224,6 +241,7 @@ const SearchResults = () => {
               <div
                 key={genre._id}
                 className="bg-gray-800 p-2 rounded w-fit h-fit"
+                onClick={() => handleGenre(genre)}
               >
                 <img src={genre?.genreImage} alt={genre?.name} />
                 <p className="text-[17px] font-Vazirmatn-300 text-white py-2">
@@ -238,6 +256,12 @@ const SearchResults = () => {
       {[artists, albums, playlists, songs, genres].every(
         (list) => !list?.length
       ) && <p className="text-white">No results found.</p>}
+
+      {(isLoggedIn || isGoogleLogin) && (
+        <div className="fixed bottom-7 left-0 right-0 z-40  bg-[#252525] rounded-md  border-t border-gray-700 lg:hidden">
+          {source === "searchsong" && <PlaySearchSong />}
+        </div>
+      )}
     </div>
   );
 };

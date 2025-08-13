@@ -157,7 +157,10 @@ const Menu = () => {
                     </span>
                     Your favorites
                   </button>
-                  <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
+                  <button
+                    className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 "
+                    onClick={() => navigate("/playlist")}
+                  >
                     <span>
                       <img
                         src={addplay}

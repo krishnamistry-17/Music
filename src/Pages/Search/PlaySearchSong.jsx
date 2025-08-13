@@ -14,10 +14,16 @@ import { IoMdVolumeOff } from "react-icons/io";
 import { useAlbum } from "../Context/AlbumContext";
 import albumSingle from "../albumSingle";
 import { useSearch } from "../Context/SearchContext";
+import { useDispatch, useSelector } from "react-redux";
+import pfav from "../../assets/svgs/pfav.svg";
+import pfull from "../../assets/svgs/pffav.svg";
+import { toast } from "react-toastify";
+import { addFavorites, removeFromFavourites } from "../Redux/Action/action";
+import { useFav } from "../Context/FavContext";
 
 const PlaySearchSong = () => {
   const {
-    currentSong,
+    selectedAlbum,
     isPlaying,
     setIsPlaying,
     playNext,
@@ -34,6 +40,9 @@ const PlaySearchSong = () => {
   const [volume, setVolume] = useState(0.8);
   const [isMuted, setIsMuted] = useState(false);
   const progressRef = useRef(null);
+  const { setSelectedId } = useFav();
+  const favorites = useSelector((state) => state.favorites);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!audioRef.current) return;
@@ -71,8 +80,21 @@ const PlaySearchSong = () => {
       "0"
     )}`;
 
-  if (!currentSong) return null;
-  console.log('currentSong :', currentSong);
+  if (!selectedAlbum) return null;
+
+  const handleClick = (song) => {
+    const isFav = favorites.some((fav) => fav._id === song._id);
+
+    if (isFav) {
+      dispatch(removeFromFavourites(song));
+      setSelectedId(null);
+      toast.success("Song removed from favourites..");
+    } else {
+      dispatch(addFavorites(song));
+      setSelectedId(song._id);
+      toast.success("Song added to favourites");
+    }
+  };
 
   return (
     <>
@@ -82,18 +104,18 @@ const PlaySearchSong = () => {
     justify-between items-center 
   rounded-md shadow-md"
       >
-        <audio ref={audioRef} src={currentSong?.cloudinaryUrl} />
+        <audio ref={audioRef} src={selectedAlbum?.cloudinaryUrl} />
 
         {/* Left */}
         <div className="flex items-center gap-3">
           <img
-            src={currentSong?.songImage?.[0]}
-            alt={currentSong?.title}
+            src={selectedAlbum?.songImage?.[0]}
+            alt={selectedAlbum?.title}
             className="w-[50px] h-[50px] rounded"
           />
 
           <div>
-            <p className="text-white">{currentSong?.title}</p>
+            <p className="text-white">{selectedAlbum?.title}</p>
           </div>
         </div>
 
@@ -130,6 +152,20 @@ const PlaySearchSong = () => {
               }`}
               onClick={() => setIsRepeat(!isRepeat)}
             />
+            {/*Fav */}
+            <div>
+              <div onClick={() => handleClick(selectedAlbum)}>
+                <img
+                  src={
+                    favorites.some((fav) => fav._id === selectedAlbum._id)
+                      ? pfull
+                      : pfav
+                  }
+                  alt="fav"
+                  className="w-[18px] h-[18px]"
+                />
+              </div>
+            </div>
           </div>
           {/* Progress bar and time */}
           <div className="col-span-1 mt-4 flex justify-between items-center text-white text-sm">
@@ -177,18 +213,18 @@ const PlaySearchSong = () => {
     justify-between items-center mx-2
   rounded-md shadow-md"
       >
-        <audio ref={audioRef} src={currentSong?.cloudinaryUrl} />
+        <audio ref={audioRef} src={selectedAlbum?.cloudinaryUrl} />
         <div className="flex justify-between items-center">
           {/* Left */}
           <div className="flex items-center gap-3">
             <img
-              src={currentSong?.songImage?.[0]}
-              alt={currentSong?.title}
+              src={selectedAlbum?.songImage?.[0]}
+              alt={selectedAlbum?.title}
               className="w-[50px] h-[50px] rounded"
             />
 
             <div>
-              <p className="text-white">{currentSong?.title}</p>
+              <p className="text-white">{selectedAlbum?.title}</p>
             </div>
           </div>
 

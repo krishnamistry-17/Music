@@ -122,7 +122,7 @@ const SearchList = () => {
       <div className="pt-[28px] pl-[24px]">
         <PopArtist />
       </div>
-      <div className="pt-[28px] pl-[24px]">
+      <div className="pt-[28px] pl-[24px] pb-5">
         <AlbumsTop />
       </div>
     </div>

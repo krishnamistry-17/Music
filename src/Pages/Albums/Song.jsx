@@ -18,6 +18,7 @@ import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
 import {
   addFavorites,
+  addPlayList,
   getallAlbum,
   removeFromFavourites,
 } from "../Redux/Action/action";
@@ -27,6 +28,7 @@ import { toast } from "react-toastify";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAlbum } from "../Context/AlbumContext";
 import albumSingle from "../albumSingle";
+import { usePlayList } from "../Context/AddPlayListContext";
 
 const Song = () => {
   const {
@@ -45,6 +47,7 @@ const Song = () => {
 
   const { isGoogleLogin, isLoggedIn } = useAuth();
   const { selectedId, setSelectedId } = useFav();
+  const { selectedSongId, setSelectedSongId } = usePlayList();
   const [selectedIndex, setSelectedIndex] = useState(null);
 
   const dispatch = useDispatch();
@@ -234,6 +237,14 @@ const Song = () => {
     }
   };
 
+  const handlePlayList = (song) => {
+    if (selectedSongId === song._id) {
+      dispatch(addPlayList(song));
+      setSelectedSongId(song._id);
+      toast.success("Song added to playlist");
+    }
+  };
+
   if (!id) {
     const defaultAlbum = album.find(
       (a) => a._id === "6864de81b5cb32f97e53b1b4"
@@ -400,7 +411,10 @@ const Song = () => {
                             />
                             {selectedIndex === song._id && (
                               <div className="bg-[#282828] absolute z-50 top-[60px] right-0 max-w-[350px] max-h-[175px] p-4">
-                                <div className="flex gap-2 items-center">
+                                <div
+                                  className="flex gap-2 items-center cursor-pointer"
+                                  onClick={() => handlePlayList(song)}
+                                >
                                   <img src={plus} alt="ps" />
                                   <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
                                     Add to your playlist
