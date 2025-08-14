@@ -5,6 +5,7 @@ import option from "../../assets/svgs/option.svg";
 import bdot from "../../assets/svgs/bdot.svg";
 import plus from "../../assets/svgs/plus.svg";
 import artist from "../../assets/svgs/artist.svg";
+import { IoCheckmark } from "react-icons/io5";
 import { CiSaveUp1 } from "react-icons/ci";
 import { FaPause } from "react-icons/fa6";
 import { BiSolidRightArrow } from "react-icons/bi";
@@ -30,7 +31,7 @@ import { useAlbum } from "../Context/AlbumContext";
 import albumSingle from "../albumSingle";
 import { usePlayList } from "../Context/AddPlayListContext";
 
-const Song = () => {
+const Song = ({ onAddSong, playlistSongs }) => {
   const {
     setSelectedAlbum,
     isPlaying,
@@ -47,7 +48,6 @@ const Song = () => {
 
   const { isGoogleLogin, isLoggedIn } = useAuth();
   const { selectedId, setSelectedId } = useFav();
-  const { selectedSongId, setSelectedSongId } = usePlayList();
   const [selectedIndex, setSelectedIndex] = useState(null);
 
   const dispatch = useDispatch();
@@ -185,13 +185,7 @@ const Song = () => {
     ? album.filter((a) => a._id === id)
     : [];
 
-  if (error) {
-    return <div className="text-white">Error...</div>;
-  }
 
-  if (loading) {
-    return <div className="text-white">Loading..</div>;
-  }
 
   const handleSelect = (index) => {
     if (!isLoggedIn && !isGoogleLogin) {
@@ -237,26 +231,22 @@ const Song = () => {
     }
   };
 
-  const handlePlayList = (song) => {
-    if (selectedSongId === song._id) {
-      dispatch(addPlayList(song));
-      setSelectedSongId(song._id);
-      toast.success("Song added to playlist");
-    }
+  const handleArtist = (artistId) => {
+    navigate(`/artist/${artistId}`);
   };
 
   if (!id) {
-    const defaultAlbum = album.find(
+    const defaultAlbum = album?.find(
       (a) => a._id === "6864de81b5cb32f97e53b1b4"
     );
     if (defaultAlbum) {
       navigate(`/album/${defaultAlbum._id}`, { replace: true });
-    } else if (album.length > 0) {
+    } else if (album?.length > 0) {
       navigate(`/album/${album[0]._id}`, { replace: true }); // fallback
     }
   }
 
-  const albumsToShow = id ? album.filter((item) => item._id === id) : album;
+  const albumsToShow = id ? album?.filter((item) => item._id === id) : album;
 
   const togglePlay = () => setIsPlaying((p) => !p);
 
@@ -411,18 +401,35 @@ const Song = () => {
                             />
                             {selectedIndex === song._id && (
                               <div className="bg-[#282828] absolute z-50 top-[60px] right-0 max-w-[350px] max-h-[175px] p-4">
-                                <div
-                                  className="flex gap-2 items-center cursor-pointer"
-                                  onClick={() => handlePlayList(song)}
-                                >
-                                  <img src={plus} alt="ps" />
-                                  <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
-                                    Add to your playlist
-                                  </p>
-                                  <BiSolidRightArrow className="ml-[5px] w-[22px] h-[22px]" />
+                                <div className="flex gap-2 items-center cursor-pointer">
+                                  {playlistSongs.some(
+                                    (s) => s._id === song._id
+                                  ) ? (
+                                    <div className="flex gap-2 items-center cursor-pointer">
+                                      <IoCheckmark />
+                                      <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
+                                        Added to your playlist
+                                      </p>
+                                      <BiSolidRightArrow className="ml-[5px] w-[22px] h-[22px]" />
+                                    </div>
+                                  ) : (
+                                    <div
+                                      className="flex gap-2 items-center cursor-pointer"
+                                      onClick={() => onAddSong(song)}
+                                    >
+                                      <img src={plus} alt="ps" />
+                                      <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
+                                        Add to your playlist
+                                      </p>
+                                      <BiSolidRightArrow className="ml-[5px] w-[22px] h-[22px]" />
+                                    </div>
+                                  )}
                                 </div>
 
-                                <div className="flex gap-2 items-center pt-2">
+                                <div
+                                  className="flex gap-2 items-center pt-2"
+                                  onClick={() => handleArtist(song._id)}
+                                >
                                   <img
                                     src={artist}
                                     alt="ar"
@@ -488,13 +495,30 @@ const Song = () => {
 
                               {/* Dropdown menu */}
                               {selectedIndex === song._id && (
-                                <div className="bg-[#282828] absolute z-50 top-[40px] right-0 max-w-[300px] w-[250px] p-4 shadow-lg">
-                                  <div className="flex gap-2 items-center">
-                                    <img src={plus} alt="ps" />
-                                    <p className="text-white text-[15px] font-Vazirmatn-400">
-                                      Add to your playlist
-                                    </p>
-                                    <BiSolidRightArrow className="ml-[5px] w-[20px] h-[20px]" />
+                                <div className="bg-[#282828] absolute z-50 top-[40px] right-0 max-w-[300px] w-[259px] p-4 shadow-lg">
+                                  <div className="flex gap-2 items-center cursor-pointer">
+                                    {playlistSongs.some(
+                                      (s) => s._id === song._id
+                                    ) ? (
+                                      <div className="flex gap-2 items-center cursor-pointer">
+                                        <IoCheckmark />
+                                        <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
+                                          Added to your playlist
+                                        </p>
+                                        <BiSolidRightArrow className="ml-[5px] w-[22px] h-[22px]" />
+                                      </div>
+                                    ) : (
+                                      <div
+                                        className="flex gap-2 items-center cursor-pointer"
+                                        onClick={() => onAddSong(song)}
+                                      >
+                                        <img src={plus} alt="ps" />
+                                        <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
+                                          Add to your playlist
+                                        </p>
+                                        <BiSolidRightArrow className="ml-[5px] w-[22px] h-[22px]" />
+                                      </div>
+                                    )}
                                   </div>
                                   <div
                                     className="flex gap-2 items-center pt-2"
@@ -505,7 +529,10 @@ const Song = () => {
                                       Save to favourites
                                     </p>
                                   </div>
-                                  <div className="flex gap-2 items-center pt-2">
+                                  <div
+                                    className="flex gap-2 items-center pt-2"
+                                    onClick={() => handleArtist(song._id)}
+                                  >
                                     <img
                                       src={artist}
                                       alt="ar"

@@ -14,6 +14,7 @@ import setting from "../../assets/svgs/setting.svg";
 import logoutbtn from "../../assets/svgs/logout.svg";
 import { IoIosLogIn } from "react-icons/io";
 import { SiGnuprivacyguard } from "react-icons/si";
+import yourplay from "../../assets/svgs/yourplay.svg";
 
 const Menu = () => {
   const { isLoggedIn, setIsLoggedIn, isGoogleLogin, logout } = useAuth();
@@ -156,6 +157,19 @@ const Menu = () => {
                       <img src={fav} alt="m" className="w-[23px] h-[20px]" />
                     </span>
                     Your favorites
+                  </button>
+                  <button
+                    className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 "
+                    onClick={() => navigate("/yourplaylist")}
+                  >
+                    <span>
+                      <img
+                        src={yourplay}
+                        alt="m"
+                        className="w-[23px] h-[20px]"
+                      />
+                    </span>
+                    Your playlist
                   </button>
                   <button
                     className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 "

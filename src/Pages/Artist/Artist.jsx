@@ -25,6 +25,8 @@ import { usePlayerSource } from "../Context/PlayerSourceContext";
 import play from "../../assets/svgs/play.svg";
 import pdot from "../../assets/svgs/pdot.svg";
 import HomeNav from "../Home/HomeNav";
+import { usePlayList } from "../Context/AddPlayListContext";
+import { toast } from "react-toastify";
 
 const Artist = () => {
   const { id } = useParams();
@@ -38,6 +40,17 @@ const Artist = () => {
   const location = useLocation();
 
   const [currentAlbum, setCurrentAlbum] = useState(null);
+
+   const { playlistSongs, setPlaylistSongs } = usePlayList();
+  
+    const addSongToPlaylist = (song) => {
+      if (!playlistSongs.find((s) => s._id === song._id)) {
+        setPlaylistSongs((prev) => [...prev, song]);
+        toast.success("Song added to playlist..");
+      } else {
+        toast.info("Song is already in playlist");
+      }
+    };
 
   const data1 = [
     {
@@ -184,7 +197,7 @@ const Artist = () => {
         {/* Sidebar */}
 
         {/* Main content area (grid content, header, songs, footer) */}
-        <div className="xl:pl-[32px] px-3">
+        <div className="xl:pl-[32px]">
           <div className=" w-full  bg-gradient-to-r from-blackbg to-black mt-[25px] rounded-tr-[7px] rounded-tl-[7px]">
             <div className="py-[30px]">
               <HomeNav />
@@ -227,7 +240,7 @@ const Artist = () => {
           </div>
 
           <div className=" col-span-2 row-span-2 lg:block hidden mt-15">
-            <Popular />
+            <Popular onAddSong={addSongToPlaylist} playlistSongs={playlistSongs}/>
           </div>
           <div className="pt-[64px] ">
             <ArtAlbum />
@@ -283,7 +296,7 @@ const Artist = () => {
           </div>
 
           <div>
-            <Popular />
+            <Popular onAddSong={addSongToPlaylist} playlistSongs={playlistSongs}/>
           </div>
 
           <div>

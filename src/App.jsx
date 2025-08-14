@@ -52,6 +52,7 @@ import PlaySearchSong from "./Pages/Search/PlaySearchSong";
 import AddPlayList from "./Pages/PlayList/AddPlayList/AddPlayList";
 import { ListProvider } from "./Pages/Context/AddPlayListContext";
 import PlayList from "./Pages/PlayList/PlayList";
+import YourPlayList from "./Pages/PlayList/YourPlayList/YourPlayList";
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
@@ -80,7 +81,7 @@ function LayoutWrapper({ children }) {
 
   const hasBottomPlayer =
     showAudio || showDisplay || showOtherMusic || showOtherMusic1;
-
+{/*1024-1140 */}
   return (
     <>
       <div className="lg:flex hidden min-h-screen">
@@ -227,6 +228,10 @@ function App() {
                                             path="/playlist"
                                             element={<PlayList />}
                                           />
+                                          <Route
+                                            path="/yourplaylist"
+                                            element={<YourPlayList />}
+                                          />
                                         </Routes>
                                       </LayoutWrapper>
                                     ) : (
@@ -300,6 +305,10 @@ function App() {
                                         <Route
                                           path="/playlist"
                                           element={<PlayList />}
+                                        />
+                                        <Route
+                                          path="/yourplaylist"
+                                          element={<YourPlayList />}
                                         />
                                       </Routes>
                                     )}

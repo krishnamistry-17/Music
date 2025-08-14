@@ -57,8 +57,8 @@ const ArtAlbum = () => {
           style={{ scrollbarWidth: "none" }}
         >
           {(isOpen ? data : data.slice(0, visibleCount)).map((item, index) => (
-            <div key={index} className=" ">
-              <div className="bg-[#1F1F1F] w-[176.4px] h-[222px] p-2 rounded-[8px]">
+        
+              <div key={index} className="bg-[#1F1F1F] w-[176.4px] h-[222px] p-2 rounded-[8px]">
                 <div className="p-2">
                   <img src={item.image} alt="a1" />
                   <div className="pt-[8px]">
@@ -70,7 +70,7 @@ const ArtAlbum = () => {
                     </p>
                   </div>
                 </div>
-              </div>
+            
             </div>
           ))}
 

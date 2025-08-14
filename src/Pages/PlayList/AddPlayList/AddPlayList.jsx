@@ -4,15 +4,18 @@ import SearchSong from "../../Search/SearchSong";
 import { useAuth } from "../../Context/AuthContext";
 import { usePlayList } from "../../Context/AddPlayListContext";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const AddPlayList = () => {
   const { playlistSongs, setPlaylistSongs, playlistTitle, setPlaylistTitle } =
     usePlayList();
   const { userData } = useAuth();
+  const navigate = useNavigate();
 
   const addSongToPlaylist = (song) => {
     if (!playlistSongs.find((s) => s._id === song._id)) {
       setPlaylistSongs((prev) => [...prev, song]);
+      navigate("/yourplaylist");
     } else {
       toast.info("Song is already in playlist");
     }

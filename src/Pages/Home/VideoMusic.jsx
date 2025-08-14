@@ -123,18 +123,11 @@ const VideoMusic = () => {
   }, []);
 
   useEffect(() => {
-    videoRefs.current = data.map(
+    videoRefs.current = data?.map(
       (_, i) => videoRefs.current[i] ?? React.createRef()
     );
   }, [data]);
 
-  if (error) {
-    return <div className="text-white">Error..</div>;
-  }
-
-  if (loading) {
-    return <div>Loading..</div>;
-  }
 
   const handleSelect = (index, item) => {
     if (item?.cloudinaryUrl) {
@@ -251,7 +244,7 @@ const VideoMusic = () => {
           className=" flex gap-3 overflow-x-auto pt-5"
           style={{ scrollbarWidth: "none" }}
         >
-          {data.map((item, index) => (
+          {data?.map((item, index) => (
             <div key={item._id || index}>
               <div className="bg-[#1F1F1F] w-[151px] h-fit p-[8px] rounded-[5px] ">
                 <div>

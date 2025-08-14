@@ -79,13 +79,6 @@ const PopArtist = () => {
     fetchData();
   }, [setSelectedArtist]);
 
-  if (error) {
-    return <div className="text-white">Error...</div>;
-  }
-
-  if (loading) {
-    return <div className="text-white">Loading..</div>;
-  }
 
   const handleArtist = (artistId) => {
     navigate(`/artist/${artistId}`);

@@ -17,7 +17,7 @@ export const AlbumProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const currentSong = selectedAlbum[selectedAlbumId];
+  const currentSong = selectedAlbum?.[selectedAlbumId];
 
   useEffect(() => {
     async function fetchData() {

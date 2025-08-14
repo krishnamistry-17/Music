@@ -6,10 +6,11 @@ import plus from "../../assets/svgs/plus.svg";
 import artist from "../../assets/svgs/artist.svg";
 import { CiSaveUp1 } from "react-icons/ci";
 import { BiSolidRightArrow } from "react-icons/bi";
+import { IoCheckmark } from "react-icons/io5";
 import { IoMdShare } from "react-icons/io";
 import { FaPlay } from "react-icons/fa";
 import { FaPause } from "react-icons/fa6";
-import { useDispatch, useSelector } from "react-redux"; 
+import { useDispatch, useSelector } from "react-redux";
 import {
   addFavorites,
   getAllArtitst,
@@ -24,7 +25,7 @@ import { useAlbum } from "../Context/AlbumContext";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
 import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
-const Popular = () => {
+const Popular = ({ onAddSong, playlistSongs }) => {
   const {
     setSelectedArtist,
     isPlaying,
@@ -195,13 +196,6 @@ const Popular = () => {
     ? album.filter((a) => a._id === id)
     : [];
 
-  if (error) {
-    return <div className="text-white">Error...</div>;
-  }
-
-  if (loading) {
-    return <div className="text-white">Loading..</div>;
-  }
 
   const handleSelect = (index) => {
     if (!isLoggedIn && !isGoogleLogin) {
@@ -239,17 +233,21 @@ const Popular = () => {
   };
 
   if (!id) {
-    const defaultAlbum = album.find(
+    const defaultAlbum = album?.find(
       (a) => a._id === "6864cf9a6c6f84ec2f487ebc"
     );
 
     if (defaultAlbum) {
       navigate(`/artist/${defaultAlbum._id}`, { replace: true });
-    } else if (album.length > 0) {
+    } else if (album?.length > 0) {
       navigate(`/artist/${album[0]._id}`, { replace: true }); // fallback
     }
   }
   const togglePlay = () => setIsPlaying((p) => !p);
+
+  const handleAlbum = (albumId) => {
+    navigate(`/album/${albumId}`);
+  };
 
   return (
     <div>
@@ -407,22 +405,42 @@ const Popular = () => {
                             />
                             {selectedIndex === song._id && (
                               <div className="bg-[#282828] absolute z-50 top-[60px] right-0 max-w-[350px] max-h-[175px] p-4">
-                                <div className="flex gap-2 items-center">
-                                  <img src={plus} alt="ps" />
-                                  <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
-                                    Add to your playlist
-                                  </p>
-                                  <BiSolidRightArrow className="ml-[5px] w-[22px] h-[22px]" />
+                                <div className="flex gap-2 items-center cursor-pointer">
+                                  {playlistSongs.some(
+                                    (s) => s._id === song._id
+                                  ) ? (
+                                    <div className="flex gap-2 items-center cursor-pointer">
+                                      <IoCheckmark className="text-white" />
+                                      <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
+                                        Added to your playlist
+                                      </p>
+                                      <BiSolidRightArrow className="ml-[5px] w-[22px] h-[22px]" />
+                                    </div>
+                                  ) : (
+                                    <div
+                                      className="flex gap-2 items-center cursor-pointer"
+                                      onClick={() => onAddSong(song)}
+                                    >
+                                      <img src={plus} alt="ps" />
+                                      <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
+                                        Add to your playlist
+                                      </p>
+                                      <BiSolidRightArrow className="ml-[5px] w-[22px] h-[22px]" />
+                                    </div>
+                                  )}
                                 </div>
 
-                                <div className="flex gap-2 items-center pt-2">
+                                <div
+                                  className="flex gap-2 items-center pt-2"
+                                  onClick={() => handleAlbum(song._id)}
+                                >
                                   <img
                                     src={artist}
                                     alt="ar"
                                     className="text-white w-[22px] h-[22px]"
                                   />
                                   <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
-                                    Go to Artist
+                                    Go to Album
                                   </p>
                                 </div>
                                 <div className="flex gap-2 items-center pt-2">
@@ -481,13 +499,30 @@ const Popular = () => {
 
                               {/* Dropdown menu */}
                               {selectedIndex === song._id && (
-                                <div className="bg-[#282828] absolute z-50 top-[40px] right-0 max-w-[300px] w-[250px] p-4 shadow-lg">
-                                  <div className="flex gap-2 items-center">
-                                    <img src={plus} alt="ps" />
-                                    <p className="text-white text-[15px] font-Vazirmatn-400">
-                                      Add to your playlist
-                                    </p>
-                                    <BiSolidRightArrow className="ml-[5px] w-[20px] h-[20px]" />
+                                <div className="bg-[#282828] absolute z-50 top-[40px] right-0 max-w-[300px] w-[259px] p-4 shadow-lg">
+                                  <div className="flex gap-2 items-center cursor-pointer">
+                                    {playlistSongs.some(
+                                      (s) => s._id === song._id
+                                    ) ? (
+                                      <div className="flex gap-2 items-center cursor-pointer">
+                                        <IoCheckmark className="text-white" />
+                                        <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
+                                          Added to your playlist
+                                        </p>
+                                        <BiSolidRightArrow className="ml-[5px] w-[22px] h-[22px]" />
+                                      </div>
+                                    ) : (
+                                      <div
+                                        className="flex gap-2 items-center cursor-pointer"
+                                        onClick={() => onAddSong(song)}
+                                      >
+                                        <img src={plus} alt="ps" />
+                                        <p className="text-white text-[17px] font-Vazirmatn-400 pt-1">
+                                          Add to your playlist
+                                        </p>
+                                        <BiSolidRightArrow className="ml-[5px] w-[22px] h-[22px]" />
+                                      </div>
+                                    )}
                                   </div>
                                   <div
                                     className="flex gap-2 items-center pt-2"
@@ -498,14 +533,17 @@ const Popular = () => {
                                       Save to favourites
                                     </p>
                                   </div>
-                                  <div className="flex gap-2 items-center pt-2">
+                                  <div
+                                    className="flex gap-2 items-center pt-2"
+                                    onClick={() => handleAlbum(song._id)}
+                                  >
                                     <img
                                       src={artist}
                                       alt="ar"
                                       className="w-[20px] h-[20px]"
                                     />
                                     <p className="text-white text-[15px] font-Vazirmatn-400">
-                                      Go to Artist
+                                      Go to Album
                                     </p>
                                   </div>
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import homebg from "../../assets/images/homebg.png";
 import HomeNav from "./HomeNav";
+import { useNavigate } from "react-router-dom";
 
 const Bg = ({
   tabsectionRef,
@@ -19,14 +20,16 @@ const Bg = ({
   };
 
   useEffect(() => {
-    window.scroll({ behavior: "smooth", top: 0 });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
+  const navigate = useNavigate();
 
   return (
     <div>
-      <div className=" relative rounded-[25px] xl:pr-[64px] xl:pl-[25px] px-[25px]">
+      <div className=" relative rounded-[25px]">
         <img src={homebg} alt="bg" className=" w-full h-[595px]" />
-        <div className=" absolute top-[24px] px-[25px] pb-[113px]">
+        <div className=" absolute top-[24px] px-[28px] pb-[113px] w-full">
           <div>
             <HomeNav
               tabsectionRef={tabsectionRef}
@@ -60,7 +63,7 @@ const Bg = ({
               </div>
               <div ref={playRef}>
                 <button
-                  onClick={() => scrollToBottom()}
+                  onClick={() => navigate("/playlist")}
                   className="text-bluearrow text-[16px] font-Vazirmatn-500 text-center py-[8px] px-[24px] rounded-[4px] border-[1px] border-bluearrow"
                 >
                   Create Playlist

@@ -25,7 +25,7 @@ const Footer = () => {
 
   return (
     <div>
-      <div className="ml-[300px] mb-15">
+      <div className="ml-[300px] mb-31">
         <div className="lg:grid hidden xl:grid-cols-3 grid-cols-1  pt-20 gap-5 ">
           <div>
             <h2 className="text-[26px] text-white font-Vazirmatn-900">About</h2>
@@ -56,11 +56,22 @@ const Footer = () => {
               </h2>
               <div className="flex flex-col justify-between items-center font-Vazirmatn-400">
                 <a className="text-[16px] text-white p-4">Explore</a>
-                <a className="text-[16px] text-white p-4" href="/artist">
+                <a
+                  className="text-[16px] text-white p-4 cursor-pointer"
+                  href="/artist"
+                >
                   Artists
                 </a>
-                <a className="text-[16px] text-white p-4">Playlists</a>
-                <a className="text-[16px] text-white p-4" href="/album">
+                <a
+                  className="text-[16px] text-white p-4 cursor-pointer"
+                  href="/playlist"
+                >
+                  Playlists
+                </a>
+                <a
+                  className="text-[16px] text-white p-4 cursor-pointer"
+                  href="/album"
+                >
                   Albums
                 </a>
                 <a className="text-[16px] text-white p-4">Trending</a>
@@ -82,7 +93,7 @@ const Footer = () => {
           </div>
 
           {isSmall ? (
-            <div className="flex items-center gap-4 lg:pl-[53px] ">
+            <div className="flex items-center justify-center gap-4 lg:pl-[53px] ">
               <div>
                 <p className="text-[40px] font-Vazirmatn-800 bg-gradient-to-t from-darkpink to-darkblue text-transparent bg-clip-text">
                   Melodies

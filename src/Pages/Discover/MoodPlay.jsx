@@ -89,13 +89,7 @@ const MoodPlay = ({ playRef }) => {
     fetchData();
   }, [dispatch]);
 
-  if (error) {
-    return <p className="text-white">Error..</p>;
-  }
 
-  if (loading) {
-    return <p className="text-white">Loading..</p>;
-  }
 
   const handleSelect = (index) => {
     if (!isGoogleLogin && !isLoggedIn) {

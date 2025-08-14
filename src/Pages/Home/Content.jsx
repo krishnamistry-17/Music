@@ -82,7 +82,7 @@ const Content = () => {
       <div className="pt-[64px] pl-[44px] pr-[64px]">
         <MoodPlay playRef={playRef} />
       </div>
-      <div className="pt-[64px] pl-[37px] pr-[65px]">
+      <div className="pt-[64px]  px-2">
         <Platform
           scrollToTabs={scrollToTabs}
           tabsectionRef={tabsectionRef}

@@ -17,7 +17,7 @@ export const SongProvider = ({ children }) => {
   const [allplay, setAllPlay] = useState([]);
   const audioRef = useRef(null);
 
-  const currentSong = songs[currentIndex] || null;
+  const currentSong = songs?.[currentIndex] || null;
 
   const playSongAt = (index) => {
     if (index >= 0 && index < songs.length) {

@@ -26,7 +26,7 @@ export const ArtistProvider = ({ children }) => {
   const [allArtist, setAllArtist] = useState([]);
   const [currentArtistId, setCurrentArtistId] = useState(0);
 
-  const currentSong = selectedArtist[selectedArtistId];
+  const currentSong = selectedArtist?.[selectedArtistId];
 
   const currentArtist = useMemo(() => {
     return selectedArtist?.[selectedArtistId] ?? null;

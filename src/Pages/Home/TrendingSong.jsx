@@ -97,13 +97,6 @@ const TrendingSong = ({ songRef }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, [setSongs]);
 
-  if (error) {
-    return <div className="text-white">Error...</div>;
-  }
-
-  if (loading) {
-    return <div className="text-white">Loading..</div>;
-  }
 
   const handleSelect = (index, item) => {
     if (item?.cloudinaryUrl) {

@@ -15,6 +15,8 @@ import { useParams } from "react-router-dom";
 import AlbumPlay from "./AlbumPlay";
 import SmallFooter from "../Footer/SmallFooter";
 import HomeNav from "../Home/HomeNav";
+import { usePlayList } from "../Context/AddPlayListContext";
+import { toast } from "react-toastify";
 
 const Albums = () => {
   const { id } = useParams();
@@ -27,6 +29,16 @@ const Albums = () => {
 
   const [currentAlbum, setCurrentAlbum] = useState(null);
 
+  const { playlistSongs, setPlaylistSongs } = usePlayList();
+
+  const addSongToPlaylist = (song) => {
+    if (!playlistSongs.find((s) => s._id === song._id)) {
+      setPlaylistSongs((prev) => [...prev, song]);
+      toast.success("Song added to playlist..");
+    } else {
+      toast.info("Song is already in playlist");
+    }
+  };
 
   // const getTextColor = (item, isActive) => {
   //   if (item.name === "Add Playlist" && isActive) return "text-blue";
@@ -65,9 +77,9 @@ const Albums = () => {
     <div>
       <div className="lg:flex hidden ">
         {/* Main content area (grid content, header, songs, footer) */}
-        <div className=" xl:px-10">
+        <div className=" xl:px-10 ">
           <div className="w-full bg-gradient-to-r from-blue to-lightblue mt-[25px] rounded-tr-[7px] rounded-tl-[7px]">
-            <div className="py-[30px] flex justify-center items-center">
+            <div className="py-[30px] flex justify-between items-center w-full">
               <HomeNav />
             </div>
 
@@ -103,7 +115,7 @@ const Albums = () => {
                 </div>
               </div>
               <div
-                className=" lg:pt-[220px] flex gap-4 md:pl-0 pl-10 pt-4 pr-8 pb-10"
+                className=" lg:pt-[220px] flex gap-4 md:pl-0 xl:pl-10 pt-4 xl:pr-8 pb-10"
                 onClick={() => handlePlayAll()}
               >
                 <p className="text-[24px] text-darkpink font-Vazirmatn-600 pt-4">
@@ -116,7 +128,7 @@ const Albums = () => {
 
           {/* Songs */}
           <div className="bg-gradient-to-r from-darkblue to-lightestblue pt-8">
-            <Song />
+            <Song onAddSong={addSongToPlaylist} playlistSongs={playlistSongs} />
           </div>
         </div>
       </div>
@@ -205,7 +217,7 @@ const Albums = () => {
               paddingBottom: "220px",
             }}
           >
-            <Song />
+            <Song onAddSong={addSongToPlaylist} playlistSongs={playlistSongs} />
           </div>
         </div>
 

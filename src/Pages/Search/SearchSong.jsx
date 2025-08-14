@@ -10,7 +10,6 @@ import { toast } from "react-toastify";
 const SearchSong = ({ onAddSong }) => {
   const [searchInput, setSearchInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  console.log("suggestions :", suggestions);
   const { setSelectedSongId, selectedSongId } = usePlayList();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -25,7 +24,7 @@ const SearchSong = ({ onAddSong }) => {
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
-      if (searchInput.trim().length > 1) {
+      if (searchInput.trim().length >= 1) {
         fetchSuggestions(searchInput);
       } else {
         setSuggestions([]);
@@ -96,10 +95,10 @@ const SearchSong = ({ onAddSong }) => {
   };
 
   return (
-    <div className="relative text-white">
+    <div className="relative text-white ">
       <form onSubmit={handleSearch}>
-        <div className="md:w-[335.67px] w-[275px] h-[38px] rounded-[10px] bg-blackbg">
-          <div className="py-[6.5px] px-[8px] w-[319px]">
+        <div className="md:w-[300.67px] w-[275px] h-[38px] rounded-[10px] bg-blackbg">
+          <div className="py-[6.5px] px-[8px] w-[277px]">
             <div className="flex gap-[3px] items-center">
               <img src={search} alt="search" />
               <input
@@ -119,13 +118,14 @@ const SearchSong = ({ onAddSong }) => {
       {suggestions && Object.keys(suggestions).length > 0 && (
         <div
           className="absolute bg-[#1f1f1f] text-white 
-        md:w-[335.67px] w-[275px] z-50 rounded-md mt-4 max-h-fit overflow-y-auto shadow-lg border border-gray-700"
+        md:w-[335.67px] w-[275px] z-50 rounded-md my-4 
+         max-h-fit overflow-y-auto shadow-lg border border-gray-700"
           style={{ scrollbarWidth: "none" }}
         >
           {["songs", "artists", "albums", "genres", "playlists"].map(
             (category) =>
               suggestions[category]?.length > 0 ? (
-                <div key={category} className="p-2 border-b border-gray-600">
+                <div key={category} className="p-2 border-b border-gray-600 ">
                   <p className="text-xs text-gray-400 mb-1 capitalize">
                     {category}
                   </p>
@@ -343,9 +343,9 @@ const SearchSong = ({ onAddSong }) => {
       )} */}
 
       {/* display here searched result */}
-      <div>
+      {/* <div>
         <AllAddPlayList />
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -59,7 +59,7 @@ const Search = () => {
   return (
     <div className="relative text-white">
       <form onSubmit={handleSearch}>
-        <div className="md:w-[335.67px] w-[275px] h-[38px] rounded-[10px] bg-blackbg">
+        <div className="lg:w-[335.67px] w-[275px] h-[38px] rounded-[10px] bg-blackbg">
           <div className="py-[6.5px] px-[8px] w-[319px]">
             <div className="flex gap-[3px] items-center">
               <img src={search} alt="search" />

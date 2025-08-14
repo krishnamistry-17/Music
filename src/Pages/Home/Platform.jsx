@@ -12,12 +12,12 @@ const Platform = ({
 }) => {
   return (
     <div ref={tabsectionRef}>
-      <div className="xl:flex">
-        <div className="py-[93px] pr-[115px]">
+      <div className="xl:flex w-full">
+        <div className="xl:w-[50%] w-[80%] pr-3 xl:py-[93px]">
           <p className="text-white text-[40px] font-Vazirmatn-900">
             Join Our Platform
           </p>
-          <p className="text-white text-[20px] font-Vazirmatn-400 text-justify w-[476.5px]">
+          <p className="text-white text-[20px] font-Vazirmatn-400 text-justify w-[460.5px] pb-5">
             You can be one of the <span className="text-darkpink">members</span>{" "}
             of our platform by just adding some necessarily information. if you
             already have an account on our website, you can just hit the{" "}
@@ -25,7 +25,7 @@ const Platform = ({
           </p>
         </div>
 
-        <div className="w-[476.5px] rounded-[12px] bg-bgpink">
+        <div className="xl:w-[40%] w-[65%] rounded-[12px] bg-bgpink">
           <div className="py-[16px] px-[25px]">
             <Tabs>
               <div>

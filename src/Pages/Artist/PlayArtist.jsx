@@ -71,7 +71,7 @@ const PlayArtist = () => {
   return (
     <>
       <div
-        className="text-white p-3
+        className="text-white p-4
     md:grid md:grid-cols-3 hidden
     justify-between items-center 
   rounded-md shadow-md"

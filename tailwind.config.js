@@ -27,7 +27,8 @@ export default {
         sm: "480px",
         md: "768px",
         lg: "992px",
-        xl: "1440px",
+        xl: "1024px",
+        xxl: "1440px",
       },
       textShadow: {
         stroke: "2px black",

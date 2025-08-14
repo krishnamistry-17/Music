@@ -84,13 +84,7 @@ const NewRelease = () => {
     fetchData();
   }, [dispatch]);
 
-  if (error) {
-    return <p className="text-white">Error..</p>;
-  }
 
-  if (loading) {
-    return <p className="text-white">Loading</p>;
-  }
 
   const handleSelect = (index, item) => {
     if (item?.cloudinaryUrl) {

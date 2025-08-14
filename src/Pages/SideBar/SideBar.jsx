@@ -23,7 +23,7 @@ const SideBar = ({ hasBottomPlayer }) => {
   const { logout } = useAuth();
   const { isLoggedIn, isGoogleLogin } = useAuth();
 
-  const sidebarHeight = hasBottomPlayer ? "calc(100vh - 80px)" : "100vh";
+  const sidebarHeight = hasBottomPlayer ? "calc(100vh - 72px)" : "100vh";
 
   const menuData = [
     {
@@ -46,7 +46,7 @@ const SideBar = ({ hasBottomPlayer }) => {
       title: "Playlist and Favorite",
       items: [
         { img: fav, name: "Your Favorites", path: "/favorites" },
-        { img: yourplay, name: "Your Playlist" },
+        { img: yourplay, name: "Your Playlist", path: "/yourplaylist" },
         {
           img: addplay,
           npimg: wplay,

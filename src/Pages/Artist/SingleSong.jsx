@@ -54,18 +54,19 @@ const SingleSong = () => {
           style={{ scrollbarWidth: "none" }}
         >
           {(isOpen ? data : data.slice(0, visibleCount)).map((item, index) => (
-            <div key={index}>
-              <div className="bg-[#1F1F1F] w-[176.4px] h-[222px] p-2 rounded-[8px]">
-                <div className="p-2">
-                  <img src={item.image} alt="a1" />
-                  <div className="pt-[8px]">
-                    <h2 className="text-white text-[16px] font-Vazirmatn-500">
-                      {item.heading}
-                    </h2>
-                    <p className="text-white text-[16px] pt-[4px] font-Vazirmatn-300">
-                      {item.para}
-                    </p>
-                  </div>
+            <div
+              key={index}
+              className="bg-[#1F1F1F] w-[176.4px] h-[222px] p-2 rounded-[8px]"
+            >
+              <div className="p-2">
+                <img src={item.image} alt="a1" />
+                <div className="pt-[8px]">
+                  <h2 className="text-white text-[16px] font-Vazirmatn-500">
+                    {item.heading}
+                  </h2>
+                  <p className="text-white text-[16px] pt-[4px] font-Vazirmatn-300">
+                    {item.para}
+                  </p>
                 </div>
               </div>
             </div>

@@ -21,10 +21,7 @@ const initialState = {
   faq: true,
   removefaq: true,
   question: [],
-  details: {
-    title: "",
-    songs: "",
-  },
+  details: [],
 };
 
 const MusicReducer = (state = initialState, action) => {
@@ -87,7 +84,7 @@ const MusicReducer = (state = initialState, action) => {
       return {
         ...state,
         details: state.details.filter(
-          (song) => song._id !== action.payload._id
+          (playlist) => playlist._id !== action.payload._id
         ),
       };
 
