@@ -15,12 +15,7 @@ import { useAuth } from "../Context/AuthContext";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
 
 const AllSongs = () => {
-  const {
-    setSongs,
-    playSongAt,
-    setIsPlaying,
-    setCurrentIndex,
-  } = useSong();
+  const { setSongs, playSongAt, setIsPlaying, setCurrentIndex } = useSong();
   const { setSource } = usePlayerSource();
   const dispatch = useDispatch();
   const { isLoggedIn, isGoogleLogin } = useAuth();
@@ -80,14 +75,6 @@ const AllSongs = () => {
     fetchData();
   }, [dispatch]);
 
-  if (error) {
-    return <p className="text-white">Error..</p>;
-  }
-
-  if (loading) {
-    return <p className="text-white">Loading</p>;
-  }
-
   const handleSelect = (index, item) => {
     if (item?.cloudinaryUrl) {
       toast.warn("This song has no playable audio.");
@@ -106,6 +93,8 @@ const AllSongs = () => {
   };
 
   const combinedSong = [...data, ...data3];
+  const isAuthenticated = isLoggedIn || isGoogleLogin;
+  const songList = isAuthenticated ? data : data3;
 
   return (
     <div>
@@ -124,7 +113,7 @@ const AllSongs = () => {
           className="hidden md:grid xl:grid-cols-6 md:grid-cols-4 gap-[24px] overflow-x-auto"
           style={{ scrollbarWidth: "none" }}
         >
-          {combinedSong.map((item, index) => {
+          {songList.map((item, index) => {
             const fallback = data3[index] || {};
 
             const image = item.songImage?.[0] || item.image || fallback.image;

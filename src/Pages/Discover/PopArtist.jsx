@@ -11,20 +11,24 @@ import { useDispatch } from "react-redux";
 import { getAllArtitst } from "../Redux/Action/action";
 import apiInstance from "../../../utils/axios";
 import { useArtist } from "../Context/ArtistContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
 import { useView } from "../Context/ViewContext";
+import { useAuth } from "../Context/AuthContext";
+import { toast } from "react-toastify";
 
 const PopArtist = () => {
   const { setSelectedArtist } = useArtist();
 
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
+  const { isLoggedIn, isGoogleLogin } = useAuth();
   const { setSource } = usePlayerSource();
   const { setOpenSource } = useView();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { id } = useParams();
 
   const data3 = [
     { image: artist11, para: "Eminiem" },
@@ -70,6 +74,8 @@ const PopArtist = () => {
         setData(response.data.data);
         setSelectedArtist(response.data.data);
         dispatch(getAllArtitst());
+        if (!id && response?.data?.data?.length > 0) {
+        }
       } catch (error) {
         setError(error.message);
       } finally {
@@ -79,10 +85,13 @@ const PopArtist = () => {
     fetchData();
   }, [setSelectedArtist]);
 
-
   const handleArtist = (artistId) => {
-    navigate(`/artist/${artistId}`);
-    setSource("popular");
+    if (isAuthenticated) {
+      navigate(`/artist/${artistId}`);
+      setSource("popular");
+    } else {
+      toast.warn("Please Log in to play music");
+    }
   };
 
   const handleClick = () => {
@@ -91,6 +100,8 @@ const PopArtist = () => {
   };
 
   const combinedArtist = [...data, ...data3];
+  const isAuthenticated = isLoggedIn || isGoogleLogin;
+  const songList = isAuthenticated ? data : data3;
 
   return (
     <div>
@@ -110,20 +121,21 @@ const PopArtist = () => {
           className=" hidden md:grid xl:grid-cols-6 lg:grid-cols-3 md:grid-cols-4 gap-[24px] overflow-x-auto"
           style={{ scrollbarWidth: "none" }}
         >
-          {Array.isArray(combinedArtist) &&
-            (isOpen
-              ? combinedArtist
-              : combinedArtist.slice(0, visibleCount)
-            ).map((item, index) => (
-              <div key={item._id || index}>
-                <div onClick={() => handleArtist(item._id)}>
-                  <img src={item.artistImage?.[0]} alt="a1" className="pl-4" />
-                  <p className="text-white text-[16px] font-Vazirmatn-500 pt-[23px] text-center">
-                    {item?.name}
-                  </p>
+          {isOpen
+            ? songList
+            : songList.slice(0, visibleCount).map((item, index) => (
+                <div key={item._id || index}>
+                  <div
+                    onClick={() => handleArtist(item._id)}
+                    className="flex-col flex justify-center items-center"
+                  >
+                    <img src={item.artistImage?.[0] || item?.image} alt="a1" />
+                    <p className="text-white text-[16px] font-Vazirmatn-500 pt-[23px] ">
+                      {item?.name || item?.para}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
 
           <div
             className="pl-[24px] py-[64px] cursor-pointer "
@@ -143,22 +155,25 @@ const PopArtist = () => {
           className=" flex gap-3 overflow-x-auto pt-5"
           style={{ scrollbarWidth: "none" }}
         >
-          {data.map((item, index) => (
-            <div key={item._id || index}>
-              <div onClick={() => handleArtist(item._id)}>
-                <div className="p-2">
-                  <img
-                    src={item.artistImage?.[0]}
-                    alt="a1"
-                    className="  max-w-[175px] max-h-[100px]"
-                  />
-                  <p className="text-white text-[12px] font-Vazirmatn-300 pt-[23px]  text-center">
-                    {item.name}
-                  </p>
+          {songList.map((item, index) => {
+            const extra = data3[index];
+            return (
+              <div key={item._id || index}>
+                <div onClick={() => handleArtist(item._id)}>
+                  <div className="p-2">
+                    <img
+                      src={item.artistImage?.[0] || item?.image}
+                      alt="a1"
+                      className="  max-w-[175px] max-h-[100px]"
+                    />
+                    <p className="text-white text-[12px] font-Vazirmatn-300 pt-[23px]  text-center">
+                      {item.name || item?.para}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

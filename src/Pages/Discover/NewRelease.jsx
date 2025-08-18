@@ -84,8 +84,6 @@ const NewRelease = () => {
     fetchData();
   }, [dispatch]);
 
-
-
   const handleSelect = (index, item) => {
     if (item?.cloudinaryUrl) {
       toast.warn("This song has no playable audio.");
@@ -109,6 +107,9 @@ const NewRelease = () => {
   };
 
   const combinedSong = [...data, ...data3];
+
+  const isAuthenticated = isLoggedIn || isGoogleLogin;
+  const songList = isAuthenticated ? data : data3;
 
   return (
     <div>
@@ -173,23 +174,23 @@ const NewRelease = () => {
           className=" flex gap-2 overflow-x-auto pt-5"
           style={{ scrollbarWidth: "none" }}
         >
-          {data.map((item, index) => (
+          {songList.map((item, index) => (
             <div key={item._id || index}>
               <div
                 className="bg-[#1F1F1F] w-[130px] h-[185px]  rounded-[10px] py-[4px] px-[8px]"
                 onClick={() => handleSelect(index, item._id)}
               >
                 <img
-                  src={item.songImage?.[0]}
+                  src={item.songImage?.[0] || item?.image}
                   alt="a1"
                   className="w-[124.39px] h-[124.39px]"
                 />
                 <div>
                   <p className="text-white text-[14px] font-Vazirmatn-500 pt-[8px]">
-                    {item?.title}
+                    {item?.title || item?.para}
                   </p>
                   <p className="text-white text-[12px] font-Vazirmatn-300 pt-[8px] opacity-80">
-                    {item?.artistId?.name}
+                    {item?.artistId?.name || item?.head}
                   </p>
                 </div>
               </div>

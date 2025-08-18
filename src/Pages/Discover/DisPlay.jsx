@@ -129,10 +129,10 @@ const DisPlay = () => {
   return (
     <>
       <div
-        className=" text-white p-4 gap-6
+        className=" text-white p-4 
           grid md:grid-cols-3 grid-cols-2 
           justify-between items-center 
-          lg:gap-60 rounded-md shadow-md "
+          xl:gap-60 lg:gap-19 gap-6 rounded-md shadow-md "
       >
         <div className="flex gap-2 items-center">
           <img

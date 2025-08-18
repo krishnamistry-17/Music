@@ -32,9 +32,13 @@ const Albums = () => {
   const { playlistSongs, setPlaylistSongs } = usePlayList();
 
   const addSongToPlaylist = (song) => {
-    if (!playlistSongs.find((s) => s._id === song._id)) {
-      setPlaylistSongs((prev) => [...prev, song]);
-      toast.success("Song added to playlist..");
+    if (isLoggedIn || isGoogleLogin) {
+      if (!playlistSongs.find((s) => s._id === song._id)) {
+        setPlaylistSongs((prev) => [...prev, song]);
+        toast.success("Song added to playlist..");
+      } else {
+        toast.warn("Please Log in");
+      }
     } else {
       toast.info("Song is already in playlist");
     }
@@ -84,7 +88,7 @@ const Albums = () => {
             </div>
 
             <div className="lg:flex justify-between items-center">
-              <div className="lg:flex pl-[43px] gap-14 md:w-[712px]">
+              <div className="lg:flex pl-[43px] gap-14 md:w-[680px]">
                 <div>
                   <img
                     src={currentAlbum?.albumImages?.[0] || song}
@@ -114,14 +118,20 @@ const Albums = () => {
                   </div>
                 </div>
               </div>
-              <div
-                className=" lg:pt-[220px] flex gap-4 md:pl-0 xl:pl-10 pt-4 xl:pr-8 pb-10"
-                onClick={() => handlePlayAll()}
-              >
-                <p className="text-[24px] text-darkpink font-Vazirmatn-600 pt-4">
-                  Play All
-                </p>
-                <img src={play} alt="play" />
+              <div className="lg:pt-[220px]  md:pl-0 xl:pl-10 pt-4 xl:pr-8 pr-3 pb-10 lg:block hidden">
+                <div
+                  className="  flex items-center xl:gap-3"
+                  onClick={() => handlePlayAll()}
+                >
+                  <p className="text-[24px] text-darkpink font-Vazirmatn-600 pt-4">
+                    Play All
+                  </p>
+                  <img
+                    src={play}
+                    alt="play"
+                    className="xl:w-[60px] xl:h-[68px] w-[41px] h-[38px]"
+                  />
+                </div>
               </div>
             </div>
           </div>

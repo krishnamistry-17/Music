@@ -13,7 +13,7 @@ import { FaPlay } from "react-icons/fa";
 import { useVideo } from "../Context/VideoContext";
 import { toast } from "react-toastify";
 import { useAuth } from "../Context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useView } from "../Context/ViewContext";
 
 const VideoMusic = () => {
@@ -36,6 +36,7 @@ const VideoMusic = () => {
   const [error, setError] = useState(null);
   const { setOpenSource } = useView();
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const data3 = [
     {
@@ -113,6 +114,8 @@ const VideoMusic = () => {
         const videos = response.data.data;
         setData(videos);
         setVideos(videos);
+        if (!id && videos.length > 0) {
+        }
       } catch (error) {
         setError(error.message);
       } finally {
@@ -127,7 +130,6 @@ const VideoMusic = () => {
       (_, i) => videoRefs.current[i] ?? React.createRef()
     );
   }, [data]);
-
 
   const handleSelect = (index, item) => {
     if (item?.cloudinaryUrl) {
@@ -147,6 +149,10 @@ const VideoMusic = () => {
   const handleClick = () => {
     navigate("/viewsong");
     setOpenSource("allvideos");
+  };
+
+  const showMessage = () => {
+    toast.warn("Please Log In To Play Music.");
   };
 
   const handleToggle = (index) => {
@@ -169,6 +175,9 @@ const VideoMusic = () => {
     }
   };
 
+  const isAuthenticated = isLoggedIn || isGoogleLogin;
+  const songList = isAuthenticated ? data : data3;
+
   return (
     <div>
       <div>
@@ -187,8 +196,8 @@ const VideoMusic = () => {
         xl:gap-[130px] lg:gap-[200px] gap-[24px] overflow-x-auto "
         style={{ scrollbarWidth: "none" }}
       >
-        {Array.isArray(data) &&
-          (isOpen ? data : data.slice(0, visibleCount)).map((item, index) => {
+        {(isOpen ? songList : songList.slice(0, visibleCount)).map(
+          (item, index) => {
             const extra = data3[index];
             return (
               <div key={item._id || index}>
@@ -198,26 +207,39 @@ const VideoMusic = () => {
                 >
                   <div>
                     <div>
-                      <video
-                        src={item?.cloudinaryUrl}
-                        ref={videoRefs.current[index]}
-                        controls
-                        muted
-                        playsInline
-                        preload="metadata"
-                        className="w-full h-auto"
-                      />
+                      {isAuthenticated ? (
+                        <div>
+                          {" "}
+                          <video
+                            src={item?.cloudinaryUrl}
+                            ref={videoRefs.current[index]}
+                            controls
+                            muted
+                            playsInline
+                            preload="metadata"
+                            className="w-full h-auto"
+                          />
+                        </div>
+                      ) : (
+                        <div>
+                          <img
+                            src={item?.image}
+                            alt="img"
+                            onClick={() => showMessage()}
+                          />
+                        </div>
+                      )}
                     </div>
                     <div>
                       <p className="text-white text-[20px] font-Vazirmatn-600 pt-[4px] ">
-                        {item?.title}
+                        {item?.title || item?.para}
                       </p>
                       <div className="flex justify-between">
                         <div className="text-white text-[12px] font-Vazirmatn-300 ">
-                          {item?.artistId?.name}
+                          {item?.artistId?.name || item?.head}
                         </div>
                         <div className="text-white text-[12px] font-Vazirmatn-300 ">
-                          {item.view || extra.view}
+                          {item.view || item?.view}
                         </div>
                       </div>
                     </div>
@@ -225,7 +247,8 @@ const VideoMusic = () => {
                 </div>
               </div>
             );
-          })}
+          }
+        )}
         <div
           className="pl-[46px] py-[73.87px] cursor-pointer hidden md:block"
           onClick={() => handleClick()}
@@ -244,13 +267,13 @@ const VideoMusic = () => {
           className=" flex gap-3 overflow-x-auto pt-5"
           style={{ scrollbarWidth: "none" }}
         >
-          {data?.map((item, index) => (
+          {songList?.map((item, index) => (
             <div key={item._id || index}>
               <div className="bg-[#1F1F1F] w-[151px] h-fit p-[8px] rounded-[5px] ">
                 <div>
                   <div>
                     <video
-                      src={item?.cloudinaryUrl}
+                      src={item?.cloudinaryUrl || item?.image}
                       ref={videoRefs.current[index]}
                       controls
                       muted
@@ -262,10 +285,10 @@ const VideoMusic = () => {
                 </div>
                 <div>
                   <p className="text-white text-[14px] font-Vazirmatn-500 pt-[4px] ">
-                    {item?.title}
+                    {item?.title || item?.para}
                   </p>
                   <p className="text-white text-[12px] font-Vazirmatn-300 pt-[8px] ">
-                    {item?.artistId?.name}
+                    {item?.artistId?.name || item?.head}
                   </p>
                 </div>
               </div>

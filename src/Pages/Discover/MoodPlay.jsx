@@ -89,8 +89,6 @@ const MoodPlay = ({ playRef }) => {
     fetchData();
   }, [dispatch]);
 
-
-
   const handleSelect = (index) => {
     if (!isGoogleLogin && !isLoggedIn) {
       toast.warn("Please log in to play music");
@@ -122,6 +120,9 @@ const MoodPlay = ({ playRef }) => {
     setOpenSource("moodplaysong");
   };
 
+  const isAuthenticated = isLoggedIn || isGoogleLogin;
+  const songList = isAuthenticated ? data : data3;
+
   return (
     <div ref={playRef}>
       <div>
@@ -139,8 +140,8 @@ const MoodPlay = ({ playRef }) => {
           className=" hidden md:grid xl:grid-cols-6 lg:grid-cols-3 md:grid-cols-4 gap-[24px] overflow-x-auto "
           style={{ scrollbarWidth: "none" }}
         >
-          {Array.isArray(data) &&
-            (isOpen ? data : data.slice(0, visibleCount)).map((item, index) => {
+          {(isOpen ? songList : songList.slice(0, visibleCount)).map(
+            (item, index) => {
               const extra = data3[index];
               return (
                 <div
@@ -150,18 +151,19 @@ const MoodPlay = ({ playRef }) => {
                   <div className="bg-[#1F1F1F] w-[174.67px] h-[195px]  rounded-[8px] ">
                     <div>
                       <img
-                        src={item?.playlistImage}
+                        src={item?.playlistImage || item?.image}
                         alt="a1"
                         className="w-[174.67px] h-[150px]"
                       />
                       <p className="text-white text-[16px] font-Vazirmatn-500 pt-[12px] pl-[4px]">
-                        {item?.title}
+                        {item?.title || item?.para}
                       </p>
                     </div>
                   </div>
                 </div>
               );
-            })}
+            }
+          )}
 
           <div
             className="pl-[24px] py-[64px] cursor-pointer "
@@ -182,17 +184,17 @@ const MoodPlay = ({ playRef }) => {
           className=" flex gap-3 overflow-x-auto pt-5"
           style={{ scrollbarWidth: "none" }}
         >
-          {data.map((item, index) => (
+          {songList.map((item, index) => (
             <div key={item._id || index} onClick={() => handleSelect(index)}>
-              <div className="bg-[#1F1F1F] w-[150.67px] h-[165px] p-2 rounded-[8px] ">
+              <div className="bg-[#1F1F1F] w-[150.67px] h-fit p-2 rounded-[8px] ">
                 <div className="p-2">
                   <img
-                    src={item?.playlistImage}
+                    src={item?.playlistImage || item?.image}
                     alt="a1"
                     className="w-[124.67px] h-[110px]"
                   />
                   <p className="text-white text-[14px] font-Vazirmatn-500 pt-[14px] pl-[8px]">
-                    {item?.title}
+                    {item?.title || item?.para}
                   </p>
                 </div>
               </div>

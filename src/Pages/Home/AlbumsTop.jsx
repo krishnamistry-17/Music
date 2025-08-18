@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
 import { getallAlbum } from "../Redux/Action/action";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAlbum } from "../Context/AlbumContext";
 import top1 from "../../assets/images/top1.png";
 import top2 from "../../assets/images/top2.png";
@@ -12,6 +12,8 @@ import top3 from "../../assets/images/top3.png";
 import top4 from "../../assets/images/top4.png";
 import top5 from "../../assets/images/top5.png";
 import { useView } from "../Context/ViewContext";
+import { useAuth } from "../Context/AuthContext";
+import { toast } from "react-toastify";
 
 const AlbumsTop = () => {
   const { setSelectedAlbum } = useAlbum();
@@ -20,7 +22,8 @@ const AlbumsTop = () => {
   const [visibleCount, setVisibleCount] = useState(2);
 
   const [data, setData] = useState([]);
-
+  const { id } = useParams();
+  const { isLoggedIn, isGoogleLogin } = useAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -66,6 +69,8 @@ const AlbumsTop = () => {
         setData(response.data.data);
         setSelectedAlbum(response.data.data);
         dispatch(getallAlbum());
+        if (!id && response?.data?.data?.length > 0) {
+        }
       } catch (error) {
         setError(error);
       } finally {
@@ -76,7 +81,11 @@ const AlbumsTop = () => {
   }, [setSelectedAlbum]);
 
   const handleAlbum = (albumId) => {
-    navigate(`/album/${albumId}`);
+    if (isAuthenticated) {
+      navigate(`/album/${albumId}`);
+    } else {
+      toast.warn("Please Login to play music");
+    }
   };
 
   const handleClick = () => {
@@ -85,6 +94,8 @@ const AlbumsTop = () => {
   };
 
   const combinedAlbum = [...data, ...data3];
+  const isAuthenticated = isLoggedIn || isGoogleLogin;
+  const songList = isAuthenticated ? data : data3;
 
   return (
     <div>
@@ -103,27 +114,31 @@ const AlbumsTop = () => {
           className=" hidden md:grid xl:grid-cols-6 lg:grid-cols-3 md:grid-cols-4 gap-[24px] overflow-x-auto "
           style={{ scrollbarWidth: "none" }}
         >
-          {Array.isArray(combinedAlbum) &&
-            (isOpen ? combinedAlbum : combinedAlbum.slice(0, visibleCount)).map(
-              (item, index) => {
-                return (
-                  <div key={item._id || index}>
-                    <div
-                      className="bg-[#1F1F1F] w-[174.4px] h-[222px] p-[8px]  rounded-[8px] "
-                      onClick={() => handleAlbum(item._id)}
-                    >
-                      <img src={item.albumImages?.[0]} alt="a1" className="" />
-                      <p className="text-white text-[16px] font-Vazirmatn-500 pt-[8px] ">
-                        {item?.title}
-                      </p>
-                      <p className="text-white text-[12px] font-Vazirmatn-300 pt-[4px] opacity-80 ">
-                        {item?.artistId?.name}
-                      </p>
-                    </div>
+          {(isOpen ? songList : songList.slice(0, visibleCount)).map(
+            (item, index) => {
+              const extra = data3[index];
+              return (
+                <div key={item._id || index}>
+                  <div
+                    className="bg-[#1F1F1F] w-[174.4px] h-[222px] p-[8px]  rounded-[8px] "
+                    onClick={() => handleAlbum(item._id)}
+                  >
+                    <img
+                      src={item.albumImages?.[0] || item?.image}
+                      alt="a1"
+                      className=""
+                    />
+                    <p className="text-white text-[16px] font-Vazirmatn-500 pt-[8px] ">
+                      {item?.title || item?.para}
+                    </p>
+                    <p className="text-white text-[12px] font-Vazirmatn-300 pt-[4px] opacity-80 ">
+                      {item?.artistId?.name || item?.head}
+                    </p>
                   </div>
-                );
-              }
-            )}
+                </div>
+              );
+            }
+          )}
 
           <div
             className="pl-[22px] py-[64px] cursor-pointer "
@@ -144,27 +159,30 @@ const AlbumsTop = () => {
           className=" flex gap-3 overflow-x-auto pt-5"
           style={{ scrollbarWidth: "none" }}
         >
-          {Array.isArray(data) &&
-            data.map((item, index) => {
-              return (
-                <div key={item._id || index}>
-                  <div
-                    className="bg-[#1F1F1F] w-[140px] h-[185px]  rounded-[10px] py-[4px] px-[8px]"
-                    onClick={() => handleAlbum(item._id)}
-                  >
-                    <img src={item.albumImages?.[0]} alt="a1" className="]" />
-                    <div>
-                      <p className="text-white text-[14px] font-Vazirmatn-500 pt-[8px]">
-                        {item?.title}
-                      </p>
-                      <p className="text-white text-[12px] font-Vazirmatn-300 pt-[8px] opacity-80">
-                        {item?.artistId?.name}
-                      </p>
-                    </div>
+          {songList.map((item, index) => {
+            return (
+              <div key={item._id || index}>
+                <div
+                  className="bg-[#1F1F1F] w-[140px] h-[185px]  rounded-[10px] py-[4px] px-[8px]"
+                  onClick={() => handleAlbum(item._id)}
+                >
+                  <img
+                    src={item.albumImages?.[0] || item?.image}
+                    alt="a1"
+                    className="]"
+                  />
+                  <div>
+                    <p className="text-white text-[14px] font-Vazirmatn-500 pt-[8px]">
+                      {item?.title || item?.para}
+                    </p>
+                    <p className="text-white text-[12px] font-Vazirmatn-300 pt-[8px] opacity-80">
+                      {item?.artistId?.name || item?.head}
+                    </p>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

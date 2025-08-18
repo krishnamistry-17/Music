@@ -56,13 +56,13 @@ const AddPlayList = () => {
         </div>
       </div>
       <div className="text-white p-4 max-w-md ">
-        <input
+        {/* <input
           type="text"
           placeholder="Enter Playlist Title"
           value={playlistTitle}
           onChange={(e) => setPlaylistTitle(e.target.value)}
           className="p-2 w-full mb-4 bg-gray-800 rounded"
-        />
+        /> */}
 
         <SearchSong onAddSong={addSongToPlaylist} />
       </div>

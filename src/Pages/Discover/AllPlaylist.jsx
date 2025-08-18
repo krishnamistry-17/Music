@@ -55,7 +55,7 @@ const AllPlaylist = () => {
     window.addEventListener("resize", updateCount);
     return () => window.removeEventListener("resize", updateCount);
   }, []);
-  
+
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
@@ -85,14 +85,6 @@ const AllPlaylist = () => {
     fetchData();
   }, [dispatch]);
 
-  if (error) {
-    return <p className="text-white">Error..</p>;
-  }
-
-  if (loading) {
-    return <p className="text-white">Loading..</p>;
-  }
-
   const handleSelect = (index) => {
     if (!isGoogleLogin && !isLoggedIn) {
       toast.warn("Please log in to play music");
@@ -120,6 +112,8 @@ const AllPlaylist = () => {
   };
 
   const combinedPlayList = [...data, ...data3];
+  const isAuthenticated = isLoggedIn || isGoogleLogin;
+  const songList = isAuthenticated ? data : data3;
 
   return (
     <div>
@@ -138,7 +132,7 @@ const AllPlaylist = () => {
           className=" hidden md:grid xl:grid-cols-6 md:grid-cols-4 gap-[24px] overflow-x-auto "
           style={{ scrollbarWidth: "none" }}
         >
-          {combinedPlayList.map((item, index) => {
+          {songList.map((item, index) => {
             const fallback = data3[index] || {};
 
             const image = item?.playlistImage || item.image || fallback.image;

@@ -23,7 +23,7 @@ const AllAudio = () => {
   const { setSource } = usePlayerSource();
 
   const [data, setData] = useState([]);
- 
+
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -72,15 +72,9 @@ const AllAudio = () => {
     fetchData();
   }, []);
 
-  if (error) {
-    return <div className="text-white">Error..</div>;
-  }
-
-  if (loading) {
-    return <div>Loading..</div>;
-  }
-
   const combinedSong = [...data, ...data3];
+
+  
 
   const handleSelect = (index, item) => {
     if (item?.cloudinaryUrl) {

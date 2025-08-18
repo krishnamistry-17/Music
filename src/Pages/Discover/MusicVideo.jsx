@@ -58,6 +58,7 @@ const MusicVideo = () => {
       view: "5M views",
     },
   ];
+  
   const data3 = [
     {
       image: newmusic1,

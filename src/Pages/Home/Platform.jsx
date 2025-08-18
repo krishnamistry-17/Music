@@ -21,7 +21,12 @@ const Platform = ({
             You can be one of the <span className="text-darkpink">members</span>{" "}
             of our platform by just adding some necessarily information. if you
             already have an account on our website, you can just hit the{" "}
-            <span className="text-darkblue">Login button.</span>
+            <span
+              onClick={() => setActiveTab("login")}
+              className="text-darkblue cursor-pointer"
+            >
+              Login button.
+            </span>
           </p>
         </div>
 

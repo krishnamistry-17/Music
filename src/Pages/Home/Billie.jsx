@@ -5,6 +5,12 @@ import next from "../../assets/svgs/next.svg";
 import { useArtist } from "../Context/ArtistContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import artist11 from "../../assets/images/artist11.png";
+import artist22 from "../../assets/images/artist22.png";
+import artist33 from "../../assets/images/artist33.png";
+import artist44 from "../../assets/images/artist44.png";
+import artist55 from "../../assets/images/artist55.png";
+import artist66 from "../../assets/images/artist66.png";
 
 const Billie = () => {
   const {
@@ -15,6 +21,15 @@ const Billie = () => {
   } = useArtist();
 
   const navigate = useNavigate();
+
+  const data3 = [
+    { image: artist33, para: "Adele" },
+    { image: artist55, para: "Harry Styles" },
+    { image: artist44, para: "Lana Del Ray" },
+    { image: artist22, para: "The Weekend" },
+    { image: artist66, para: "Billie Eilish" },
+    { image: artist11, para: "Eminiem" },
+  ];
 
   useEffect(() => {
     if (!artist || artist.length === 0) return;
@@ -48,7 +63,7 @@ const Billie = () => {
         <div className="flex  items-center">
           <div>
             <img
-              src={currentArtist?.artistImage}
+              src={currentArtist?.artistImage || data3?.image}
               alt="bile"
               className=" rounded-[5px] "
             />

@@ -13,12 +13,14 @@ import { useArtist } from "../Context/ArtistContext";
 import { useNavigate } from "react-router-dom";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
 import { useView } from "../Context/ViewContext";
+import { useAuth } from "../Context/AuthContext";
 
 const AllArtist = () => {
   const { selectedArtist, setSelectedArtist } = useArtist();
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(2);
   const { setSource } = usePlayerSource();
+  const { isLoggedIn, isGoogleLogin } = useAuth();
   const { setOpenSource } = useView();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -72,20 +74,14 @@ const AllArtist = () => {
     fetchData();
   }, [setSelectedArtist]);
 
-  if (error) {
-    return <div className="text-white">Error...</div>;
-  }
-
-  if (loading) {
-    return <div className="text-white">Loading..</div>;
-  }
-
   const handleArtist = (artistId) => {
     navigate(`/artist/${artistId}`);
     setSource("popular");
   };
 
   const combinedArtist = [...data, ...data3];
+  const isAuthenticated = isLoggedIn || isGoogleLogin;
+  const songList = isAuthenticated ? data : data3;
 
   return (
     <div>
@@ -102,10 +98,10 @@ const AllArtist = () => {
 
       <div>
         <div
-          className=" hidden md:grid xl:grid-cols-6 md:grid-cols-4 gap-[24px] overflow-x-auto"
+          className=" hidden md:grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 gap-[24px] overflow-x-auto"
           style={{ scrollbarWidth: "none" }}
         >
-          {combinedArtist.map((item, index) => {
+          {songList.map((item, index) => {
             const fallback = data3[index] || {};
 
             const image = item.artistImage?.[0] || item.image || fallback.image;
@@ -113,9 +109,12 @@ const AllArtist = () => {
 
             return (
               <div key={item._id || index}>
-                <div onClick={() => handleArtist(item._id)}>
-                  <img src={image} alt="a1" className="pl-4 rounded-full" />
-                  <p className="text-white text-[16px] font-Vazirmatn-500 pt-[23px] text-center">
+                <div
+                  onClick={() => handleArtist(item._id)}
+                  className="flex flex-col justify-center items-center"
+                >
+                  <img src={image} alt="a1" className=" rounded-full " />
+                  <p className="text-white text-[16px] font-Vazirmatn-500 pt-[23px] ">
                     {title}
                   </p>
                 </div>

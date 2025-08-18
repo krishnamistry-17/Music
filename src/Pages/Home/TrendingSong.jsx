@@ -18,6 +18,10 @@ import { useSong } from "../Context/SongContext";
 import { useFav } from "../Context/FavContext";
 import { useParams } from "react-router-dom";
 // import useFetchData from "../Hooks/useFetchData";
+import artist1 from "../../assets/images/artist11.png";
+import artist3 from "../../assets/images/artist33.png";
+import artist5 from "../../assets/images/artist55.png";
+import artist6 from "../../assets/images/artist66.png";
 
 const TrendingSong = ({ songRef }) => {
   const {
@@ -39,6 +43,7 @@ const TrendingSong = ({ songRef }) => {
   const favorites = useSelector((state) => state.favorites);
 
   const [data, setData] = useState([]);
+  console.log("data :", data);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -47,14 +52,50 @@ const TrendingSong = ({ songRef }) => {
   const dispatch = useDispatch();
 
   const data1 = [
-    { id: 0, fimg: pfav, fullimg: pfull, ptime: "3:26" },
-    { id: 1, fimg: pfav, fullimg: pfull, ptime: "2:45" },
-    { id: 2, fimg: pfav, fullimg: pfull, ptime: "2:11" },
-    { id: 3, fimg: pfav, fullimg: pfull, ptime: "2:18" },
-    { id: 4, fimg: pfav, fullimg: pfull, ptime: "3:26" },
-    { id: 5, fimg: pfav, fullimg: pfull, ptime: "3:26" },
-    { id: 6, fimg: pfav, fullimg: pfull, ptime: "3:26" },
-    { id: 7, fimg: pfav, fullimg: pfull, ptime: "3:26" },
+    {
+      id: 0,
+      image: artist3,
+      artistname: "Adele",
+      title: "Adele 21",
+      rdate: "2025-07-02",
+      bio: "British singer with a powerful, soulful voice.",
+      fimg: pfav,
+      fullimg: pfull,
+      ptime: "3:26",
+    },
+    {
+      id: 1,
+      image: artist5,
+      artistname: "Harry Styles",
+      title: "Harry's House",
+      rdate: "2025-07-02",
+      bio: "British pop singer and former One Direction member.",
+      fimg: pfav,
+      fullimg: pfull,
+      ptime: "2:45",
+    },
+    {
+      id: 2,
+      image: artist6,
+      artistname: "Billie Eilish",
+      title: "Born To Die",
+      rdate: "2025-07-02",
+      bio: "Singer of 'Bad Guy', known for her unique voice and style.",
+      fimg: pfav,
+      fullimg: pfull,
+      ptime: "2:45",
+    },
+    {
+      id: 3,
+      image: artist1,
+      artistname: "Eminem",
+      title: "mockingbird",
+      rdate: "2025-07-02",
+      bio: "tate mcree, nightmares, the neighberhood, doja cat and ...",
+      fimg: pfav,
+      fullimg: pfull,
+      ptime: "2:45",
+    },
   ];
 
   const handleResize = () => {
@@ -82,8 +123,10 @@ const TrendingSong = ({ songRef }) => {
         const albums = response.data.data;
         setData(albums);
         setSongs(albums);
-
         dispatch(getAllSong());
+
+        if (!id && albums.length > 0) {
+        }
       } catch (error) {
         setError(error);
       } finally {
@@ -97,9 +140,8 @@ const TrendingSong = ({ songRef }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, [setSongs]);
 
-
   const handleSelect = (index, item) => {
-    if (item?.cloudinaryUrl) {
+    if (!item?.cloudinaryUrl) {
       toast.warn("This song has no playable audio.");
       return;
     }
@@ -110,6 +152,10 @@ const TrendingSong = ({ songRef }) => {
       playSongAt(index);
       setCurrentIndex(index);
     }
+  };
+
+  const showMessage = (index, item) => {
+    toast.warn("Please Log In To Play Music.");
   };
 
   const handleClick = (song) => {
@@ -130,6 +176,10 @@ const TrendingSong = ({ songRef }) => {
   };
 
   const togglePlay = () => setIsPlaying((p) => !p);
+
+  const isAuthenticated = isLoggedIn || isGoogleLogin;
+  const songList = isAuthenticated ? data : data1;
+  console.log("songList :", songList);
 
   return (
     <div ref={songRef}>
@@ -197,120 +247,115 @@ const TrendingSong = ({ songRef }) => {
 
           <div className="flex pt-[15px] mt-[-17px] px-2">
             <div className="flex flex-col items-center mt-4 md:mr-4 mr-3">
-              {data?.map((item, index) => (
+              {songList?.map((item, index) => (
                 <div
                   key={item._id}
                   className="lg:py-[20px] py-[25px] text-white flex items-center justify-center"
                 >
-                  {isLoggedIn || isGoogleLogin ? (
+                  {isAuthenticated ? (
                     <div onClick={togglePlay}>
                       {currentIndex === index ? (
                         isPlaying ? (
-                          <FaPause className="text-white w-[20px] h-[20px]" />
+                          <FaPause className="text-white md:w-[20px] md:h-[20px]" />
                         ) : (
-                          <FaPlay className="text-white w-[20px] h-[20px]" />
+                          <FaPlay className="text-white md:w-[20px] md:h-[20px]" />
                         )
                       ) : (
-                        <p className="lg:text-[24px] text-[16px] font-Vazirmatn-600">
+                        <p className="lg:text-[24px] text-[16px] font-Vazirmatn-600 text-white">
                           #{index + 1}
                         </p>
                       )}
                     </div>
                   ) : (
-                    <div>
-                      {" "}
-                      <p className="lg:text-[24px] text-[16px] font-Vazirmatn-600">
-                        #{index + 1}
-                      </p>
-                    </div>
+                    <p className="lg:text-[24px] text-[16px] font-Vazirmatn-600 text-white">
+                      #{index + 1}
+                    </p>
                   )}
                 </div>
               ))}
             </div>
 
             <div className="pb-[15px]">
-              {Array.isArray(data) &&
-                data.map((item, index) => {
-                  const extra = data1[index] || {};
-
-                  return (
+              {songList.map((item, index) => (
+                <div
+                  key={item._id || item.id}
+                  className="pt-[15px] cursor-pointer"
+                >
+                  <div className="grid xl:grid-cols-4 grid-cols-3 gap-6 bg-[#1E1E1E] relative">
                     <div
-                      key={item._id || index}
-                      className="pt-[15px] cursor-pointer"
+                      className="flex"
+                      onClick={
+                        isAuthenticated
+                          ? () => handleSelect(index, item)
+                          : () => showMessage(index, item)
+                      }
                     >
-                      <div className="grid xl:grid-cols-4 grid-cols-3 gap-6 bg-[#1E1E1E] relative">
-                        <div
-                          className="flex"
-                          onClick={() => handleSelect(index, item._id)}
-                        >
-                          <img
-                            src={item?.artistId?.artistImage?.[0]}
-                            alt="artist"
-                            className="w-[60px] h-[60px] rounded-[5px] border"
-                          />
-                          <div className="md:pl-[23px] pl-1 md:py-[5px] pt-[11px]">
-                            <p className="text-white md:text-[20px] font-Vazirmatn-600 text-[15px] truncate">
-                              {item?.artistId?.name}
-                            </p>
-                            <p className="text-white text-[12px] font-Vazirmatn-300 truncate">
-                              {item?.albumId?.title}
-                            </p>
-                          </div>
-                        </div>
-
-                        {isSmall ? (
-                          <div>
-                            {" "}
-                            <p className="text-white text-[16px] pl-20 font-Vazirmatn-400 py-[17.5px] lg:block hidden">
-                              {item?.artistId?.createdAt?.split("T")[0]}
-                            </p>
-                          </div>
-                        ) : (
-                          <div>
-                            {" "}
-                            <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] lg:block hidden">
-                              {item?.artistId?.createdAt?.split("T")[0]}
-                            </p>
-                          </div>
-                        )}
-
-                        <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] w-[345px] xl:block hidden truncate">
-                          {item?.artistId?.bio}
+                      <img
+                        src={item?.artistId?.artistImage?.[0] || item.image}
+                        alt="artist"
+                        className="w-[60px] h-[60px] rounded-[5px] border"
+                      />
+                      <div className="md:pl-[23px] pl-1 md:py-[5px] pt-[11px]">
+                        <p className="text-white md:text-[20px] font-Vazirmatn-600 text-[15px] truncate">
+                          {item?.artistId?.name || item.artistname}
                         </p>
-
-                        <div
-                          className="flex justify-end lg:gap-2.5 gap-8 py-[17.5px] pr-[9px]"
-                          onClick={() => handleClick(item)}
-                        >
-                          {isLoggedIn || isGoogleLogin ? (
-                            <div>
-                              {" "}
-                              <img
-                                src={
-                                  favorites.some((fav) => fav._id === item._id)
-                                    ? extra?.fullimg
-                                    : extra?.fimg
-                                }
-                                alt="fav"
-                                className="lg:block hidden w-[24.24px] h-[25px]"
-                              />
-                            </div>
-                          ) : (
-                            <div>
-                              <img src={extra?.fimg} alt="fav" />
-                            </div>
-                          )}
-
-                          <p className="text-white text-[16px] font-Vazirmatn-400">
-                            {item?.duration}
-                          </p>
-                        </div>
+                        <p className="text-white text-[12px] font-Vazirmatn-300 truncate">
+                          {item?.albumId?.title || item.title}
+                        </p>
                       </div>
                     </div>
-                  );
-                })}
+
+                    {isSmall ? (
+                      <div>
+                        {" "}
+                        <p className="text-white text-[16px] pl-20 font-Vazirmatn-400 py-[17.5px] lg:block hidden">
+                          {item?.artistId?.createdAt?.split("T")[0] ||
+                            item?.rdate}
+                        </p>
+                      </div>
+                    ) : (
+                      <div>
+                        {" "}
+                        <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] lg:block hidden">
+                          {item?.artistId?.createdAt?.split("T")[0] ||
+                            item?.rdate}
+                        </p>
+                      </div>
+                    )}
+
+                    <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] w-[345px] xl:block hidden truncate">
+                      {item?.artistId?.bio || item.bio}
+                    </p>
+
+                    <div className="flex justify-end lg:gap-2.5 gap-8 py-[17.5px] pr-[9px]">
+                      {isAuthenticated ? (
+                        <img
+                          src={
+                            favorites.some((fav) => fav._id === item._id)
+                              ? pfull
+                              : pfav
+                          }
+                          alt="fav"
+                          className="lg:block hidden w-[24.24px] h-[25px]"
+                          onClick={() => handleClick(item)}
+                        />
+                      ) : (
+                        <img
+                          src={item.fimg}
+                          alt="fav"
+                          className="lg:block hidden w-[24.24px] h-[25px] opacity-50"
+                        />
+                      )}
+                      <p className="text-white text-[16px] font-Vazirmatn-400">
+                        {item?.duration || item.ptime}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
+
           <div className=" flex justify-center items-center  pt-[15px]">
             <button className="bg-[#1E1E1E] py-[14px] px-[20px] text-white text-[16px] font-Vazirmatn-500 rounded-[4px] flex gap-1 items-center">
               <span>

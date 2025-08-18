@@ -66,6 +66,8 @@ const WeeklyTop = () => {
         const response = await apiInstance.get(apiRoutes.GET_AUDIO);
         const albums = response.data.data;
         setData(albums);
+        if (!id && albums.length > 0) {
+        }
       } catch (error) {
         setError(error.message);
       } finally {
@@ -74,14 +76,6 @@ const WeeklyTop = () => {
     }
     fetchData();
   }, []);
-
-  if (error) {
-    return <div className="text-white">Error..</div>;
-  }
-
-  if (loading) {
-    return <div>Loading..</div>;
-  }
 
   const combinedSong = [...data, ...data3];
 
@@ -105,6 +99,9 @@ const WeeklyTop = () => {
     navigate("/viewsong");
     setOpenSource("viewaudio");
   };
+
+  const isAuthenticated = isLoggedIn || isGoogleLogin;
+  const songList = isAuthenticated ? data : data3;
 
   return (
     <div>
@@ -169,24 +166,31 @@ const WeeklyTop = () => {
           className=" flex gap-2 overflow-x-auto pt-5"
           style={{ scrollbarWidth: "none" }}
         >
-          {data.map((item, index) => (
-            <div key={item._id || index}>
-              <div
-                className="bg-[#1F1F1F] w-[130px] h-[185px]  rounded-[10px] py-[4px] px-[8px]"
-                onClick={() => handleSelect(index, item._id)}
-              >
-                <img src={item?.songImage} alt="a1" className="]" />
-                <div>
-                  <p className="text-white text-[14px] font-Vazirmatn-500 pt-[8px]">
-                    {item?.title}
-                  </p>
-                  <p className="text-white text-[12px] font-Vazirmatn-300 pt-[8px] opacity-80">
-                    {item?.artistId?.name}
-                  </p>
+          {songList.map((item, index) => {
+            const extra = data3[index];
+            return (
+              <div key={item._id || index}>
+                <div
+                  className="bg-[#1F1F1F] w-[130px] h-[185px]  rounded-[10px] py-[4px] px-[8px]"
+                  onClick={() => handleSelect(index, item._id)}
+                >
+                  <img
+                    src={item?.songImage || item?.image}
+                    alt="a1"
+                    className="]"
+                  />
+                  <div>
+                    <p className="text-white text-[14px] font-Vazirmatn-500 pt-[8px]">
+                      {item?.title || item?.para}
+                    </p>
+                    <p className="text-white text-[12px] font-Vazirmatn-300 pt-[8px] opacity-80">
+                      {item?.artistId?.name || item?.head}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

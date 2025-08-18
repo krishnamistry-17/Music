@@ -90,8 +90,6 @@ const MusicGeners = () => {
     fetchData();
   }, [dispatch]);
 
-
-
   const handleSelect = (index) => {
     if (!isLoggedIn && !isGoogleLogin) {
       toast.warn("Please Log In To Play Music.");
@@ -124,6 +122,9 @@ const MusicGeners = () => {
     setOpenSource("allgenere");
   };
 
+  const isAuthenticated = isLoggedIn || isGoogleLogin;
+  const songList = isAuthenticated ? data : data3;
+
   return (
     <div>
       <div>
@@ -140,16 +141,16 @@ const MusicGeners = () => {
         className=" hidden md:grid xl:grid-cols-5 lg:grid-cols-3 md:grid-cols-4 gap-[24px] overflow-x-auto "
         style={{ scrollbarWidth: "none" }}
       >
-        {Array.isArray(data) &&
-          (isOpen ? data : data.slice(0, visibleCount)).map((item, index) => (
-            <div
-              key={item._id || index}
-              className=""
-              onClick={() => handleSelect(index)}
-            >
-              <img src={item.genreImage?.[0]} alt="img1" />
-            </div>
-          ))}
+        {(isOpen ? songList : songList.slice(0, visibleCount)).map(
+          (item, index) => {
+            const extra = data3[index];
+            return (
+              <div key={item._id || index} onClick={() => handleSelect(index)}>
+                <img src={item.genreImage?.[0] || item?.image} alt="img1" />
+              </div>
+            );
+          }
+        )}
 
         <div
           className="pl-[69px] py-[31px] cursor-pointer "
@@ -164,60 +165,30 @@ const MusicGeners = () => {
         </div>
       </div>
 
-      {/* <div className="grid grid-cols-1 gap-4">
-        {selectedAlbumGenere.map((item, index) => {
-          return (
-            <div
-              key={item._id || index}
-              className=" border border-gray-700 p-4 rounded bg-[#1E1E1E] flex justify-between"
-            >
-              <div className="flex items-center gap-4">
-                <div>
-                  <img
-                    src={item?.songImage}
-                    alt="image"
-                    className="w-[60px] h-[60px] rounded object-cover border"
-                  />
-                </div>
-                <div>
-                  <p className="text-white">{item.title} </p>
-                  <p className="text-white">{item.duration}</p>
-                </div>
-              </div>
-              <div></div>
-            </div>
-          );
-        })}
-      </div> */}
-
       <div className="md:hidden">
         <div
           className=" flex gap-3 overflow-x-auto pt-5"
           style={{ scrollbarWidth: "none" }}
         >
-          {Array.isArray(data) &&
-            data.map((item, index) => {
-              const extra = data3[index];
-              return (
-                <div
-                  key={item._id || index}
-                  onClick={() => handleSelect(index)}
-                >
-                  <div className="bg-[#1F1F1F] w-[150.67px] h-[165px] p-2 rounded-[8px] ">
-                    <div className="p-2">
-                      <img
-                        src={item.genreImage?.[0]}
-                        alt="a1"
-                        className="w-[124.67px] h-[110px]"
-                      />
-                      <p className="text-white text-[14px] font-Vazirmatn-500 pt-[8px] pl-[8px]">
-                        {extra.para}
-                      </p>
-                    </div>
+          {songList.map((item, index) => {
+            const extra = data3[index];
+            return (
+              <div key={item._id || index} onClick={() => handleSelect(index)}>
+                <div className="bg-[#1F1F1F] w-[150.67px] h-[165px] p-2 rounded-[8px] ">
+                  <div className="p-2">
+                    <img
+                      src={item.genreImage?.[0] || item?.image}
+                      alt="a1"
+                      className="w-[124.67px] h-[110px]"
+                    />
+                    <p className="text-white text-[14px] font-Vazirmatn-500 pt-[8px] pl-[8px]">
+                      {extra.para}
+                    </p>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

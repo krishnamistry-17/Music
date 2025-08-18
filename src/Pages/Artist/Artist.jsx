@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
 import bback from "../../assets/svgs/blueback.svg";
 import right from "../../assets/svgs/right.svg";
-import art1 from "../../assets/images/art1.jpg";
-import art2 from "../../assets/images/art2.jpg";
-import art3 from "../../assets/images/art3.jpg";
-import art4 from "../../assets/images/art4.jpg";
-import art5 from "../../assets/images/art5.jpg";
-import pfav from "../../assets/svgs/pfav.svg";
-import option from "../../assets/svgs/option.svg";
 import artist from "../..//assets/images/artist.png";
 import { data, Link, useNavigate, useParams } from "react-router-dom";
 import Popular from "./Popular";
@@ -41,131 +34,16 @@ const Artist = () => {
 
   const [currentAlbum, setCurrentAlbum] = useState(null);
 
-   const { playlistSongs, setPlaylistSongs } = usePlayList();
-  
-    const addSongToPlaylist = (song) => {
-      if (!playlistSongs.find((s) => s._id === song._id)) {
-        setPlaylistSongs((prev) => [...prev, song]);
-        toast.success("Song added to playlist..");
-      } else {
-        toast.info("Song is already in playlist");
-      }
-    };
+  const { playlistSongs, setPlaylistSongs } = usePlayList();
 
-  const data1 = [
-    {
-      id: 0,
-      image: art1,
-      head: "Without Me",
-      para: "Eminem",
-      rdate: "May 15, 2002",
-      played: "21,215,618",
-      fimg: pfav,
-      ptime: "4:50",
-      oimage: option,
-    },
-    {
-      id: 1,
-      image: art2,
-      head: "mockingbird",
-      para: "Eminem",
-      rdate: "Apr 25, 2005",
-      played: "19,856,112",
-      fimg: pfav,
-      ptime: "4:10",
-      oimage: option,
-    },
-    {
-      id: 2,
-      image: art3,
-      head: "The Real Slim Sha..",
-      para: "Eminem",
-      rdate: "Nov 30, 2023",
-      played: "16,564,223",
-      fimg: pfav,
-      ptime: "4:44",
-      oimage: option,
-    },
-    {
-      id: 3,
-      image: art4,
-      head: "Lose Yourself",
-      para: "Eminem",
-      rdate: "Nov 30, 2023",
-      played: "16,240,390",
-      fimg: pfav,
-      ptime: "5:22",
-      oimage: option,
-    },
-    {
-      id: 4,
-      image: art5,
-      head: "Godzila",
-      para: "Eminem",
-      rdate: "Nov 30, 2023",
-      played: "14,367,500",
-      fimg: pfav,
-      ptime: "3:30",
-      oimage: option,
-    },
-    {
-      id: 5,
-      image: art4,
-      head: "Lose Yourself",
-      para: "Eminem",
-      rdate: "Nov 30, 2023",
-      played: "16,240,390",
-      fimg: pfav,
-      ptime: "5:22",
-      oimage: option,
-    },
-    {
-      id: 6,
-      image: art1,
-      head: "Without Me",
-      para: "Eminem",
-      rdate: "May 15, 2002",
-      played: "21,215,618",
-      fimg: pfav,
-      ptime: "4:50",
-      oimage: option,
-    },
-
-    {
-      id: 7,
-      image: art3,
-      head: "The Real Slim Sha..",
-      para: "Eminem",
-      rdate: "Nov 30, 2023",
-      played: "16,564,223",
-      fimg: pfav,
-      ptime: "4:44",
-      oimage: option,
-    },
-
-    {
-      id: 8,
-      image: art5,
-      head: "Godzila",
-      para: "Eminem",
-      rdate: "Nov 30, 2023",
-      played: "14,367,500",
-      fimg: pfav,
-      ptime: "3:30",
-      oimage: option,
-    },
-    {
-      id: 9,
-      image: art2,
-      head: "mockingbird",
-      para: "Eminem",
-      rdate: "Apr 25, 2005",
-      played: "19,856,112",
-      fimg: pfav,
-      ptime: "4:10",
-      oimage: option,
-    },
-  ];
+  const addSongToPlaylist = (song) => {
+    if (!playlistSongs.find((s) => s._id === song._id)) {
+      setPlaylistSongs((prev) => [...prev, song]);
+      toast.success("Song added to playlist..");
+    } else {
+      toast.info("Song is already in playlist");
+    }
+  };
 
   const handleClick = () => {
     navigate("/");
@@ -203,7 +81,7 @@ const Artist = () => {
               <HomeNav />
             </div>
             <div className="lg:flex justify-between items-center">
-              <div className="lg:flex pl-[43px] gap-14 md:w-[712px]">
+              <div className="lg:flex pl-[43px] gap-14 md:w-[680px]">
                 <div>
                   <img
                     src={currentAlbum?.artistImage?.[0] || artist}
@@ -230,17 +108,26 @@ const Artist = () => {
                   </div>
                 </div>
               </div>
-              <div className=" lg:pt-[220px] flex gap-4 md:pl-0 pl-10 pt-4 pr-8 pb-10">
-                <p className="text-[24px] text-darkpink font-Vazirmatn-600 pt-4">
-                  Play All
-                </p>
-                <img src={play} alt="play" />
+              <div className="lg:block hidden lg:pt-[220px] md:pl-0 pl-10 pt-4 pr-8 pb-10">
+                <div className="  flex items-center xl:gap-3">
+                  <p className="text-[24px] text-darkpink font-Vazirmatn-600 pt-4">
+                    Play All
+                  </p>
+                  <img
+                    src={play}
+                    alt="play"
+                    className="xl:w-[60px] xl:h-[68px] w-[41px] h-[38px]"
+                  />
+                </div>
               </div>
             </div>
           </div>
 
           <div className=" col-span-2 row-span-2 lg:block hidden mt-15">
-            <Popular onAddSong={addSongToPlaylist} playlistSongs={playlistSongs}/>
+            <Popular
+              onAddSong={addSongToPlaylist}
+              playlistSongs={playlistSongs}
+            />
           </div>
           <div className="pt-[64px] ">
             <ArtAlbum />
@@ -296,7 +183,10 @@ const Artist = () => {
           </div>
 
           <div>
-            <Popular onAddSong={addSongToPlaylist} playlistSongs={playlistSongs}/>
+            <Popular
+              onAddSong={addSongToPlaylist}
+              playlistSongs={playlistSongs}
+            />
           </div>
 
           <div>

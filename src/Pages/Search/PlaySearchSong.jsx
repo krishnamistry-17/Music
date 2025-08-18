@@ -34,6 +34,7 @@ const PlaySearchSong = () => {
     setIsRepeat,
     audioRef,
   } = useSearch();
+  console.log(" selectedAlbum :", selectedAlbum);
 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -99,59 +100,82 @@ const PlaySearchSong = () => {
   return (
     <>
       <div
-        className="text-white p-3
-    md:grid md:grid-cols-3 hidden
-    justify-between items-center 
-  rounded-md shadow-md"
+        className=" text-white p-4
+          grid md:grid-cols-3 grid-cols-2 
+          justify-between items-center 
+          xl:gap-60 lg:gap-19  gap-6 rounded-md shadow-md "
       >
-        <audio ref={audioRef} src={selectedAlbum?.cloudinaryUrl} />
-
-        {/* Left */}
-        <div className="flex items-center gap-3">
+        <div className="flex gap-2 items-center">
           <img
             src={selectedAlbum?.songImage?.[0]}
             alt={selectedAlbum?.title}
-            className="w-[50px] h-[50px] rounded"
+            className="w-[50px] h-[50px] rounded-[5px] object-cover"
           />
-
-          <div>
-            <p className="text-white">{selectedAlbum?.title}</p>
+          <div className="flex flex-col py-1">
+            <p className="lg:text-[18px] text-[16px] font-Vazirmatn-500  truncate max-w-xs">
+              {selectedAlbum?.title}
+            </p>
+            <div className="flex gap-2">
+              {/*Fav */}
+              <div>
+                <div onClick={() => handleClick(selectedAlbum)}>
+                  <img
+                    src={
+                      favorites.some((fav) => fav?._id === selectedAlbum?._id)
+                        ? pfull
+                        : pfav
+                    }
+                    alt="fav"
+                    className="w-[18px] h-[18px] sm:hidden"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Middle (controls) */}
         <div>
-          <div className="flex items-center justify-center gap-4">
-            <FaShuffle
-              className={`cursor-pointer ${
-                isShuffle ? "text-green-400" : "text-white"
-              }`}
-              onClick={() => setIsShuffle(!isShuffle)}
-            />
-            <GiPreviousButton
-              className="cursor-pointer text-white"
-              onClick={playPrevious}
-            />
+          <div className="flex items-center gap-5 ">
+            {/* Shuffle */}
+            <div onClick={() => setIsShuffle((s) => !s)}>
+              <FaShuffle
+                className={`w-[20px] h-[20px] cursor-pointer md:block hidden ${
+                  isShuffle ? "text-green-400" : ""
+                }`}
+              />
+            </div>
+
+            {/* Previous */}
+            <div onClick={playPrevious} className="cursor-pointer">
+              <GiPreviousButton className="w-[20px] h-[20px]" />
+            </div>
+
+            {/* Play/Pause */}
             <div
-              className="bg-white rounded-full p-2 cursor-pointer"
+              className="lg:bg-white rounded-full md:p-4 p-1 cursor-pointer"
               onClick={togglePlay}
             >
               {isPlaying ? (
-                <FaPause className="text-black" />
+                <FaPause className="lg:text-black md:w-[20px] md:h-[20px]" />
               ) : (
-                <FaPlay className="text-black" />
+                <FaPlay className="lg:text-black md:w-[20px] md:h-[20px]" />
               )}
             </div>
-            <GiNextButton
-              className="cursor-pointer text-white"
-              onClick={playNext}
-            />
-            <FaRepeat
-              className={`cursor-pointer ${
-                isRepeat ? "text-green-400" : "text-white"
-              }`}
-              onClick={() => setIsRepeat(!isRepeat)}
-            />
+
+            {/* Next */}
+            <div onClick={playNext} className="cursor-pointer">
+              <GiNextButton className="w-[20px] h-[20px]" />
+            </div>
+
+            {/* Repeat */}
+            <div onClick={() => setIsRepeat((r) => !r)}>
+              <FaRepeat
+                className={`w-[20px] h-[20px] cursor-pointer md:block hidden ${
+                  isRepeat ? "text-green-400" : ""
+                }`}
+              />
+            </div>
+
             {/*Fav */}
             <div>
               <div onClick={() => handleClick(selectedAlbum)}>
@@ -162,144 +186,106 @@ const PlaySearchSong = () => {
                       : pfav
                   }
                   alt="fav"
-                  className="w-[18px] h-[18px]"
+                  className="sm:block hidden"
                 />
               </div>
             </div>
           </div>
-          {/* Progress bar and time */}
-          <div className="col-span-1 mt-4 flex justify-between items-center text-white text-sm">
-            <span>{formatted(currentTime)}</span>
-            <input
-              type="range"
-              ref={progressRef}
-              min="0"
-              max={duration || 0}
-              value={currentTime}
-              onChange={(e) => {
-                audioRef.current.currentTime = e.target.value;
-                setCurrentTime(e.target.value);
-              }}
-              className="flex-1 mx-4"
-            />
-            <span>{formatted(duration)}</span>
-          </div>
-        </div>
 
-        {/* Right (volume + expand) */}
-        <div className="md:flex items-center justify-end gap-4 hidden">
-          <button onClick={toggleMute}>
-            {isMuted ? (
-              <IoMdVolumeOff className="text-white" />
-            ) : (
-              <IoMdVolumeMute className="text-white" />
-            )}
-          </button>
-          <input
-            type="range"
-            className="md:block hidden"
-            min="0"
-            max="1"
-            step="0.01"
-            value={volume}
-            onChange={handleVolumeChange}
-          />
-          <MdOutlineFullscreen className="text-white cursor-pointer md:block hidden" />
-        </div>
-      </div>
-      <div
-        className="text-white p-3
-    md:hidden 
-    justify-between items-center mx-2
-  rounded-md shadow-md"
-      >
-        <audio ref={audioRef} src={selectedAlbum?.cloudinaryUrl} />
-        <div className="flex justify-between items-center">
-          {/* Left */}
-          <div className="flex items-center gap-3">
-            <img
-              src={selectedAlbum?.songImage?.[0]}
-              alt={selectedAlbum?.title}
-              className="w-[50px] h-[50px] rounded"
-            />
-
+          {/* Progress Bar */}
+          <div className="flex items-center gap-4 mt-1 lg:-ml-19">
             <div>
-              <p className="text-white">{selectedAlbum?.title}</p>
+              <span className="sm:block hidden">
+                {Math.floor(currentTime / 60)}:
+                {String(Math.floor(currentTime % 60)).padStart(2, "0")}
+              </span>
             </div>
-          </div>
 
-          {/* Middle (controls) */}
-          <div>
-            <div className="flex items-center justify-center gap-4 ">
-              <FaShuffle
-                className={`cursor-pointer hidden ${
-                  isShuffle ? "text-green-400" : "text-white"
-                }`}
-                onClick={() => setIsShuffle(!isShuffle)}
+            <div className="flex-1">
+              <input
+                type="range"
+                ref={progressRef}
+                min="0"
+                max={duration}
+                value={currentTime}
+                onChange={(e) => {
+                  const newTime = Number(e.target.value);
+                  audioRef.current.currentTime = newTime;
+                  setCurrentTime(newTime);
+                }}
+                className="w-full"
               />
-              <GiPreviousButton
-                className="cursor-pointer text-white"
-                onClick={playPrevious}
-              />
-              <div
-                className="bg-white rounded-full p-2 cursor-pointer"
-                onClick={togglePlay}
-              >
-                {isPlaying ? (
-                  <FaPause className="text-black" />
-                ) : (
-                  <FaPlay className="text-black" />
-                )}
-              </div>
-              <GiNextButton
-                className="cursor-pointer text-white"
-                onClick={playNext}
-              />
-              <FaRepeat
-                className={`cursor-pointer hidden ${
-                  isRepeat ? "text-green-400" : "text-white"
-                }`}
-                onClick={() => setIsRepeat(!isRepeat)}
-              />
+            </div>
+            <div>
+              <span className="sm:block hidden">
+                {Math.floor(duration / 60)}:
+                {String(Math.floor(duration % 60)).padStart(2, "0")}
+              </span>
             </div>
           </div>
         </div>
-        {/* Progress bar and time */}
-        <div className="col-span-1 mt-4 flex justify-between items-center text-white text-sm">
-          <span>{formatted(currentTime)}</span>
-          <input
-            type="range"
-            ref={progressRef}
-            min="0"
-            max={duration || 0}
-            value={currentTime}
-            onChange={(e) => {
-              audioRef.current.currentTime = e.target.value;
-              setCurrentTime(e.target.value);
-            }}
-            className="flex-1 mx-4"
-          />
-          <span>{formatted(duration)}</span>
-        </div>
-        {/* Right (volume + expand) */}
-        <div className="md:flex items-center justify-end gap-4 hidden">
-          <button onClick={toggleMute}>
-            {isMuted ? (
-              <IoMdVolumeOff className="text-white" />
-            ) : (
-              <IoMdVolumeMute className="text-white" />
-            )}
-          </button>
-          <input
-            type="range"
-            className="md:block hidden"
-            min="0"
-            max="1"
-            step="0.01"
-            value={volume}
-            onChange={handleVolumeChange}
-          />
-          <MdOutlineFullscreen className="text-white cursor-pointer md:block hidden" />
+
+        {/* Audio and Side Controls */}
+        <audio
+          ref={audioRef}
+          src={selectedAlbum?.cloudinaryUrl}
+          preload="metadata"
+          onLoadedMetadata={(e) => {
+            const duration = e.target.duration;
+            setDuration(duration);
+            progressRef.current.max = duration;
+          }}
+          onTimeUpdate={(e) => {
+            const currentTime = e.target.currentTime;
+            setCurrentTime(currentTime);
+            if (progressRef.current) {
+              progressRef.current.value = currentTime;
+            }
+          }}
+          onEnded={() => {
+            if (isRepeat) {
+              audioRef.current.currentTime = 0;
+              audioRef.current.play();
+            } else {
+              playNext();
+            }
+          }}
+        />
+
+        <div className="md:flex hidden items-center gap-3">
+          <div>
+            <MdLyrics className="w-[20px] h-[20px] lg:block hidden" />
+          </div>
+          <div>
+            <MdOutlineQueueMusic className="w-[23px] h-[23px] lg:block hidden" />
+          </div>
+          <div className="flex items-center gap-2">
+            <div onClick={toggleMute}>
+              {isMuted ? (
+                <div>
+                  {" "}
+                  <IoMdVolumeOff className="w-[23px] h-[23px]" />
+                </div>
+              ) : (
+                <div>
+                  <IoMdVolumeMute className="w-[23px] h-[23px]" />
+                </div>
+              )}
+            </div>
+            <div>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value={volume}
+                onChange={handleVolumeChange}
+              />
+            </div>
+          </div>
+          <div>
+            <MdOutlineFullscreen className="w-[23px] h-[23px]" />
+          </div>
         </div>
       </div>
     </>
