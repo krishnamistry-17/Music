@@ -4,6 +4,7 @@ import { apiRoutes } from "../Component/Constants/apiRoutes";
 import { useAuth } from "../Context/AuthContext";
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const ChangePassword = () => {
   const [error, setError] = useState(null);
@@ -12,14 +13,10 @@ const ChangePassword = () => {
   const [isClicked, setIsClicked] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const {
-    newPassword,
-    setNewPassword,
-    currentPassword,
-    setCurrentPassword,
-    userData,
-  } = useAuth();
+  const { userData } = useAuth();
 
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = async (e) => {
@@ -27,14 +24,13 @@ const ChangePassword = () => {
     setError("");
     setSuccessMessage("");
 
-    
-    if (!currentPassword || !newPassword || !confirmPassword) {
-      setError("All fields are required.");
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      toast.error("All fields are required.");
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setError("New password and confirm password do not match.");
+      toast.error("New password and confirm password do not match.");
       return;
     }
 
@@ -47,11 +43,11 @@ const ChangePassword = () => {
         return;
       }
       const response = await apiInstance.put(
-        apiRoutes.CHANGE_PASSWORD(userData._id),
+        apiRoutes.CHANGE_PASSWORD(userData?._id),
         {
           oldPassword,
-          newPassword: newPassword,
-          confirmPassword: confirmPassword,
+          newPassword,
+          confirmPassword,
         },
         {
           headers: {
@@ -59,12 +55,19 @@ const ChangePassword = () => {
           },
         }
       );
-
-      console.log("response>>>change password :", response);
-
-      setSuccessMessage("Password changed successfully.");
+      if (response.status === 200) {
+        setSuccessMessage("Password changed successfully.");
+        toast.success("Password changed successfully.");
+      } else {
+        throw new Error("Failed to change password");
+      }
+      setOldPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
     } catch (err) {
-      setError(err.response?.data?.message || "Something went wrong");
+      const message = err.response?.data?.message || "Something went wrong";
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -93,9 +96,12 @@ const ChangePassword = () => {
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter old password"
+                    value={oldPassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
                     className="text-[14px] text-white font-Vazirmatn-400 w-full h-[21px] focus:ring-0 focus:outline-none focus:shadow-none"
                   />
                 </div>
+
                 <div className="flex justify-end mr-4" onClick={togglePassword}>
                   {isClicked && showPassword ? (
                     <div>

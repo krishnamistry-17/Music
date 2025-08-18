@@ -43,7 +43,7 @@ const TrendingSong = ({ songRef }) => {
   const favorites = useSelector((state) => state.favorites);
 
   const [data, setData] = useState([]);
-  console.log("data :", data);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -179,7 +179,6 @@ const TrendingSong = ({ songRef }) => {
 
   const isAuthenticated = isLoggedIn || isGoogleLogin;
   const songList = isAuthenticated ? data : data1;
-  console.log("songList :", songList);
 
   return (
     <div ref={songRef}>
@@ -189,8 +188,8 @@ const TrendingSong = ({ songRef }) => {
         </p>
         <div>
           {isSmall ? (
-            <div>
-              <div className="flex justify-between items-end md:px-5 ">
+            <div className=" w-full">
+              <div className="flex justify-between items-end  ">
                 <div>
                   <p></p>
                 </div>
@@ -210,8 +209,8 @@ const TrendingSong = ({ songRef }) => {
               </div>
             </div>
           ) : (
-            <div>
-              <div className="flex justify-between items-end md:px-5 ">
+            <div className="w-full">
+              <div className="flex justify-between items-end md:px-3">
                 <div>
                   <p></p>
                 </div>

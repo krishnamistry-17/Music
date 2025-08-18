@@ -138,7 +138,6 @@ const Popular = ({ onAddSong, playlistSongs }) => {
   const filteredAlbum = Array.isArray(album)
     ? album.filter((a) => a._id === id)
     : [];
-  console.log("filteredAlbum :", filteredAlbum);
 
   const handleSelect = (index) => {
     if (!isLoggedIn && !isGoogleLogin) {
@@ -206,7 +205,6 @@ const Popular = ({ onAddSong, playlistSongs }) => {
         albumName: fallback.albumName,
         fallbackData: fallback,
       }));
-  console.log("songList :", songList);
 
   return (
     <div>
@@ -217,24 +215,26 @@ const Popular = ({ onAddSong, playlistSongs }) => {
         <p className="text-white text-[24px] font-Vazirmatn-700 lg:hidden pl-4">
           Popular <span className="text-darkpink">Songs</span>{" "}
         </p>
-        <div className="flex justify-between items-end md:px-15 ">
-          <div>
-            <p></p>
-          </div>
-          <div>
-            <p className="text-[20px] font-Vazirmatn-400 text-white xl:block hidden">
-              Relase Date
-            </p>
-          </div>
-          <div>
-            <p className="text-[20px] text-white font-Vazirmatn-400 xl:block hidden">
-              Played
-            </p>
-          </div>
-          <div>
-            <p className="text-[20px] text-white font-Vazirmatn-400 lg:block hidden">
-              Time
-            </p>
+        <div className="w-full">
+          <div className="flex justify-between items-end md:px-3 ">
+            <div>
+              <p></p>
+            </div>
+            <div>
+              <p className="text-[20px] font-Vazirmatn-400 text-white xl:block hidden">
+                Relase Date
+              </p>
+            </div>
+            <div>
+              <p className="text-[20px] text-white font-Vazirmatn-400 xl:block hidden">
+                Played
+              </p>
+            </div>
+            <div>
+              <p className="text-[20px] text-white font-Vazirmatn-400 lg:block hidden">
+                Time
+              </p>
+            </div>
           </div>
         </div>
         <div className="flex justify-end gap-8 pt-5 lg:hidden">

@@ -53,6 +53,8 @@ import AddPlayList from "./Pages/PlayList/AddPlayList/AddPlayList";
 import { ListProvider } from "./Pages/Context/AddPlayListContext";
 import PlayList from "./Pages/PlayList/PlayList";
 import YourPlayList from "./Pages/PlayList/YourPlayList/YourPlayList";
+import AboutUs from "./Pages/AboutUs/AboutUs";
+import Contact from "./Pages/Contact/Contact";
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
@@ -81,7 +83,9 @@ function LayoutWrapper({ children }) {
 
   const hasBottomPlayer =
     showAudio || showDisplay || showOtherMusic || showOtherMusic1;
-{/*1024-1140 */}
+  {
+    /*1024-1140 */
+  }
   return (
     <>
       <div className="lg:flex hidden min-h-screen">
@@ -232,6 +236,14 @@ function App() {
                                             path="/yourplaylist"
                                             element={<YourPlayList />}
                                           />
+                                          <Route
+                                            path="/aboutus"
+                                            element={<AboutUs />}
+                                          />
+                                          <Route
+                                            path="/contact"
+                                            element={<Contact />}
+                                          />
                                         </Routes>
                                       </LayoutWrapper>
                                     ) : (
@@ -309,6 +321,14 @@ function App() {
                                         <Route
                                           path="/yourplaylist"
                                           element={<YourPlayList />}
+                                        />
+                                        <Route
+                                          path="/aboutus"
+                                          element={<AboutUs />}
+                                        />
+                                        <Route
+                                          path="/contact"
+                                          element={<Contact />}
                                         />
                                       </Routes>
                                     )}

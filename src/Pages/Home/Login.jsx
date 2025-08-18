@@ -88,6 +88,7 @@ const Login = ({ onForgotPassword }) => {
 
       const { encryptedUserData, iv, key, accessToken, refreshToken } =
         response?.data;
+      console.log("response?.data :", response?.data);
 
       // Decrypt the encrypted user data
       const decryptedUser = decryptUserData(encryptedUserData, key, iv);
@@ -111,7 +112,7 @@ const Login = ({ onForgotPassword }) => {
       navigate("/", { state: { tokenReady: true } });
     } catch (error) {
       setError(error.response?.data?.message || "Login Failed");
-      toast.error(error.message || "Login failed");
+      toast.error("Details are incorrect");
     } finally {
       setLoading(false);
       setEmail("");

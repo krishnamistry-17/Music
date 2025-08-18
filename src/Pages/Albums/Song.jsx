@@ -132,7 +132,6 @@ const Song = ({ onAddSong, playlistSongs }) => {
   const filteredAlbum = Array.isArray(album)
     ? album.filter((a) => a._id === id)
     : [];
-  console.log("filteredAlbum :", filteredAlbum);
 
   const handleSelect = (index) => {
     if (!isLoggedIn && !isGoogleLogin) {
@@ -212,28 +211,29 @@ const Song = ({ onAddSong, playlistSongs }) => {
         fallbackData: fallback,
       }));
 
-  console.log("songList :", songList);
   return (
     <div>
       <div className="md:px-5 px-1 ">
-        <div className="flex justify-between items-end md:px-5 ">
-          <div>
-            <p></p>
-          </div>
-          <div>
-            <p className="text-[20px] font-Vazirmatn-400 text-white xl:block hidden">
-              Relase Date
-            </p>
-          </div>
-          <div>
-            <p className="text-[20px] font-Vazirmatn-400 text-white xl:block hidden">
-              Album
-            </p>
-          </div>
-          <div>
-            <p className="text-[20px] text-white font-Vazirmatn-400 lg:block hidden">
-              Time
-            </p>
+        <div className=" w-full">
+          <div className="flex justify-between items-end md:px-5 ">
+            <div>
+              <p></p>
+            </div>
+            <div>
+              <p className="text-[20px] font-Vazirmatn-400 text-white xl:block hidden">
+                Relase Date
+              </p>
+            </div>
+            <div>
+              <p className="text-[20px] font-Vazirmatn-400 text-white xl:block hidden">
+                Album
+              </p>
+            </div>
+            <div>
+              <p className="text-[20px] text-white font-Vazirmatn-400 lg:block hidden">
+                Time
+              </p>
+            </div>
           </div>
         </div>
         <div className="flex justify-end gap-5 pt-5 lg:hidden">
@@ -331,7 +331,7 @@ const Song = ({ onAddSong, playlistSongs }) => {
                     {/* Album Title */}
                     <div>
                       <p className="text-white text-[16px] font-Vazirmatn-400 py-[17.5px] truncate w-[345px] xl:block hidden">
-                        {filteredAlbum?.[0]?.artistId?.bio}
+                        {albumName || filteredAlbum?.[0]?.artistId?.bio}
                       </p>
                     </div>
 

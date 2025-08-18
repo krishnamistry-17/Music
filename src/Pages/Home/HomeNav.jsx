@@ -104,7 +104,6 @@ const HomeNav = ({
                         alt="Profile"
                         className="w-[40px] h-[40px] rounded-full object-cover"
                       />
-                    
                     </div>
 
                     {isdisplayDetail && (
@@ -195,7 +194,7 @@ const HomeNav = ({
                     {ismenuOpen && (
                       <div className="absolute top-13 right-5 w-[120px] bg-[#282828]  py-4 px-4 rounded shadow-md z-50 text-left justify-start ">
                         <Link
-                          to="/about"
+                          to="/aboutus"
                           className="block text-white text-[14px] font-Vazirmatn-500  mb-3"
                         >
                           About Us
@@ -239,7 +238,7 @@ const HomeNav = ({
             <div>
               <div className="flex items-center justify-center gap-[24px] flex-1">
                 <Link
-                  to="/about"
+                  to="/aboutus"
                   className="text-white text-[16px] font-Vazirmatn-500 text-center w-[111.89px] h-[25px]"
                 >
                   About Us
@@ -275,7 +274,6 @@ const HomeNav = ({
                       alt="Profile"
                       className="w-[40px] h-[40px] rounded-full object-cover"
                     />
-                  
                   </div>
 
                   {isdisplayDetail && (
@@ -283,7 +281,7 @@ const HomeNav = ({
                       <div className="p-3 text-white text-[14px] font-Vazirmatn-400">
                         {/* Account */}
                         <div className="flex items-center py-2">
-                          <Link to="/account">Account</Link>
+                          <Link to="/userdetail">Account</Link>
                         </div>
                         {/* Profile */}
                         <div

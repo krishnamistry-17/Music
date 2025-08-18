@@ -5,6 +5,7 @@ import back from "../../assets/svgs/back.svg";
 import PopArtist from "../Discover/PopArtist";
 import AlbumsTop from "../Home/AlbumsTop";
 import apiInstance from "../../../utils/axios";
+import { usePlayerSource } from "../Context/PlayerSourceContext";
 
 const SearchList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -13,6 +14,7 @@ const SearchList = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const { setSource } = usePlayerSource();
 
   useEffect(() => {
     const query = searchParams.get("query") || "";
@@ -27,7 +29,6 @@ const SearchList = () => {
         setSuggestions([]);
       }
     }, 300);
-    console.log("delayDebounce :", delayDebounce);
 
     return () => clearTimeout(delayDebounce);
   }, [searchInput]);
@@ -50,11 +51,13 @@ const SearchList = () => {
         `/search?query=${encodeURIComponent(searchInput)}&page=1&limit=5`
       );
     }
+    setSource("searchsong");
   };
 
   const handleSuggestionClick = (text) => {
     navigate(`/search?query=${encodeURIComponent(text)}&page=1&limit=5`);
     setSuggestions([]);
+    setSource("searchsong");
   };
 
   return (

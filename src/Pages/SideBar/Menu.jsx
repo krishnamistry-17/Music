@@ -15,6 +15,7 @@ import logoutbtn from "../../assets/svgs/logout.svg";
 import { IoIosLogIn } from "react-icons/io";
 import { SiGnuprivacyguard } from "react-icons/si";
 import yourplay from "../../assets/svgs/yourplay.svg";
+import { IoCallOutline } from "react-icons/io5";
 
 const Menu = () => {
   const { isLoggedIn, setIsLoggedIn, isGoogleLogin, logout } = useAuth();
@@ -62,11 +63,22 @@ const Menu = () => {
                 <Link
                   className="text-white font-Vazirmatn-600 text-[20px] 
                    border-white/20 border-b-2  p-4 flex gap-4"
+                  to={"/aboutus"}
                 >
                   <span>
                     <FcAbout className="mt-0.5" />
                   </span>
                   About
+                </Link>
+                <Link
+                  className="text-white font-Vazirmatn-600 text-[20px] 
+                   border-white/20 border-b-2  p-4 flex gap-4"
+                  to={"/contact"}
+                >
+                  <span>
+                    <IoCallOutline className="mt-0.5 text-white" />
+                  </span>
+                  Contact
                 </Link>
                 <Link
                   className="text-white font-Vazirmatn-600 text-[20px] 
