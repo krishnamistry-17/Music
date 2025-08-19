@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import search from "../../assets/svgs/search.svg";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import apiInstance from "../../../utils/axios";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
-import AllAddPlayList from "../PlayList/AllPlayList/AllAddPlayList";
 import { usePlayList } from "../Context/AddPlayListContext";
 import { toast } from "react-toastify";
-
+//playlist-search
 const SearchSong = ({ onAddSong }) => {
   const [searchInput, setSearchInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);

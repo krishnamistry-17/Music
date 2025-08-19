@@ -18,7 +18,7 @@ import axios from "axios";
 import { loginWithEmail } from "../../service/authService";
 import CryptoJS from "crypto-js";
 
-const LoginSmall = ({ onSuccess, onForgotPassword }) => {
+const LoginSmall = ({ onForgotPassword }) => {
   const [isClicked, setIsClicked] = useState(false);
   const { setCurrentPassword, setUserData } = useAuth();
   const { login } = useAuth();
@@ -231,46 +231,47 @@ const LoginSmall = ({ onSuccess, onForgotPassword }) => {
               </button>
             </div>
           </div>
-          <div>
-            <button
-              onClick={onForgotPassword}
-              className="text-white text-[16px] font-Vazirmatn-500 underline hover:text-darkblue"
-            >
-              Forgot Password
-            </button>
-          </div>
-          <div className="flex items-center justify-center pt-[12px]">
-            <span className="border-t-[1px] block flex-1 border-white"></span>
-            <span className="text-white leading-[3px] block px-5 text-[16px] font-Vazirmatn-500">
-              Or
-            </span>
-            <span className="border-t-[1px] block flex-1 border-white"></span>
-          </div>
-          <div
-            onClick={() => loginGoogle()}
-            className="mt-[20px] flex justify-center items-center w-full py-[7px] border-[2px] rounded-[4px] border-white "
+        </form>
+
+        <div>
+          <button
+            onClick={() => navigate("/forgotpassword")}
+            className="text-white text-[16px] font-Vazirmatn-500 underline hover:text-darkblue"
           >
-            <img src={google} alt="ggle" />
-            <p className="text-[16px] text-white font-Vazirmatn-500 text-justify pl-[6.25px]">
-              Sign in With Google
+            Forgot Password
+          </button>
+        </div>
+        <div className="flex items-center justify-center pt-[12px]">
+          <span className="border-t-[1px] block flex-1 border-white"></span>
+          <span className="text-white leading-[3px] block px-5 text-[16px] font-Vazirmatn-500">
+            Or
+          </span>
+          <span className="border-t-[1px] block flex-1 border-white"></span>
+        </div>
+        <div
+          onClick={() => loginGoogle()}
+          className="mt-[20px] flex justify-center items-center w-full py-[7px] border-[2px] rounded-[4px] border-white "
+        >
+          <img src={google} alt="ggle" />
+          <p className="text-[16px] text-white font-Vazirmatn-500 text-justify pl-[6.25px]">
+            Sign in With Google
+          </p>
+        </div>
+        <div className="flex py-[24px]">
+          <div>
+            <p className="text-[20px] font-Vazirmatn-700 text-white">
+              Dont Have An Account?
             </p>
           </div>
-          <div className="flex py-[24px]">
-            <div>
-              <p className="text-[20px] font-Vazirmatn-700 text-white">
-                Dont Have An Account?
-              </p>
-            </div>
-            <div>
-              <a
-                href="/signup"
-                className="text-[16px] font-Vazirmatn-500 text-white underline hover:text-bluearrow pl-2"
-              >
-                Signup
-              </a>
-            </div>
+          <div>
+            <a
+              href="/signup"
+              className="text-[16px] font-Vazirmatn-500 text-white underline hover:text-bluearrow pl-2"
+            >
+              Signup
+            </a>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

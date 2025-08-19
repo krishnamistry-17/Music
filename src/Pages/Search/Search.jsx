@@ -4,9 +4,10 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import apiInstance from "../../../utils/axios";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
 
-const Search = () => {
+const Search = ({ showSuggestion = true }) => {
   const [searchInput, setSearchInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [hasUserTyped, setHasUserTyped] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -19,7 +20,7 @@ const Search = () => {
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
-      if (searchInput.trim().length > 1) {
+      if (hasUserTyped && searchInput.trim().length > 1) {
         fetchSuggestions(searchInput);
       } else {
         setSuggestions([]);
@@ -27,7 +28,7 @@ const Search = () => {
     }, 300);
 
     return () => clearTimeout(delayDebounce);
-  }, [searchInput]);
+  }, [searchInput, hasUserTyped]);
 
   const fetchSuggestions = async (query) => {
     try {
@@ -66,7 +67,10 @@ const Search = () => {
               <input
                 type="search"
                 value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
+                onChange={(e) => {
+                  setSearchInput(e.target.value);
+                  setHasUserTyped(true);
+                }}
                 placeholder="Search For Musics, Artists,..."
                 className="text-[12px] text-white font-Vazirmatn-300 
                   focus:ring-0 focus:outline-none focus:shadow-none
@@ -77,7 +81,7 @@ const Search = () => {
         </div>
       </form>
 
-      {suggestions && Object.keys(suggestions).length > 0 && (
+      {showSuggestion && suggestions && Object.keys(suggestions).length > 0 && (
         <div
           className="absolute bg-[#1f1f1f] text-white 
         md:w-[335.67px] w-[275px] z-50 rounded-md mt-1 max-h-[300px] overflow-y-auto shadow-lg border border-gray-700"

@@ -108,7 +108,7 @@ const Artist = () => {
                   </div>
                 </div>
               </div>
-              <div className="lg:block hidden lg:pt-[220px] md:pl-0 pl-10 pt-4 pr-8 pb-10">
+              <div className="lg:block hidden lg:pt-[220px] md:pl-0 pl-10 pt-4 xl:pr-8 pb-10">
                 <div className="  flex items-center xl:gap-3">
                   <p className="text-[24px] text-darkpink font-Vazirmatn-600 pt-4">
                     Play All

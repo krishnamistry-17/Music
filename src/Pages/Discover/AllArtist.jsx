@@ -79,7 +79,6 @@ const AllArtist = () => {
     setSource("popular");
   };
 
-  const combinedArtist = [...data, ...data3];
   const isAuthenticated = isLoggedIn || isGoogleLogin;
   const songList = isAuthenticated ? data : data3;
 
@@ -101,7 +100,7 @@ const AllArtist = () => {
           className=" hidden md:grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 gap-[24px] overflow-x-auto"
           style={{ scrollbarWidth: "none" }}
         >
-          {songList.map((item, index) => {
+          {songList?.map((item, index) => {
             const fallback = data3[index] || {};
 
             const image = item.artistImage?.[0] || item.image || fallback.image;

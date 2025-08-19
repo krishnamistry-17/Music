@@ -275,7 +275,7 @@ const TrendingSong = ({ songRef }) => {
             </div>
 
             <div className="pb-[15px]">
-              {songList.map((item, index) => (
+              {songList?.map((item, index) => (
                 <div
                   key={item._id || item.id}
                   className="pt-[15px] cursor-pointer"

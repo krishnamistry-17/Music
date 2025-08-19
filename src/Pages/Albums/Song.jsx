@@ -105,7 +105,7 @@ const Song = ({ onAddSong, playlistSongs }) => {
         // setAllAlbums(albums);
         dispatch(getallAlbum());
 
-        if (!id && albums.length > 0) {
+        if (!id && albums?.length > 0) {
           setSelectedAlbum(albums[0].songs || []);
           setSelectedAlbumId(0); // First song
         }
@@ -120,7 +120,7 @@ const Song = ({ onAddSong, playlistSongs }) => {
 
   useEffect(() => {
     if (id && Array.isArray(data)) {
-      const foundAlbum = data.find((item) => item._id === id);
+      const foundAlbum = data?.find((item) => item._id === id);
       if (foundAlbum) {
         setSelectedAlbum(foundAlbum.songs || []);
         setSelectedAlbumId(0);
@@ -130,7 +130,7 @@ const Song = ({ onAddSong, playlistSongs }) => {
   }, [id, data]);
 
   const filteredAlbum = Array.isArray(album)
-    ? album.filter((a) => a._id === id)
+    ? album?.filter((a) => a._id === id)
     : [];
 
   const handleSelect = (index) => {
@@ -200,7 +200,7 @@ const Song = ({ onAddSong, playlistSongs }) => {
 
   const songList = isAuthenticated
     ? filteredAlbum?.[0]?.songs || []
-    : data1.map((fallback, i) => ({
+    : data1?.map((fallback, i) => ({
         _id: fallback.id,
         title: fallback.head,
         artistName: fallback.para,
@@ -250,7 +250,7 @@ const Song = ({ onAddSong, playlistSongs }) => {
         <div className="flex px-2">
           <div className="flex flex-col items-center mt-4 md:mr-4 mr-3">
             <div>
-              {songList.map((song, index) => (
+              {songList?.map((song, index) => (
                 <p
                   key={song._id || index}
                   className="lg:text-[24px] text-[16px] font-Vazirmatn-600 text-white lg:py-[17px] py-[22px]"
@@ -287,7 +287,7 @@ const Song = ({ onAddSong, playlistSongs }) => {
           </div>
 
           <div className="text-white pb-[15px] pt-[15px] w-full grid grid-cols-1">
-            {songList.map((song, index) => {
+            {songList?.map((song, index) => {
               const fallback = song.fallbackData || {};
 
               const image = song?.songImage?.[0] || fallback?.image;
@@ -342,7 +342,7 @@ const Song = ({ onAddSong, playlistSongs }) => {
                       <div onClick={() => handleClick(song)}>
                         <img
                           src={
-                            favorites.some((fav) => fav._id === song._id)
+                            favorites?.some((fav) => fav._id === song._id)
                               ? pfull
                               : pfav
                           }

@@ -16,10 +16,12 @@ import Playmood from "./Playmood";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
 import AudioMusic from "../Home/AudioMusic";
 import VideoMusic from "../Home/VideoMusic";
+import AlbumsTop from "../Home/AlbumsTop";
 
 const Discover = () => {
   const { isLoggedIn, isGoogleLogin } = useAuth();
   const { source, setSource } = usePlayerSource();
+  console.log("source :", source);
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
@@ -75,7 +77,7 @@ const Discover = () => {
             <VideoMusic />
           </div>
           <div className="pt-[28px] pl-[24px]">
-            <TopAlbums />
+            <AlbumsTop />
           </div>
         </div>
 

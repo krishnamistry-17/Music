@@ -12,6 +12,7 @@ import top3 from "../../assets/images/top3.png";
 import top4 from "../../assets/images/top4.png";
 import top5 from "../../assets/images/top5.png";
 import { useView } from "../Context/ViewContext";
+import { useAuth } from "../Context/AuthContext";
 
 const AllAlbum = () => {
   const { setSelectedAlbum } = useAlbum();
@@ -20,7 +21,7 @@ const AllAlbum = () => {
   const [visibleCount, setVisibleCount] = useState(2);
 
   const [data, setData] = useState([]);
-
+  const { isLoggedIn, isGoogleLogin } = useAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -51,7 +52,6 @@ const AllAlbum = () => {
     return () => window.removeEventListener("resize", updateCount);
   }, []);
 
-
   useEffect(() => {
     async function fetchData() {
       const token = localStorage.getItem("accessToken");
@@ -79,7 +79,8 @@ const AllAlbum = () => {
     navigate(`/album/${albumId}`);
   };
 
-  const combinedAlbum = [...data, ...data3];
+  const isAuthenticated = isLoggedIn || isGoogleLogin;
+  const songList = isAuthenticated ? data : data3;
 
   return (
     <div>
@@ -98,7 +99,7 @@ const AllAlbum = () => {
           className=" hidden md:grid xl:grid-cols-6 md:grid-cols-4 gap-[24px] overflow-x-auto "
           style={{ scrollbarWidth: "none" }}
         >
-          {combinedAlbum.map((item, index) => {
+          {songList?.map((item, index) => {
             const fallback = data3[index] || {};
 
             const image = item.albumImages?.[0] || item.image || fallback.image;

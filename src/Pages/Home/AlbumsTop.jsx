@@ -93,7 +93,6 @@ const AlbumsTop = () => {
     setOpenSource("allalbums");
   };
 
-  const combinedAlbum = [...data, ...data3];
   const isAuthenticated = isLoggedIn || isGoogleLogin;
   const songList = isAuthenticated ? data : data3;
 
@@ -114,7 +113,7 @@ const AlbumsTop = () => {
           className=" hidden md:grid xl:grid-cols-6 lg:grid-cols-3 md:grid-cols-4 gap-[24px] overflow-x-auto "
           style={{ scrollbarWidth: "none" }}
         >
-          {(isOpen ? songList : songList.slice(0, visibleCount)).map(
+          {(isOpen ? songList : songList?.slice(0, visibleCount))?.map(
             (item, index) => {
               const extra = data3[index];
               return (
@@ -159,7 +158,7 @@ const AlbumsTop = () => {
           className=" flex gap-3 overflow-x-auto pt-5"
           style={{ scrollbarWidth: "none" }}
         >
-          {songList.map((item, index) => {
+          {songList?.map((item, index) => {
             return (
               <div key={item._id || index}>
                 <div

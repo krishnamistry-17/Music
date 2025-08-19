@@ -196,7 +196,7 @@ const VideoMusic = () => {
         xl:gap-[130px] lg:gap-[200px] gap-[24px] overflow-x-auto "
         style={{ scrollbarWidth: "none" }}
       >
-        {(isOpen ? songList : songList.slice(0, visibleCount)).map(
+        {(isOpen ? songList : songList?.slice(0, visibleCount))?.map(
           (item, index) => {
             const extra = data3[index];
             return (

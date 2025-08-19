@@ -73,7 +73,7 @@ const AllGenere = () => {
 
         dispatch(getAllGenere());
 
-        if (!id && albums.length > 0) {
+        if (!id && albums?.length > 0) {
           setSelectedAlbumGenere(albums[0].songs || []);
           setSelectedAlbumGenId(0); // by-default 0 show
         }
@@ -113,7 +113,8 @@ const AllGenere = () => {
     setCurrentSongIndex(0);
   };
 
-  const combinedSong = [...data, ...data3];
+  const isAuthenticated = isLoggedIn || isGoogleLogin;
+  const songList = isAuthenticated ? data : data3;
 
   return (
     <div>
@@ -132,7 +133,7 @@ const AllGenere = () => {
         md:grid-cols-4 gap-[24px] overflow-x-auto "
         style={{ scrollbarWidth: "none" }}
       >
-        {combinedSong.map((item, index) => {
+        {songList?.map((item, index) => {
           const fallback = data3[index] || {};
           const image = item.genreImage?.[0] || item.image || fallback.image;
           return (
@@ -149,7 +150,7 @@ const AllGenere = () => {
           style={{ scrollbarWidth: "none" }}
         >
           {Array.isArray(data) &&
-            data.map((item, index) => {
+            data?.map((item, index) => {
               const extra = data3[index];
               return (
                 <div

@@ -72,10 +72,6 @@ const AllAudio = () => {
     fetchData();
   }, []);
 
-  const combinedSong = [...data, ...data3];
-
-  
-
   const handleSelect = (index, item) => {
     if (item?.cloudinaryUrl) {
       toast.warn("This song has no playble audio");
@@ -91,6 +87,9 @@ const AllAudio = () => {
       setIsPlaying(true);
     }
   };
+
+  const isAuthenticated = isLoggedIn || isGoogleLogin;
+  const songList = isAuthenticated ? data : data3;
 
   return (
     <div>
@@ -109,7 +108,7 @@ const AllAudio = () => {
           className=" hidden md:grid xl:grid-cols-6  md:grid-cols-4 gap-[24px] overflow-x-auto "
           style={{ scrollbarWidth: "none" }}
         >
-          {combinedSong.map((item, index) => {
+          {songList?.map((item, index) => {
             const fallback = data3[index] || {};
 
             const image = item.songImage?.[0] || item.image || fallback.image;

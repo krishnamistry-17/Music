@@ -34,7 +34,6 @@ const PlaySearchSong = () => {
     setIsRepeat,
     audioRef,
   } = useSearch();
-  console.log(" selectedAlbum :", selectedAlbum);
 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);

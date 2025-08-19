@@ -64,7 +64,7 @@ const AllSongs = () => {
         const albums = response.data.data;
         setData(albums);
         dispatch(getAllSong());
-        if (!id && albums.length > 0) {
+        if (!id && albums?.length > 0) {
         }
       } catch (error) {
         console.log(error.message);
@@ -92,7 +92,6 @@ const AllSongs = () => {
     }
   };
 
-  const combinedSong = [...data, ...data3];
   const isAuthenticated = isLoggedIn || isGoogleLogin;
   const songList = isAuthenticated ? data : data3;
 
@@ -113,7 +112,7 @@ const AllSongs = () => {
           className="hidden md:grid xl:grid-cols-6 md:grid-cols-4 gap-[24px] overflow-x-auto"
           style={{ scrollbarWidth: "none" }}
         >
-          {songList.map((item, index) => {
+          {songList?.map((item, index) => {
             const fallback = data3[index] || {};
 
             const image = item.songImage?.[0] || item.image || fallback.image;

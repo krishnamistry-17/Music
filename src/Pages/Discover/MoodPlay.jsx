@@ -140,7 +140,7 @@ const MoodPlay = ({ playRef }) => {
           className=" hidden md:grid xl:grid-cols-6 lg:grid-cols-3 md:grid-cols-4 gap-[24px] overflow-x-auto "
           style={{ scrollbarWidth: "none" }}
         >
-          {(isOpen ? songList : songList.slice(0, visibleCount)).map(
+          {(isOpen ? songList : songList?.slice(0, visibleCount))?.map(
             (item, index) => {
               const extra = data3[index];
               return (
@@ -184,7 +184,7 @@ const MoodPlay = ({ playRef }) => {
           className=" flex gap-3 overflow-x-auto pt-5"
           style={{ scrollbarWidth: "none" }}
         >
-          {songList.map((item, index) => (
+          {songList?.map((item, index) => (
             <div key={item._id || index} onClick={() => handleSelect(index)}>
               <div className="bg-[#1F1F1F] w-[150.67px] h-fit p-2 rounded-[8px] ">
                 <div className="p-2">

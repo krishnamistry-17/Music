@@ -15,6 +15,8 @@ import logoutbtn from "../../assets/svgs/logout.svg";
 import { useAuth } from "../Context/AuthContext";
 import { IoIosLogIn } from "react-icons/io";
 import { SiGnuprivacyguard } from "react-icons/si";
+import yourplay from "../../assets/svgs/yourplay.svg";
+import { IoCallOutline } from "react-icons/io5";
 
 const LsSidebar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -70,11 +72,22 @@ const LsSidebar = () => {
               <Link
                 className="text-white font-Vazirmatn-600 text-[20px] 
                    border-white/20 border-b-2  p-4 flex gap-4"
+                to={"/aboutus"}
               >
                 <span>
                   <FcAbout className="mt-0.5" />
                 </span>
                 About
+              </Link>
+              <Link
+                className="text-white font-Vazirmatn-600 text-[20px] 
+                                 border-white/20 border-b-2  p-4 flex gap-4"
+                to={"/contact"}
+              >
+                <span>
+                  <IoCallOutline className="mt-0.5 text-white" />
+                </span>
+                Contact
               </Link>
               <Link
                 className="text-white font-Vazirmatn-600 text-[20px] 
@@ -153,13 +166,28 @@ const LsSidebar = () => {
                 <h2 className="text-[#EE10B0] text-[14px] pb-4">
                   Playlist and favorite
                 </h2>
-                <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
+                <button
+                  className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 "
+                  onClick={() => navigate("/favorites")}
+                >
                   <span>
                     <img src={fav} alt="m" className="w-[23px] h-[20px]" />
                   </span>
                   Your favorites
                 </button>
-                <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
+                <button
+                  className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 "
+                  onClick={() => navigate("/yourplaylist")}
+                >
+                  <span>
+                    <img src={yourplay} alt="m" className="w-[23px] h-[20px]" />
+                  </span>
+                  Your playlist
+                </button>
+                <button
+                  className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 "
+                  onClick={() => navigate("/playlist")}
+                >
                   <span>
                     <img src={addplay} alt="m" className="w-[23px] h-[20px]" />
                   </span>

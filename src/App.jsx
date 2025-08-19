@@ -162,7 +162,12 @@ function App() {
                                           <Route path="/" element={<Home />} />
                                           <Route
                                             path="/search"
-                                            element={<SearchResults />}
+                                            element={
+                                              <SearchResults
+                                                album={Song}
+                                                artist={Popular}
+                                              />
+                                            }
                                           />
                                           <Route
                                             path="/discover"

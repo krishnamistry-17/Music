@@ -99,7 +99,6 @@ const PopArtist = () => {
     setOpenSource("allartist");
   };
 
-  const combinedArtist = [...data, ...data3];
   const isAuthenticated = isLoggedIn || isGoogleLogin;
   const songList = isAuthenticated ? data : data3;
 
@@ -123,7 +122,7 @@ const PopArtist = () => {
         >
           {isOpen
             ? songList
-            : songList.slice(0, visibleCount).map((item, index) => (
+            : songList?.slice(0, visibleCount)?.map((item, index) => (
                 <div key={item._id || index}>
                   <div
                     onClick={() => handleArtist(item._id)}
@@ -155,7 +154,7 @@ const PopArtist = () => {
           className=" flex gap-3 overflow-x-auto pt-5"
           style={{ scrollbarWidth: "none" }}
         >
-          {songList.map((item, index) => {
+          {songList?.map((item, index) => {
             const extra = data3[index];
             return (
               <div key={item._id || index}>

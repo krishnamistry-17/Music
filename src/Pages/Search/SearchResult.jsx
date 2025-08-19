@@ -10,13 +10,7 @@ import { usePlayerSource } from "../Context/PlayerSourceContext";
 import PlaySearchSong from "./PlaySearchSong";
 
 const SearchResults = () => {
-  const {
-    setSelectedAlbum,
-    isPlaying,
-    setIsPlaying,
-    setSelectedAlbumId,
-    selectedAlbumId,
-  } = useSearch();
+  const { setSelectedAlbum, setIsPlaying, setSelectedAlbumId } = useSearch();
 
   const { id } = useParams();
   const [searchParams] = useSearchParams();
@@ -75,7 +69,6 @@ const SearchResults = () => {
       return;
     }
     setSelectedAlbum(song);
-    console.log("song :", song);
     setSelectedAlbumId(0);
     setSource("searchsong");
     setIsPlaying(true);

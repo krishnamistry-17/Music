@@ -64,7 +64,7 @@ const Albums = () => {
 
   useEffect(() => {
     if (Array.isArray(allAlbums)) {
-      const foundAlbum = allAlbums.find((album) => album._id === id);
+      const foundAlbum = allAlbums?.find((album) => album._id === id);
       if (foundAlbum) {
         setCurrentAlbum(foundAlbum);
       }

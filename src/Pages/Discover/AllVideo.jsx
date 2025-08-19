@@ -125,7 +125,7 @@ const AllVideo = () => {
   }, []);
 
   useEffect(() => {
-    videoRefs.current = data.map(
+    videoRefs.current = data?.map(
       (_, i) => videoRefs.current[i] ?? React.createRef()
     );
   }, [data]);
@@ -171,7 +171,7 @@ const AllVideo = () => {
         className=" hidden md:grid   xl:grid-cols-3 grid-cols-2  gap-[24px] overflow-x-auto "
         style={{ scrollbarWidth: "none" }}
       >
-        {data.map((item, index) => {
+        {data?.map((item, index) => {
           const fallback = data3[index] || {};
 
           const image = item.songImage?.[0] || item.image || fallback.image;

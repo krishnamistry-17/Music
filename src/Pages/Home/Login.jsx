@@ -88,7 +88,6 @@ const Login = ({ onForgotPassword }) => {
 
       const { encryptedUserData, iv, key, accessToken, refreshToken } =
         response?.data;
-      console.log("response?.data :", response?.data);
 
       // Decrypt the encrypted user data
       const decryptedUser = decryptUserData(encryptedUserData, key, iv);

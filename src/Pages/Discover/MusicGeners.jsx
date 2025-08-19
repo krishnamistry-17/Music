@@ -141,7 +141,7 @@ const MusicGeners = () => {
         className=" hidden md:grid xl:grid-cols-5 lg:grid-cols-3 md:grid-cols-4 gap-[24px] overflow-x-auto "
         style={{ scrollbarWidth: "none" }}
       >
-        {(isOpen ? songList : songList.slice(0, visibleCount)).map(
+        {(isOpen ? songList : songList?.slice(0, visibleCount))?.map(
           (item, index) => {
             const extra = data3[index];
             return (
@@ -170,7 +170,7 @@ const MusicGeners = () => {
           className=" flex gap-3 overflow-x-auto pt-5"
           style={{ scrollbarWidth: "none" }}
         >
-          {songList.map((item, index) => {
+          {songList?.map((item, index) => {
             const extra = data3[index];
             return (
               <div key={item._id || index} onClick={() => handleSelect(index)}>

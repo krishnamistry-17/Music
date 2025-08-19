@@ -11,7 +11,7 @@ const SearchList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchInput, setSearchInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-
+  const [hasUserTyped, setHasUserTyped] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { setSource } = usePlayerSource();
@@ -23,7 +23,7 @@ const SearchList = () => {
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
-      if (searchInput.trim().length > 1) {
+      if (hasUserTyped && searchInput.trim().length > 1) {
         fetchSuggestions(searchInput);
       } else {
         setSuggestions([]);
@@ -31,7 +31,7 @@ const SearchList = () => {
     }, 300);
 
     return () => clearTimeout(delayDebounce);
-  }, [searchInput]);
+  }, [searchInput, hasUserTyped]);
 
   const fetchSuggestions = async (query) => {
     try {
@@ -81,10 +81,13 @@ const SearchList = () => {
                 <input
                   type="search"
                   value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
+                  onChange={(e) => {
+                    setSearchInput(e.target.value);
+                    setHasUserTyped(true);
+                  }}
                   placeholder="Search For Musics, Artists,..."
                   className="text-[12px] text-black  font-Vazirmatn-400 
-                  focus:ring-0 focus:outline-none focus:shadow-none w-[248px] p-2"
+                  focus:ring-0 focus:outline-none focus:shadow-none w-[248px] p-2 pt-[10px]"
                 />
               </div>
             </div>

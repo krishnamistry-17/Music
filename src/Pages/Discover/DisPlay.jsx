@@ -166,8 +166,8 @@ const DisPlay = () => {
             {/* Shuffle */}
             <div>
               <FaShuffle
-                className={`cursor-pointer ${
-                  isShuffle ? "text-green-400" : "text-white"
+                className={`cursor-pointer md:block hidden ${
+                  isShuffle ? "text-green-400 " : "text-white"
                 }`}
                 onClick={() => setIsShuffle(!isShuffle)}
               />

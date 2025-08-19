@@ -77,8 +77,6 @@ const WeeklyTop = () => {
     fetchData();
   }, []);
 
-  const combinedSong = [...data, ...data3];
-
   const handleSelect = (index, item) => {
     if (item?.cloudinaryUrl) {
       toast.warn("This song has no playble audio");
@@ -120,32 +118,31 @@ const WeeklyTop = () => {
           className=" hidden md:grid xl:grid-cols-6 lg:grid-cols-3 md:grid-cols-4 gap-[24px] overflow-x-auto "
           style={{ scrollbarWidth: "none" }}
         >
-          {Array.isArray(combinedSong) &&
-            (isOpen ? combinedSong : combinedSong.slice(0, visibleCount)).map(
-              (item, index) => {
-                const extra = data3[index];
-                return (
-                  <div key={item._id || index}>
-                    <div
-                      className="bg-[#1F1F1F] w-[174.4px] h-[214px] py-[4px] px-[15px]  rounded-[10px] "
-                      onClick={() => handleSelect(index, item._id)}
-                    >
-                      <img
-                        src={item?.songImage || extra?.image}
-                        alt="a1"
-                        className=""
-                      />
-                      <p className="text-white text-[16px] font-Vazirmatn-500 pt-[8px] ">
-                        {item?.title || extra?.para}
-                      </p>
-                      <p className="text-white text-[12px] font-Vazirmatn-300 pt-[4px] opacity-80 ">
-                        {item?.artistId?.nam || extra?.head}
-                      </p>
-                    </div>
+          {(isOpen ? songList : songList?.slice(0, visibleCount))?.map(
+            (item, index) => {
+              const extra = data3[index];
+              return (
+                <div key={item._id || index}>
+                  <div
+                    className="bg-[#1F1F1F] w-[174.4px] h-[214px] py-[4px] px-[15px]  rounded-[10px] "
+                    onClick={() => handleSelect(index, item._id)}
+                  >
+                    <img
+                      src={item?.songImage || extra?.image}
+                      alt="a1"
+                      className=""
+                    />
+                    <p className="text-white text-[16px] font-Vazirmatn-500 pt-[8px] ">
+                      {item?.title || extra?.para}
+                    </p>
+                    <p className="text-white text-[12px] font-Vazirmatn-300 pt-[4px] opacity-80 ">
+                      {item?.artistId?.nam || extra?.head}
+                    </p>
                   </div>
-                );
-              }
-            )}
+                </div>
+              );
+            }
+          )}
 
           <div
             className="pl-[22px] py-[64px] cursor-pointer "
@@ -166,7 +163,7 @@ const WeeklyTop = () => {
           className=" flex gap-2 overflow-x-auto pt-5"
           style={{ scrollbarWidth: "none" }}
         >
-          {songList.map((item, index) => {
+          {songList?.map((item, index) => {
             const extra = data3[index];
             return (
               <div key={item._id || index}>

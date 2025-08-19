@@ -12,10 +12,11 @@ import { useDispatch } from "react-redux";
 import { getSignUp } from "../Redux/Action/action";
 import { toast } from "react-toastify";
 import LsSidebar from "../SideBar/LsSideBar";
+import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useAuth } from "../Context/AuthContext";
 
-const SignUpSmall = ({ onSuccess }) => {
+const SignUpSmall = (onSuccess) => {
   const [isClicked, setIsClicked] = useState(false);
   const [data, setData] = useState("");
   const { setUserData } = useAuth();
@@ -37,6 +38,7 @@ const SignUpSmall = ({ onSuccess }) => {
   };
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -64,7 +66,7 @@ const SignUpSmall = ({ onSuccess }) => {
       console.log("response.data>>>>>> :", response.data);
       setUserData(response.data);
       toast.success("Signup suceess");
-      onSuccess();
+      navigate("/login");
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed");
       toast.error("Signup failed");

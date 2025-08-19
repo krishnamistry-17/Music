@@ -136,7 +136,7 @@ const Popular = ({ onAddSong, playlistSongs }) => {
   }, [id, data]);
 
   const filteredAlbum = Array.isArray(album)
-    ? album.filter((a) => a._id === id)
+    ? album?.filter((a) => a._id === id)
     : [];
 
   const handleSelect = (index) => {
@@ -195,7 +195,7 @@ const Popular = ({ onAddSong, playlistSongs }) => {
 
   const songList = isAuthenticated
     ? filteredAlbum?.[0]?.songs || []
-    : data1.map((fallback, i) => ({
+    : data1?.map((fallback, i) => ({
         _id: fallback.id,
         title: fallback.head,
         artistName: fallback.para,
@@ -249,9 +249,9 @@ const Popular = ({ onAddSong, playlistSongs }) => {
         </div>
 
         <div className="flex pt-[15px] mt-[-17px] px-3">
-          <div className="flex flex-col items-center mt-4 md:mr-4 mr-3">
+          <div className="flex flex-col items-center lg:mt-4 mt-8 md:mr-4 mr-3">
             <div>
-              {songList.map((song, index) => (
+              {songList?.map((song, index) => (
                 <p
                   key={song._id || index}
                   className="lg:text-[24px] text-[16px] font-Vazirmatn-600 text-white lg:py-[17px] py-[22px]"
@@ -288,7 +288,7 @@ const Popular = ({ onAddSong, playlistSongs }) => {
           </div>
 
           <div className="pb-[15px] pt-[15px] grid grid-cols-1 w-full">
-            {songList.map((song, index) => {
+            {songList?.map((song, index) => {
               const fallback = song.fallbackData || {};
 
               const image = song?.songImage?.[0] || fallback?.image;
@@ -343,7 +343,7 @@ const Popular = ({ onAddSong, playlistSongs }) => {
                       <div onClick={() => handleClick(song)}>
                         <img
                           src={
-                            favorites.some((fav) => fav._id === song._id)
+                            favorites?.some((fav) => fav._id === song._id)
                               ? pfull
                               : pfav
                           }
@@ -424,7 +424,7 @@ const Popular = ({ onAddSong, playlistSongs }) => {
                     </div>
                   </div>
                   {/*Mobile */}
-                  <div className="grid grid-cols-1 gap-4 mb-4 pt-[12px] sm:hidden">
+                  <div className="grid grid-cols-1 relative gap-4 mb-4 pt-[12px] sm:hidden">
                     <div className="flex justify-between items-center bg-[#1E1E1E] w-full max-w-full gap-3">
                       {/* Song info */}
                       <div className="flex">
@@ -438,7 +438,7 @@ const Popular = ({ onAddSong, playlistSongs }) => {
                             {title}
                           </p>
                           <p className="text-white text-[12px] font-Vazirmatn-300 pt-0.5 truncate">
-                            {artist || filteredAlbum?.[0]?.artistId?.name}
+                            {artist || filteredAlbum?.[0]?.name}
                           </p>
                         </div>
                       </div>

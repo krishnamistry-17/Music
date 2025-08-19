@@ -7,11 +7,8 @@ import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
-import { useDispatch } from "react-redux";
-import { getSignUp } from "../Redux/Action/action";
 import { toast } from "react-toastify";
 import { useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 

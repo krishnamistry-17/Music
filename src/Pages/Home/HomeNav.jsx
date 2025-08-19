@@ -41,7 +41,6 @@ const HomeNav = ({
     if (width >= 1350) {
       setIsSmall(false);
     } else if (width <= 1024) {
-      console.log("width >>elseif:", width);
       setIsSmall(true);
     } else {
       setIsSmall(true);
@@ -60,7 +59,7 @@ const HomeNav = ({
 
   const screen = ["/", "/discover"].includes(location.pathname) && (
     <div>
-      <Search />
+      <Search showSuggestion={false} />
     </div>
   );
   const artist = ["/artist"].includes(location.pathname);

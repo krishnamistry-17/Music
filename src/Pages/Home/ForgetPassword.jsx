@@ -7,11 +7,14 @@ import { useAuth } from "../Context/AuthContext";
 import { IoIosArrowBack } from "react-icons/io";
 import mail from "../../assets/svgs/mail.svg";
 import { toast } from "react-toastify";
+import back from "../../assets/svgs/back.svg";
+import { useNavigate } from "react-router-dom";
 
 const ForgetPassword = ({ onBackToLogin }) => {
   const { setForgotEmail } = useAuth();
   const [email, setEmail] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = async () => {
     if (!email || !email.includes("@")) {
@@ -34,8 +37,17 @@ const ForgetPassword = ({ onBackToLogin }) => {
 
   return (
     <div className="px-4 py-4">
-      <div className="text-white flex gap-2 items-center mb-4">
+      <div className="text-white lg:flex gap-2 items-center mb-4  hidden">
         <IoIosArrowBack onClick={onBackToLogin} />
+        Forget Password
+      </div>
+      <div className="text-white text-[16px] flex gap-2 items-center mb-4 lg:hidden">
+        <img
+          src={back}
+          alt="back"
+          onClick={() => navigate("/login")}
+          className="w-6 h-7"
+        />
         Forget Password
       </div>
 

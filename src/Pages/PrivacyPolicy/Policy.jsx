@@ -78,7 +78,7 @@ const Policy = () => {
           Privacy Policy
         </h1>
 
-        <p className="mb-4 text-[18px] font-Vazirmatn-400 text-white">
+        <p className="mb-4 lg:text-[18px] text-[16.5px] font-Vazirmatn-400 text-white">
           At{" "}
           <strong className=" bg-gradient-to-t from-darkblue to-darkpink text-transparent bg-clip-text">
             Melodies
@@ -91,7 +91,7 @@ const Policy = () => {
         <h2 className="text-[24px] font-Vazirmatn-600 text-white mt-6 mb-2">
           <span className="pr-2">🔍</span> Information We Collect
         </h2>
-        <ul className="list-disc list-inside space-y-2 text-[18px] font-Vazirmatn-400 text-white">
+        <ul className="list-disc list-inside space-y-2 lg:text-[18px] text-[16.5px] font-Vazirmatn-400 text-white">
           <li>
             <strong>Personal Information:</strong> Name, email, profile photo
             (for account creation).
@@ -109,7 +109,7 @@ const Policy = () => {
         <h2 className="text-[24px] font-Vazirmatn-600 text-white mt-6 mb-2">
           <span className="pr-2">🛠️</span> How We Use Your Information
         </h2>
-        <ul className="list-disc list-inside space-y-2 text-[18px] font-Vazirmatn-400 text-white">
+        <ul className="list-disc list-inside space-y-2 lg:text-[18px] text-[16.5px] font-Vazirmatn-400 text-white">
           <li>Personalize and improve your listening experience</li>
           <li>Communicate updates and offers (only if you opt-in)</li>
           <li>Ensure platform security and performance</li>
@@ -118,7 +118,7 @@ const Policy = () => {
         <h2 className="text-[24px] font-Vazirmatn-600 text-white mt-6 mb-2">
           <span className="pr-2">🔒</span> Data Security
         </h2>
-        <p className="text-[18px] font-Vazirmatn-400 text-white mb-4">
+        <p className="lg:text-[18px] text-[16.5px] font-Vazirmatn-400 text-white mb-4">
           We use modern security practices to protect your data. While no system
           is entirely secure, we strive to keep your information safe.
         </p>
@@ -126,7 +126,7 @@ const Policy = () => {
         <h2 className="text-[24px] font-Vazirmatn-600 text-white mt-6 mb-2">
           <span className="pr-2">👥 </span>Sharing Your Data
         </h2>
-        <p className="text-[18px] font-Vazirmatn-400 text-white mb-4">
+        <p className="lg:text-[18px] text-[16.5px] font-Vazirmatn-400 text-white mb-4">
           We <strong>do not sell</strong> or rent your personal data. We may
           share data with trusted third-party services or when legally required.
         </p>
@@ -134,7 +134,7 @@ const Policy = () => {
         <h2 className="text-[24px] font-Vazirmatn-600 text-white mt-6 mb-2">
           <span className="pr-2"> 🧒</span> Children's Privacy
         </h2>
-        <p className="text-[18px] font-Vazirmatn-400 text-white mb-4">
+        <p className="lg:text-[18px] text-[16.5px] font-Vazirmatn-400 text-white mb-4">
           Our platform is not intended for users under 13. We do not knowingly
           collect data from children.
         </p>
@@ -142,7 +142,7 @@ const Policy = () => {
         <h2 className="text-[24px] font-Vazirmatn-600 text-white mt-6 mb-2">
           <span className="pr-2">⚙️ </span>Your Choices
         </h2>
-        <ul className="list-disc list-inside space-y-2 text-[18px] font-Vazirmatn-400 text-white">
+        <ul className="list-disc list-inside space-y-2 lg:text-[18px] text-[16.5px] font-Vazirmatn-400 text-white">
           <li>Update or delete your profile anytime</li>
           <li>Disable cookies in browser settings</li>
           <li>Request data access or deletion via contact</li>
@@ -151,11 +151,11 @@ const Policy = () => {
         <h2 className="text-[24px] font-Vazirmatn-600 text-white mt-6 mb-2">
           <span className="pr-2">📬</span> Contact Us
         </h2>
-        <p className="text-[18px] font-Vazirmatn-400 text-white">
+        <p className="lg:text-[18px] text-[16.5px] font-Vazirmatn-400 text-white">
           If you have any questions about this Privacy Policy, feel free to
           contact us at:
           <br />
-          <span className="text-darkblue font-Vazirmatn-500 text-[18px]">
+          <span className="text-darkblue font-Vazirmatn-500 lg:text-[18px] text-[16.5px]">
             support@melodies.com
           </span>
         </p>
