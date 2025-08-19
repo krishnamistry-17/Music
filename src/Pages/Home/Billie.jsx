@@ -66,6 +66,9 @@ const Billie = () => {
               src={currentArtist?.artistImage || data3?.image}
               alt="bile"
               className=" rounded-[5px] "
+              onClick={() => {
+                handleClick(currentArtist._id);
+              }}
             />
           </div>
           <div className="sm:pl-8 pl-4">

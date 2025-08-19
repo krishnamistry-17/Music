@@ -26,10 +26,28 @@ const Albums = () => {
   const location = useLocation();
   const [visibleContent, setVisibleContent] = useState();
   const { isLoggedIn, isGoogleLogin } = useAuth();
-
+  const [issmall, setIsSmall] = useState(false);
   const [currentAlbum, setCurrentAlbum] = useState(null);
 
   const { playlistSongs, setPlaylistSongs } = usePlayList();
+
+  const handleResize = () => {
+    const width = document?.body?.clientWidth;
+
+    if (width >= 1350) {
+      setIsSmall(false);
+    } else if (width <= 768) {
+      setIsSmall(true);
+    } else {
+      setIsSmall(true);
+    }
+  };
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const addSongToPlaylist = (song) => {
     if (isLoggedIn || isGoogleLogin) {
@@ -162,7 +180,7 @@ const Albums = () => {
 
         <div>
           <div className=" w-full h-fit pb-6 shadow-lg  bg-gradient-to-r from-blue to-lightblue ">
-            <div className="lg:flex justify-between items-center">
+            <div className="flex justify-between items-center">
               <div
                 className={`${
                   visibleContent >= 425 && visibleContent <= 992
@@ -175,43 +193,46 @@ const Albums = () => {
                     src={currentAlbum?.albumImages?.[0] || song}
                     alt="song"
                     className={`${
-                      visibleContent >= 425 ? " w-[160px]" : "w-[200px] mx-8"
+                      visibleContent >= 425 ? " w-[160px]" : "w-[200px] "
                     }`}
                   />
                 </div>
-                <div className="md:pl-4 pl-3 pt-[27px] mx-8">
+                <div className="md:pl-4 pl-3 pt-[27px] ">
                   <p className=" text-white font-Vazirmatn-700 text-[12px] truncate sm:block hidden">
                     {currentAlbum?.artistId?.bio || "The Eminem Show"}
                   </p>
-                  <div className="flex gap-2.5 pt-4">
+                  <div className="flex gap-2.5 pt-3">
                     <img
                       src={currentAlbum?.albumImages?.[0] || song}
                       alt="em"
-                      className="w-[36px] h-[36px] rounded-md"
+                      className="w-[41px] h-[41px] rounded-md"
                     />
                     <p
-                      className="text-white text-[16px] font-Vazirmatn-600 pt-1.5
+                      className="text-white text-[19px] font-Vazirmatn-600 pt-2.5
                     "
                     >
                       {currentAlbum?.artistId?.name || "Eminem"}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex  items-center gap-4 pt-4">
-                      <p className="text-white text-[14px] font-Vazirmatn-800">
-                        {currentAlbum?.songs?.length || 2} songs
-                      </p>
-                      <img src={bluedot} alt="pd" />
-                      <p className="text-white text-[14px] font-Vazirmatn-800">
-                        1h 36m
-                      </p>
-                    </div>
-                    <div>
-                      <img
-                        src={bplay}
-                        alt="bplay"
-                        className=" w-[35px] h-[35px] "
-                      />
+                  <div className=" w-full">
+                    <div className="flex justify-between items-center gap-2 pt-4">
+                      <div className="flex items-center gap-4 ">
+                        <p className="text-white text-[14px] font-Vazirmatn-800">
+                          {currentAlbum?.songs?.length || 2} songs
+                        </p>
+                        <img src={bluedot} alt="pd" />
+                        <p className="text-white text-[14px] font-Vazirmatn-800">
+                          1h 36m
+                        </p>
+                      </div>
+                      <div className="flex items-center sm:mt-0 mt-0 sm:ml-5 ml-4">
+                        <p className="text-white">Play All</p>
+                        <img
+                          src={bplay}
+                          alt="bplay"
+                          className=" w-[35px] h-[35px] ml-3 "
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>

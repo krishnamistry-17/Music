@@ -38,7 +38,7 @@ const SideBar = ({ hasBottomPlayer }) => {
     {
       title: "Library",
       items: [
-        { img: recent, name: "Recently Added" },
+        { img: recent, name: "Recently Added", path: "/recentlyadded" },
         { img: most, name: "Most Played" },
       ],
     },

@@ -144,7 +144,10 @@ const Menu = () => {
 
                 <div className="border-white/20 border-b-2  p-4">
                   <h2 className="text-[#EE10B0] text-[14px] pb-4">Library</h2>
-                  <button className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 ">
+                  <button
+                    className="text-[16px] text-white font-Vazirmatn-600 flex gap-2.5 pb-4 "
+                    onClick={() => navigate("/recentlyadded")}
+                  >
                     <span>
                       <img src={recent} alt="m" className="w-[23px] h-[20px]" />
                     </span>

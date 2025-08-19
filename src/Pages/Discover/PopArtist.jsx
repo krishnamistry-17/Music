@@ -163,7 +163,7 @@ const PopArtist = () => {
                     <img
                       src={item.artistImage?.[0] || item?.image}
                       alt="a1"
-                      className="  max-w-[175px] max-h-[100px]"
+                      className="  max-w-[175px] max-h-[100px] rounded-full"
                     />
                     <p className="text-white text-[12px] font-Vazirmatn-300 pt-[23px]  text-center">
                       {item.name || item?.para}
