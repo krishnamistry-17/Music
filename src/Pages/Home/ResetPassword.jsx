@@ -60,7 +60,7 @@ const ResetPassword = () => {
         <div className="w-[476.5px] rounded-[12px] bg-bgpink">
           <div className="py-[16px] px-[25px]">
             <div className="flex gap-2 items-center mb-4">
-              <IoIosArrowBack />
+              <IoIosArrowBack className=" text-white" />
               <p className="text-white">Reset Password</p>
             </div>
 
@@ -137,7 +137,7 @@ const ResetPassword = () => {
             <div className="py-[16px]">
               <div className="w-full bg-darkpink rounded-[4px]">
                 <button
-                  className="text-[18px] text-white font-Vazirmatn-500 text-center py-[8px] px-[181.75px]"
+                  className="text-[18px] text-white font-Vazirmatn-500 text-center py-[8px] px-[142.75px]"
                   type="submit"
                   onClick={handleReset}
                 >

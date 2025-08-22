@@ -11,6 +11,7 @@ import artist33 from "../../assets/images/artist33.png";
 import artist44 from "../../assets/images/artist44.png";
 import artist55 from "../../assets/images/artist55.png";
 import artist66 from "../../assets/images/artist66.png";
+import { useAuth } from "../Context/AuthContext";
 
 const Billie = () => {
   const {
@@ -18,8 +19,12 @@ const Billie = () => {
     setSelectedArtistId,
     selectedArtist,
     currentArtist,
+    followedArtistDetail,
+    followedArtist,
+    setFollowedArtist,
   } = useArtist();
 
+  const { isLoggedIn, isGoogleLogin } = useAuth();
   const navigate = useNavigate();
 
   const data3 = [
@@ -50,11 +55,21 @@ const Billie = () => {
   };
 
   const handleClick = (artistId) => {
-    navigate(`/artist/${artistId}`);
+    if (isGoogleLogin || isLoggedIn) {
+      navigate(`/artist/${artistId}`);
+    } else {
+      toast.warn("Please login to play music");
+    }
   };
 
   const handleFollow = () => {
-    toast.success(`Followed the Artist ${currentArtist.name}`);
+    if (isGoogleLogin || isLoggedIn) {
+      setFollowedArtist(followedArtistDetail);
+      toast.success(`Followed the  ${currentArtist.name} Artist`);
+      navigate("/library");
+    } else {
+      toast.warn("Please login to follow artist");
+    }
   };
 
   return (
@@ -63,9 +78,9 @@ const Billie = () => {
         <div className="flex  items-center">
           <div>
             <img
-              src={currentArtist?.artistImage || data3?.image}
+              src={currentArtist?.artistImage || artist66}
               alt="bile"
-              className=" rounded-[5px] "
+              className="  rounded-full"
               onClick={() => {
                 handleClick(currentArtist._id);
               }}
@@ -73,10 +88,11 @@ const Billie = () => {
           </div>
           <div className="sm:pl-8 pl-4">
             <p className="sm:text-[22px] text-[20px] font-Vazirmatn-600 text-white">
-              {currentArtist?.name}
+              {currentArtist?.name || "Billie Eilish"}
             </p>
             <p className="text-white sm:text-[18px] text-[12px] font-Vazirmatn-300 sm:w-[325px] w-[177px] text-justify sm:pt-4 pt-[4px]">
-              {currentArtist?.bio}
+              {currentArtist?.bio ||
+                "Singer of 'Bad Guy', known for her unique voice and style"}
             </p>
 
             <div className="sm:flex items-center justify-between">
@@ -84,7 +100,7 @@ const Billie = () => {
                 <div className="flex">
                   <button
                     onClick={() => {
-                      handleClick(currentArtist._id);
+                      handleClick(currentArtist?._id);
                     }}
                     className="sm:text-[14px] text-[12px] text-darkpink font-Vazirmatn-300 text-center sm:w-[150px] sm:h-[40px] w-[82.5px] h-[34px] rounded-[5px] border-[1px] border-darkpink"
                   >

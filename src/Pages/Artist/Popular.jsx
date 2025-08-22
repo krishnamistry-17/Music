@@ -27,6 +27,7 @@ import { useAlbum } from "../Context/AlbumContext";
 import { usePlayerSource } from "../Context/PlayerSourceContext";
 import apiInstance from "../../../utils/axios";
 import { apiRoutes } from "../Component/Constants/apiRoutes";
+import { SlUserFollow } from "react-icons/sl";
 
 const Popular = ({ onAddSong, playlistSongs }) => {
   const {
@@ -35,6 +36,7 @@ const Popular = ({ onAddSong, playlistSongs }) => {
     setIsPlaying,
     selectedArtistId,
     setSelectedArtistId,
+    setFollowedArtist,
   } = useArtist();
 
   const [album, setAlbum] = useState(null);
@@ -95,6 +97,7 @@ const Popular = ({ onAddSong, playlistSongs }) => {
       try {
         const response = await apiInstance.get(apiRoutes.GET_ALL_ARTIST);
         const albums = response.data.data;
+        console.log("albums :", albums);
         setData(albums);
         setAlbum(albums);
         // setAllAlbums(albums);
@@ -138,6 +141,17 @@ const Popular = ({ onAddSong, playlistSongs }) => {
   const filteredAlbum = Array.isArray(album)
     ? album?.filter((a) => a._id === id)
     : [];
+  console.log("filteredAlbum :", filteredAlbum);
+
+  const handleFollow = () => {
+    if (isGoogleLogin || isLoggedIn) {
+      setFollowedArtist(filteredAlbum);
+      toast.success(`Followed the  ${filteredAlbum?.[0]?.name} Artist`);
+      navigate("/library");
+    } else {
+      toast.warn("Please login to follow artist");
+    }
+  };
 
   const handleSelect = (index) => {
     if (!isLoggedIn && !isGoogleLogin) {
@@ -398,6 +412,16 @@ const Popular = ({ onAddSong, playlistSongs }) => {
                               )}
                             </div>
 
+                            <div className="flex items-center gap-2 pt-1">
+                              <SlUserFollow className="text-white" />
+                              <p
+                                className="text-white cursor-pointer"
+                                onClick={handleFollow}
+                              >
+                                Follow the Artist
+                              </p>
+                            </div>
+
                             <div
                               className="flex gap-2 items-center pt-2"
                               onClick={() => handleArtist(song._id)}
@@ -488,6 +512,16 @@ const Popular = ({ onAddSong, playlistSongs }) => {
                                     <BiSolidRightArrow className="ml-[5px] w-[22px] h-[22px]" />
                                   </div>
                                 )}
+                              </div>
+
+                              <div className="flex items-center gap-2 pt-1">
+                                <SlUserFollow className="text-white" />
+                                <p
+                                  className="text-white cursor-pointer"
+                                  onClick={handleFollow}
+                                >
+                                  Follow the Artist
+                                </p>
                               </div>
 
                               <div

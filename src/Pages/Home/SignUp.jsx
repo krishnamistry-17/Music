@@ -170,7 +170,7 @@ const SignUp = ({ onSuccess }) => {
           <div className="py-[16px]">
             <div className="w-full bg-darkpink rounded-[4px]">
               <button
-                className="text-[18px] text-white font-Vazirmatn-500 text-center py-[8px] px-[181.75px]"
+                className="text-[18px] text-white font-Vazirmatn-500 text-center py-[8px] px-[172.75px]"
                 type="submit"
               >
                 {loading ? "Loading" : " Sign Up"}

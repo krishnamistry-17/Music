@@ -36,8 +36,10 @@ const SmallFooter = () => {
           >
             {section.items.map((item, index) => {
               const isActive =
-                activeIndex === `${sectionIndex}-${index}` ||
-                location.pathname.startsWith(item.path);
+                item.path &&
+                (location.pathname === item.path ||
+                  (item.path !== "/" &&
+                    location.pathname.startsWith(item.path)));
 
               return (
                 <div

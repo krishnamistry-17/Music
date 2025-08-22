@@ -93,9 +93,9 @@ const Footer = () => {
           </div>
 
           {isSmall ? (
-            <div className="flex items-center justify-center gap-4 lg:pl-[53px] ">
+            <div className="flex items-center  gap-4 lg:pl-[53px] ">
               <div>
-                <p className="text-[40px] font-Vazirmatn-800 bg-gradient-to-t from-darkpink to-darkblue text-transparent bg-clip-text">
+                <p className="text-[40px] font-Vazirmatn-800 bg-gradient-to-l from-darkpink to-darkblue text-transparent bg-clip-text">
                   Melodies
                 </p>
               </div>

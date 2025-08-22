@@ -25,6 +25,7 @@ export const ArtistProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [allArtist, setAllArtist] = useState([]);
   const [currentArtistId, setCurrentArtistId] = useState(0);
+  const [followedArtist, setFollowedArtist] = useState([]);
 
   const currentSong = selectedArtist?.[selectedArtistId];
 
@@ -32,31 +33,15 @@ export const ArtistProvider = ({ children }) => {
     return selectedArtist?.[selectedArtistId] ?? null;
   }, [selectedArtist, selectedArtistId]);
 
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const token = localStorage.getItem("accessToken");
-  //     if (!token) {
-  //       setError("Unauthorized: Please login first");
-  //       setLoading(false);
-  //       return;
-  //     }
+  const followedArtistDetail = useMemo(() => {
+    return selectedArtist?.[selectedArtistId] ?? null;
+  }, [selectedArtist, selectedArtistId]);
 
-  //     try {
-  //       const response = await apiInstance.get(apiRoutes.GET_ALL_ARTIST);
-  //       const albums = response.data.data;
-  //       setAlbum(albums);
-  //       setAllArtist(albums);
-  //       setSelectedArtist(albums.length > 0 ? albums[0].songs : []);
-  //       setSelectedArtistId(0);
-  //     } catch (error) {
-  //       setError(error.message || "Failed to fetch albums");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-
-  //   fetchData();
-  // }, [id]);
+  const removeArtist = (artistId) => {
+    setFollowedArtist((prev) =>
+      prev?.filter((artist) => artist._id !== artistId)
+    );
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -154,6 +139,9 @@ export const ArtistProvider = ({ children }) => {
         loading,
         error,
         currentArtist,
+        followedArtistDetail,
+        followedArtist,
+        setFollowedArtist,
       }}
     >
       {children}

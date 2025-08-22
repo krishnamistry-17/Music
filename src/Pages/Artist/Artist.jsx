@@ -23,16 +23,20 @@ import { toast } from "react-toastify";
 
 const Artist = () => {
   const { id } = useParams();
-  const { album: allAlbums } = useArtist();
+  const {
+    album: allAlbums,
+    followedArtistDetail,
+    followedArtist,
+    setFollowedArtist,
+  } = useArtist();
 
   const { source, setSource } = usePlayerSource();
   const { isLoggedIn, isGoogleLogin, logout } = useAuth();
-  const [isdisplayDetail, setDisplayDetail] = useState();
-  const { isPlaying } = useArtist();
   const navigate = useNavigate();
   const location = useLocation();
 
   const [currentAlbum, setCurrentAlbum] = useState(null);
+  console.log("currentAlbum :", currentAlbum);
 
   const { playlistSongs, setPlaylistSongs } = usePlayList();
 

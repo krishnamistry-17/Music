@@ -56,6 +56,7 @@ import YourPlayList from "./Pages/PlayList/YourPlayList/YourPlayList";
 import AboutUs from "./Pages/AboutUs/AboutUs";
 import Contact from "./Pages/Contact/Contact";
 import RecentlyAdded from "./Pages/RecentlyAdded/RecentlyAdded";
+import Library from "./Pages/Library/Library";
 
 function LayoutWrapper({ children }) {
   const location = useLocation();
@@ -254,6 +255,10 @@ function App() {
                                             path="/recentlyadded"
                                             element={<RecentlyAdded />}
                                           />
+                                          <Route
+                                            path="/library"
+                                            element={<Library />}
+                                          />
                                         </Routes>
                                       </LayoutWrapper>
                                     ) : (
@@ -343,6 +348,10 @@ function App() {
                                         <Route
                                           path="/recentlyadded"
                                           element={<RecentlyAdded />}
+                                        />
+                                        <Route
+                                          path="/library"
+                                          element={<Library />}
                                         />
                                       </Routes>
                                     )}

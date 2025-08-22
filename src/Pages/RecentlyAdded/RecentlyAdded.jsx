@@ -1,6 +1,7 @@
 import React from "react";
 import AllFavorites from "../Favorites/AllFavorites";
-import YourPlayList from "../PlayList/YourPlayList/YourPlayList";
+import Library from "../Library/Library";
+
 const RecentlyAdded = () => {
   return (
     <div>
@@ -8,7 +9,7 @@ const RecentlyAdded = () => {
         <AllFavorites />
       </div>
       <div className="mt-5">
-        <YourPlayList />
+        <Library />
       </div>
     </div>
   );
